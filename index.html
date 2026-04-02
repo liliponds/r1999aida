@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aida — Reverse: 1999</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & BASE ─────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:        #100d08;
+  --bg-mid:    #1a1410;
+  --bg-panel:  #221c14;
+  --bg-card:   #1a1208;
+  --accent:    #c8956a;
+  --accent-l:  #e8b882;
+  --accent-p:  #f4deb8;
+  --gold:      #d4a84a;
+  --gold-l:    #e8c870;
+  --rose:      #c87868;
+  --sky:       #7ab0c8;
+  --text:      #e8dcc8;
+  --text-mid:  #a89878;
+  --text-dim:  #6a5848;
+  --border:    rgba(200,149,106,0.22);
+  --border-b:  rgba(200,149,106,0.55);
+  --glow:      rgba(212,168,74,0.12);
+  --glow-b:    rgba(212,168,74,0.28);
+}
+
+html,body{
+  width:100%;min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Cormorant Garamond',serif;
+  overflow-x:hidden;
+  cursor:default;
+}
+
+/* custom cursor */
+body{ cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='4' fill='none' stroke='%23c8956a' stroke-width='1'/%3E%3Ccircle cx='10' cy='10' r='1' fill='%23c8956a'/%3E%3C/svg%3E") 10 10, crosshair; }
+
+/* ─── BACKGROUND EFFECTS ───────────────────────── */
+.bg-layer{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 50%, rgba(212,168,74,0.04) 0%, transparent 100%),
+    radial-gradient(ellipse 40% 60% at 85% 30%, rgba(122,176,200,0.03) 0%, transparent 100%),
+    radial-gradient(ellipse 80% 40% at 50% 90%, rgba(200,120,104,0.03) 0%, transparent 100%);
+}
+
+.grain{
+  position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ─── LOADING SCREEN ───────────────────────────── */
+#loader{
+  position:fixed;inset:0;z-index:1000;
+  background:var(--bg);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:24px;
+  transition:opacity 0.6s ease, visibility 0.6s ease;
+}
+#loader.hidden{opacity:0;visibility:hidden;}
+
+.loader-emblem{
+  width:80px;height:80px;
+  border:1px solid var(--border-b);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  animation:emblem-spin 3s linear infinite;
+}
+@keyframes emblem-spin{
+  0%{transform:rotate(0deg);}
+  100%{transform:rotate(360deg);}
+}
+.loader-emblem::before{
+  content:'';position:absolute;inset:6px;
+  border:1px solid rgba(200,149,106,0.3);
+  animation:emblem-spin 2s linear infinite reverse;
+}
+.loader-emblem-inner{
+  font-size:28px;
+  animation:emblem-spin 3s linear infinite reverse;
+}
+
+.loader-bar-wrap{
+  width:200px;height:2px;
+  background:rgba(200,149,106,0.15);
+  position:relative;overflow:hidden;
+}
+.loader-bar{
+  position:absolute;left:0;top:0;bottom:0;width:0;
+  background:linear-gradient(90deg,var(--gold),var(--accent-l));
+  animation:load-fill 1.8s ease forwards 0.3s;
+}
+@keyframes load-fill{
+  0%{width:0;}
+  100%{width:100%;}
+}
+
+.loader-text{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;letter-spacing:0.2em;
+  color:var(--text-dim);text-transform:uppercase;
+  animation:blink 1s ease infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+/* ─── WRAPPER ───────────────────────────────────── */
+#app{
+  position:relative;z-index:2;
+  max-width:1080px;margin:0 auto;
+  padding:24px 16px;
+  opacity:0;transform:translateY(16px);
+  transition:opacity 0.8s ease, transform 0.8s ease;
+}
+#app.visible{opacity:1;transform:translateY(0);}
+
+/* ─── TOP NAV ───────────────────────────────────── */
+.top-nav{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 16px;
+  background:var(--bg-panel);
+  border:1px solid var(--border);
+  border-bottom:none;
+  animation:slide-down 0.5s ease both;
+  animation-delay:0.1s;
+}
+@keyframes slide-down{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+
+.nav-back{
+  width:26px;height:26px;border:1px solid var(--border);
+  background:transparent;color:var(--text-dim);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:14px;
+  transition:all 0.2s;
+}
+.nav-back:hover{border-color:var(--accent);color:var(--accent);}
+
+.nav-tabs{display:flex;gap:2px;margin-left:8px;}
+.nav-tab{
+  padding:4px 16px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;letter-spacing:0.1em;
+  color:var(--text-dim);text-transform:uppercase;
+  border:1px solid transparent;
+  cursor:pointer;
+  transition:all 0.25s;
+  position:relative;
+}
+.nav-tab::after{
+  content:'';position:absolute;bottom:-1px;left:0;right:0;
+  height:2px;background:var(--gold);
+  transform:scaleX(0);transition:transform 0.25s;
+}
+.nav-tab.active{
+  color:var(--accent-l);
+  border-color:var(--border);
+  background:rgba(200,149,106,0.07);
+}
+.nav-tab.active::after{transform:scaleX(1);}
+.nav-tab:hover:not(.active){color:var(--accent);border-color:var(--border);}
+
+.nav-spacer{flex:1;}
+.nav-logo{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.2em;
+  color:var(--text-dim);text-transform:uppercase;
+}
+
+/* ─── PROFILE MAIN ──────────────────────────────── */
+.profile-main{
+  display:grid;
+  grid-template-columns:300px 1fr;
+  border:1px solid var(--border);
+  background:var(--bg-panel);
+  min-height:640px;
+}
+
+/* ─── LEFT PANEL ────────────────────────────────── */
+.left-panel{
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  animation:slide-right 0.6s ease both;
+  animation-delay:0.2s;
+}
+@keyframes slide-right{from{opacity:0;transform:translateX(-12px);}to{opacity:1;transform:translateX(0);}}
+
+/* ART AREA */
+.art-area{
+  width:100%;height:360px;
+  position:relative;overflow:hidden;
+  border-bottom:1px solid var(--border);
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(212,168,74,0.2) 0%, transparent 65%),
+    radial-gradient(ellipse at 50% 0%, rgba(122,176,200,0.08) 0%, transparent 55%),
+    linear-gradient(180deg,#0e0a04 0%,#1e1608 60%,#0e0a04 100%);
+  cursor:crosshair;
+}
+
+.art-parallax{
+  position:absolute;inset:0;
+  transition:transform 0.1s ease-out;
+  display:flex;align-items:center;justify-content:center;
+}
+
+.art-img-wrap{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+
+/* Placeholder — replace with <img> */
+.art-placeholder{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  position:relative;z-index:2;
+}
+.art-placeholder-box{
+  width:110px;height:160px;
+  border:1px dashed rgba(200,149,106,0.35);
+  display:flex;align-items:center;justify-content:center;
+  font-size:40px;
+  background:rgba(212,168,74,0.03);
+  position:relative;
+}
+.art-placeholder-box::before,.art-placeholder-box::after{
+  content:'';position:absolute;width:10px;height:10px;
+  border-color:var(--accent);border-style:solid;
+}
+.art-placeholder-box::before{top:-1px;left:-1px;border-width:1px 0 0 1px;}
+.art-placeholder-box::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0;}
+.art-hint{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.1em;
+  color:rgba(106,88,72,0.6);text-transform:uppercase;
+}
+
+/* geo circles */
+.geo{
+  position:absolute;border-radius:50%;
+  border:1px solid rgba(200,149,106,0.07);
+  pointer-events:none;
+}
+
+/* dawn glow */
+.dawn-glow{
+  position:absolute;bottom:0;left:0;right:0;height:130px;
+  background:linear-gradient(0deg,rgba(212,168,74,0.16) 0%,transparent 100%);
+  pointer-events:none;
+}
+
+/* afflatus badge */
+.afflatus-badge{
+  position:absolute;top:12px;left:12px;z-index:3;
+  width:52px;height:52px;
+  border:1px solid var(--border-b);
+  background:rgba(16,12,8,0.92);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:3px;
+  transition:all 0.3s;
+}
+.afflatus-badge:hover{
+  border-color:var(--gold);
+  box-shadow:0 0 12px rgba(212,168,74,0.2);
+}
+.aff-icon{font-size:20px;line-height:1;}
+.aff-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:7px;letter-spacing:0.08em;
+  color:var(--sky);text-transform:uppercase;
+}
+
+/* corner decos */
+.corner-deco{
+  position:absolute;width:14px;height:14px;
+  border-color:var(--accent);border-style:solid;opacity:0.4;
+}
+.c-tl{top:5px;left:5px;border-width:1px 0 0 1px;}
+.c-tr{top:5px;right:5px;border-width:1px 1px 0 0;}
+.c-bl{bottom:5px;left:5px;border-width:0 0 1px 1px;}
+.c-br{bottom:5px;right:5px;border-width:0 1px 1px 0;}
+
+/* STARS */
+.stars-row{
+  padding:9px 14px 4px;display:flex;gap:3px;align-items:center;
+}
+.star{font-size:14px;color:var(--gold);line-height:1;}
+.star.dim{color:rgba(106,88,72,0.3);}
+
+/* NAME */
+.name-block{
+  padding:3px 14px 12px;
+  border-bottom:1px solid var(--border);
+}
+.char-name{
+  font-family:'Cinzel',serif;
+  font-size:28px;font-weight:600;
+  letter-spacing:0.07em;color:var(--accent-l);
+  line-height:1;
+}
+.char-title{
+  font-size:11.5px;font-style:italic;
+  color:var(--text-mid);margin-top:3px;
+  letter-spacing:0.04em;
+}
+
+/* BOND */
+.bond-row{
+  padding:8px 14px;display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--border);
+}
+.bond-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.06em;color:var(--text-dim);
+  min-width:34px;
+}
+.bond-track{
+  flex:1;height:3px;
+  background:rgba(200,149,106,0.12);
+  position:relative;overflow:hidden;
+}
+.bond-fill{
+  position:absolute;left:0;top:0;bottom:0;
+  width:0;
+  background:linear-gradient(90deg,var(--gold),var(--accent-l));
+  transition:width 1.8s cubic-bezier(0.22,1,0.36,1);
+}
+.bond-pct{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;color:var(--accent);
+}
+
+/* ROLES */
+.roles-row{
+  padding:8px 14px;display:flex;gap:5px;flex-wrap:wrap;
+  border-bottom:1px solid var(--border);
+}
+.role-chip{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.07em;
+  color:var(--text-mid);text-transform:uppercase;
+  padding:3px 8px;
+  border:1px solid var(--border);
+  background:rgba(200,149,106,0.05);
+  transition:all 0.2s;
+}
+.role-chip:hover{
+  border-color:var(--accent);color:var(--accent-l);
+  background:rgba(200,149,106,0.1);
+}
+
+/* STATS */
+.stats-section{padding:10px 14px;flex:1;}
+.stats-heading{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.12em;
+  color:var(--text-dim);text-transform:uppercase;
+  margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
+}
+.stats-heading::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.stat-item{
+  padding:6px 8px;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-left:2px solid rgba(212,168,74,0.3);
+  transition:all 0.25s;
+  cursor:default;
+}
+.stat-item:hover{
+  border-color:var(--border-b);
+  border-left-color:var(--gold);
+  background:rgba(212,168,74,0.06);
+  box-shadow:0 0 8px rgba(212,168,74,0.08);
+}
+.stat-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.07em;
+  color:var(--text-dim);text-transform:uppercase;
+  margin-bottom:3px;
+}
+.stat-value{
+  font-family:'Cinzel',serif;
+  font-size:17px;color:var(--accent-p);
+  line-height:1;
+}
+.stat-full{grid-column:span 2;}
+
+/* ─── RIGHT PANEL ───────────────────────────────── */
+.right-panel{
+  display:flex;flex-direction:column;
+  animation:fade-up 0.6s ease both;
+  animation-delay:0.3s;
+}
+@keyframes fade-up{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* DOC HEADER */
+.doc-header{
+  padding:10px 20px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(34,28,20,0.7);
+}
+.doc-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;letter-spacing:0.2em;
+  color:rgba(200,149,106,0.4);text-transform:uppercase;
+}
+.doc-label::before{content:'✦ ';color:var(--accent);font-size:8px;}
+
+.level-row{display:flex;gap:16px;align-items:center;}
+.li-item{display:flex;flex-direction:column;align-items:center;gap:1px;}
+.li-key{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.06em;
+  color:var(--text-dim);text-transform:uppercase;
+}
+.li-val{
+  font-family:'Cinzel',serif;
+  font-size:16px;color:var(--accent-l);font-weight:600;line-height:1;
+}
+.li-sub{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--text-dim);}
+.insight-pips{display:flex;gap:3px;margin-top:2px;}
+.ins-pip{
+  width:10px;height:10px;
+  background:rgba(212,168,74,0.45);
+  border:1px solid var(--gold);
+}
+
+/* PSYCHUBE */
+.psychube-row{
+  padding:7px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.psy-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.08em;
+  color:var(--text-dim);text-transform:uppercase;
+}
+.psy-name{font-size:13px;font-style:italic;color:var(--accent-l);}
+.psy-lv{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;color:var(--text-dim);margin-left:3px;
+}
+.psy-tris{display:flex;gap:3px;margin-left:auto;align-items:flex-end;}
+.tri{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;}
+.tri-on{border-bottom:9px solid var(--accent);}
+.tri-mid{border-bottom:9px solid rgba(200,149,106,0.35);}
+.tri-off{border-bottom:9px solid rgba(106,88,72,0.2);}
+
+/* SKILL CARDS */
+.cards-row{
+  padding:10px 20px;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  border-bottom:1px solid var(--border);
+}
+.skill-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  cursor:pointer;
+  transition:all 0.25s;
+  position:relative;overflow:hidden;
+}
+.skill-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 100%,rgba(212,168,74,0.1) 0%,transparent 70%);
+  opacity:0;transition:opacity 0.3s;
+}
+.skill-card:hover{
+  border-color:var(--accent);
+  transform:translateY(-2px);
+  box-shadow:0 4px 16px rgba(0,0,0,0.4),0 0 0 1px rgba(200,149,106,0.1);
+}
+.skill-card:hover::before{opacity:1;}
+.skill-card:active{transform:translateY(0);}
+
+.skill-card-art{
+  height:72px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.skill-card-art::before,.skill-card-art::after{
+  content:'';position:absolute;width:7px;height:7px;
+  border-color:rgba(200,149,106,0.35);border-style:solid;
+}
+.skill-card-art::before{top:4px;left:4px;border-width:1px 0 0 1px;}
+.skill-card-art::after{bottom:4px;right:4px;border-width:0 1px 1px 0;}
+
+.skill-card-foot{padding:6px 8px;}
+.skill-card-name{
+  font-family:'Cinzel',serif;
+  font-size:10px;color:var(--accent-l);
+  display:block;font-weight:600;
+}
+.skill-card-sub{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;color:var(--text-dim);
+  letter-spacing:0.04em;display:block;margin-top:2px;
+}
+
+/* ─── TAB CONTENT PANELS ────────────────────────── */
+.tab-panel{display:none;flex:1;flex-direction:column;}
+.tab-panel.active{display:flex;}
+
+/* LORE (profile tab) */
+.lore-area{
+  flex:1;padding:16px 20px;
+  display:flex;flex-direction:column;gap:14px;
+  overflow-y:auto;max-height:320px;
+}
+.lore-area::-webkit-scrollbar{width:3px;}
+.lore-area::-webkit-scrollbar-track{background:transparent;}
+.lore-area::-webkit-scrollbar-thumb{background:var(--border);}
+
+.lore-section{}
+.lore-heading{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.15em;
+  color:var(--accent);text-transform:uppercase;
+  margin-bottom:6px;
+  display:flex;align-items:center;gap:8px;
+}
+.lore-heading::after{content:'';flex:1;height:1px;background:var(--border);}
+.lore-text{
+  font-size:13.5px;line-height:1.78;
+  color:var(--text-mid);font-weight:300;
+}
+.lore-em{color:var(--accent-l);font-style:italic;}
+.lore-quote{
+  border-left:2px solid var(--gold);
+  padding-left:12px;margin:8px 0;
+  font-style:italic;color:var(--text-mid);
+  font-size:13px;line-height:1.7;
+}
+
+/* STORY TAB */
+.story-area{
+  flex:1;padding:16px 20px;
+  display:flex;flex-direction:column;gap:0;
+  overflow-y:auto;max-height:320px;
+}
+.story-area::-webkit-scrollbar{width:3px;}
+.story-area::-webkit-scrollbar-track{background:transparent;}
+.story-area::-webkit-scrollbar-thumb{background:var(--border);}
+
+/* INSIGHT PROGRESSION */
+.insight-nav{
+  display:flex;gap:0;
+  border-bottom:1px solid var(--border);
+  padding:0 20px;
+}
+.insight-btn{
+  padding:8px 16px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.1em;
+  color:var(--text-dim);text-transform:uppercase;
+  border:none;border-bottom:2px solid transparent;
+  background:transparent;cursor:pointer;
+  transition:all 0.2s;
+}
+.insight-btn.active{
+  color:var(--gold);border-bottom-color:var(--gold);
+}
+.insight-btn:hover:not(.active){color:var(--accent);}
+
+.insight-panel{display:none;padding:16px 20px;}
+.insight-panel.active{display:block;}
+.insight-title{
+  font-family:'Cinzel',serif;
+  font-size:14px;color:var(--accent-l);
+  margin-bottom:10px;letter-spacing:0.05em;
+}
+.insight-body{
+  font-size:13px;line-height:1.85;
+  color:var(--text-mid);font-weight:300;
+}
+.insight-body p{margin-bottom:10px;}
+.insight-body p:last-child{margin-bottom:0;}
+.insight-body em{color:var(--accent-l);}
+
+/* RELATIONS TAB */
+.relations-area{
+  flex:1;padding:16px 20px;
+  display:flex;flex-direction:column;gap:10px;
+  overflow-y:auto;max-height:320px;
+}
+.relations-area::-webkit-scrollbar{width:3px;}
+.relations-area::-webkit-scrollbar-thumb{background:var(--border);}
+
+.relation-card{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:10px 12px;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  transition:all 0.2s;
+}
+.relation-card:hover{border-color:var(--accent);background:rgba(212,168,74,0.04);}
+.relation-icon{font-size:24px;line-height:1;flex-shrink:0;margin-top:2px;}
+.relation-body{}
+.relation-name{
+  font-family:'Cinzel',serif;
+  font-size:13px;color:var(--accent-l);
+  margin-bottom:3px;
+}
+.relation-type{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.08em;
+  color:var(--sky);text-transform:uppercase;
+  margin-bottom:5px;
+}
+.relation-desc{
+  font-size:12px;line-height:1.65;
+  color:var(--text-mid);font-weight:300;
+}
+
+/* INSIGHT FOOTER */
+.insight-footer{
+  padding:9px 20px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:6px;
+}
+.ins-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.1em;
+  color:var(--text-dim);text-transform:uppercase;
+  margin-right:3px;
+}
+.ins-footer-pip{
+  width:22px;height:22px;
+  border:1px solid var(--gold);
+  background:rgba(212,168,74,0.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;color:var(--gold);
+}
+.ins-spacer{flex:1;}
+.afflatus-tag{
+  display:flex;align-items:center;gap:5px;
+  padding:4px 10px;
+  border:1px solid var(--border);
+  background:var(--bg-card);
+}
+.afflatus-tag-icon{font-size:11px;}
+.afflatus-tag-text{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.1em;
+  color:var(--sky);text-transform:uppercase;
+}
+
+/* ─── SKILL POPUP ───────────────────────────────── */
+.popup-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(10,8,4,0.75);
+  backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;
+  transition:all 0.25s;
+}
+.popup-overlay.open{opacity:1;visibility:visible;}
+
+.popup-box{
+  width:440px;max-width:90vw;
+  background:var(--bg-panel);
+  border:1px solid var(--border-b);
+  position:relative;
+  transform:scale(0.94) translateY(8px);
+  transition:transform 0.25s ease;
+  box-shadow:0 24px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(212,168,74,0.1);
+}
+.popup-overlay.open .popup-box{transform:scale(1) translateY(0);}
+
+.popup-header{
+  padding:14px 16px 12px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;
+}
+.popup-icon{font-size:32px;line-height:1;}
+.popup-header-text{}
+.popup-skill-type{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.12em;
+  color:var(--text-dim);text-transform:uppercase;
+  margin-bottom:3px;
+}
+.popup-skill-name{
+  font-family:'Cinzel',serif;
+  font-size:18px;color:var(--accent-l);
+  font-weight:600;letter-spacing:0.05em;
+}
+.popup-close{
+  position:absolute;top:12px;right:12px;
+  width:24px;height:24px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--text-dim);
+  cursor:pointer;font-size:14px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
+}
+.popup-close:hover{border-color:var(--accent);color:var(--accent);}
+
+.popup-body{padding:14px 16px 16px;}
+.popup-quote{
+  border-left:2px solid var(--gold);
+  padding-left:10px;margin-bottom:12px;
+  font-style:italic;color:var(--text-mid);
+  font-size:12.5px;line-height:1.7;
+}
+.popup-desc{
+  font-size:13px;line-height:1.75;
+  color:var(--text-mid);font-weight:300;
+}
+.popup-corner{
+  position:absolute;width:10px;height:10px;
+  border-color:var(--accent);border-style:solid;opacity:0.5;
+}
+.pc-tl{top:4px;left:4px;border-width:1px 0 0 1px;}
+.pc-br{bottom:4px;right:4px;border-width:0 1px 1px 0;}
+
+/* ─── BOTTOM BAR ────────────────────────────────── */
+.bottom-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;
+  border:1px solid var(--border);border-top:none;
+  background:var(--bg-panel);
+}
+.bottom-note{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.12em;
+  color:var(--text-dim);text-transform:uppercase;
+}
+.bottom-geo{
+  font-size:10px;color:var(--text-dim);letter-spacing:0.25em;
+}
+
+/* ─── SCAN LINE EFFECT ──────────────────────────── */
+@keyframes scanline{
+  0%{transform:translateY(-100%);}
+  100%{transform:translateY(100vh);}
+}
+.scanline{
+  position:fixed;top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,rgba(212,168,74,0.04),transparent);
+  pointer-events:none;z-index:3;
+  animation:scanline 6s linear infinite;
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="grain"></div>
+<div class="scanline"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-emblem">
+    <div class="loader-emblem-inner">🌅</div>
+  </div>
+  <div class="loader-bar-wrap">
+    <div class="loader-bar"></div>
+  </div>
+  <div class="loader-text">Loading Profile Data</div>
+</div>
+
+<!-- SKILL POPUP -->
+<div class="popup-overlay" id="popup" onclick="closePopup(event)">
+  <div class="popup-box">
+    <div class="popup-corner pc-tl"></div>
+    <div class="popup-corner pc-br"></div>
+    <div class="popup-header">
+      <div class="popup-icon" id="popup-icon">🌅</div>
+      <div class="popup-header-text">
+        <div class="popup-skill-type" id="popup-type">Portrait</div>
+        <div class="popup-skill-name" id="popup-name">First Light</div>
+      </div>
+      <button class="popup-close" onclick="closePopupDirect()">✕</button>
+    </div>
+    <div class="popup-body">
+      <div class="popup-quote" id="popup-quote"></div>
+      <div class="popup-desc" id="popup-desc"></div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <!-- TOP NAV -->
+  <div class="top-nav">
+    <button class="nav-back" onclick="playClick()">‹</button>
+    <div class="nav-tabs">
+      <div class="nav-tab active" onclick="switchTab('profile',this)">Profile</div>
+      <div class="nav-tab" onclick="switchTab('story',this)">Story</div>
+      <div class="nav-tab" onclick="switchTab('relations',this)">Relations</div>
+    </div>
+    <div class="nav-spacer"></div>
+    <div class="nav-logo">Reverse : 1999 · OC</div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="profile-main">
+
+    <!-- LEFT PANEL — always visible -->
+    <div class="left-panel">
+
+      <!-- ART -->
+      <div class="art-area" id="artArea">
+        <div class="geo" style="width:220px;height:220px;top:70px;left:40px;"></div>
+        <div class="geo" style="width:120px;height:120px;top:120px;left:90px;"></div>
+        <div class="geo" style="width:60px;height:60px;top:150px;left:120px;opacity:0.15;"></div>
+
+        <div class="afflatus-badge">
+          <span class="aff-icon">👁</span>
+          <span class="aff-label">Spirit</span>
+        </div>
+
+        <div class="art-parallax" id="artParallax">
+          <div class="art-img-wrap">
+            <!--
+              REPLACE WITH CHARACTER ART:
+              <img src="your-image-url.png"
+                   style="width:100%;height:100%;
+                   object-fit:cover;object-position:top center;">
+            -->
+            <div class="art-placeholder">
+              <div class="art-placeholder-box">🌅</div>
+              <span class="art-hint">Replace with character art</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dawn-glow"></div>
+        <div class="corner-deco c-tl"></div>
+        <div class="corner-deco c-tr"></div>
+        <div class="corner-deco c-bl"></div>
+        <div class="corner-deco c-br"></div>
+      </div>
+
+      <!-- STARS -->
+      <div class="stars-row">
+        <span class="star">★</span>
+        <span class="star">★</span>
+        <span class="star">★</span>
+        <span class="star">★</span>
+        <span class="star">★</span>
+        <span class="star dim">★</span>
+      </div>
+
+      <!-- NAME -->
+      <div class="name-block">
+        <div class="char-name">Aida</div>
+        <div class="char-title">One Who Returns · Ancient Shepherd's Crook</div>
+      </div>
+
+      <!-- BOND -->
+      <div class="bond-row">
+        <span class="bond-label">Bond</span>
+        <div class="bond-track">
+          <div class="bond-fill" id="bondFill"></div>
+        </div>
+        <span class="bond-pct">100%</span>
+      </div>
+
+      <!-- ROLES -->
+      <div class="roles-row">
+        <span class="role-chip">⚔ Carry</span>
+        <span class="role-chip">◈ Control</span>
+        <span class="role-chip">✦ Support</span>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-section">
+        <div class="stats-heading">Personal Stats</div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-label">ATK</div>
+            <div class="stat-value">1840</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">HP</div>
+            <div class="stat-value">9640</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">RLT DEF</div>
+            <div class="stat-value">820</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">MNT DEF</div>
+            <div class="stat-value">760</div>
+          </div>
+          <div class="stat-item stat-full">
+            <div class="stat-label">Critical Technique</div>
+            <div class="stat-value">490</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /left-panel -->
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+
+      <!-- DOC HEADER -->
+      <div class="doc-header">
+        <span class="doc-label">Document</span>
+        <div class="level-row">
+          <div class="li-item">
+            <span class="li-key">Level</span>
+            <span class="li-val">60</span>
+            <span class="li-sub">/60</span>
+          </div>
+          <div class="li-item">
+            <span class="li-key">Insight</span>
+            <span class="li-val">III</span>
+            <div class="insight-pips">
+              <div class="ins-pip"></div>
+              <div class="ins-pip"></div>
+              <div class="ins-pip"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PSYCHUBE -->
+      <div class="psychube-row">
+        <span class="psy-label">Psychube ▶</span>
+        <span class="psy-name">The Fool's Journey</span>
+        <span class="psy-lv">Lv.60</span>
+        <div class="psy-tris">
+          <div class="tri tri-on"></div>
+          <div class="tri tri-mid"></div>
+          <div class="tri tri-off"></div>
+        </div>
+      </div>
+
+      <!-- SKILL CARDS -->
+      <div class="cards-row">
+        <div class="skill-card" onclick="openSkill('portrait')">
+          <div class="skill-card-art">🌅</div>
+          <div class="skill-card-foot">
+            <span class="skill-card-name">Portrait</span>
+            <span class="skill-card-sub">First Light</span>
+          </div>
+        </div>
+        <div class="skill-card" onclick="openSkill('skill1')">
+          <div class="skill-card-art">🌾</div>
+          <div class="skill-card-foot">
+            <span class="skill-card-name">Skill I</span>
+            <span class="skill-card-sub">Come Along</span>
+          </div>
+        </div>
+        <div class="skill-card" onclick="openSkill('skill2')">
+          <div class="skill-card-art">🐑</div>
+          <div class="skill-card-foot">
+            <span class="skill-card-name">Skill II</span>
+            <span class="skill-card-sub">Tend</span>
+          </div>
+        </div>
+        <div class="skill-card" onclick="openSkill('ultimate')">
+          <div class="skill-card-art">☀️</div>
+          <div class="skill-card-foot">
+            <span class="skill-card-name">Ultimate</span>
+            <span class="skill-card-sub">Sunrise</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB PANELS -->
+
+      <!-- PROFILE TAB -->
+      <div class="tab-panel active" id="tab-profile">
+        <div class="lore-area">
+          <div class="lore-section">
+            <div class="lore-heading">Overview</div>
+            <div class="lore-text">A shepherd's crook of the Central Asian steppe, ancient and nomadic in origin, awakened mid-Storm from a museum archive where she had spent several undignified decades behind glass. She emerged already knowing how to walk, already looking for something to guide home. <span class="lore-em">Spirit Afflatus. Unexpected carry. The crook still in her hand.</span></div>
+          </div>
+          <div class="lore-section">
+            <div class="lore-heading">Personality</div>
+            <div class="lore-text">Curious and wandering — she followed flocks across wide steppe country for centuries and has not stopped being interested in what's on the other side of things. She meets everything new with genuine open warmth. The backbone surfaces when it needs to. She is not loud about it. She simply becomes very clear, very still, and very firm.</div>
+            <div class="lore-quote">"Not that way. This way. It's alright — I'll show you."</div>
+          </div>
+          <div class="lore-section">
+            <div class="lore-heading">Backstory</div>
+            <div class="lore-text">She remembers the animals more than the people — the particular stubbornness of a sheep that kept drifting, the way a young lamb moved differently from an old one, the sound of the flock settling at dusk. The Storm found her in a museum case. It found her because she had been waiting for a very long time and <span class="lore-em">wanting is a kind of pressure and pressure is a kind of energy and the Storm is very good at finding energy that has nowhere to go.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STORY TAB — Insight Lore -->
+      <div class="tab-panel" id="tab-story">
+        <div class="insight-nav">
+          <button class="insight-btn active" onclick="switchInsight(0,this)">Insight I</button>
+          <button class="insight-btn" onclick="switchInsight(1,this)">Insight II</button>
+          <button class="insight-btn" onclick="switchInsight(2,this)">Insight III</button>
+        </div>
+        <div class="story-area">
+          <div class="insight-panel active" id="ins-0">
+            <div class="insight-title">To the Ones I Remember</div>
+            <div class="insight-body">
+              <p>You were the stubborn one. The grey one with the notched ear who always drifted left. I knew before you did that you were going to drift — I could feel it in the shift of the wood, the particular angle of your wandering. I never minded. I just came alongside you and you came back and that was how it always went.</p>
+              <p>I don't know what happened to you. Time did what time does. I was in a case behind glass and you were — elsewhere. A long time ago.</p>
+              <p>I think about your notched ear sometimes. I think about the way the morning light came across the grass when we were moving and how you were always the first one out and the last one in and I was always there.</p>
+              <p><em>I was always there.</em></p>
+            </div>
+          </div>
+          <div class="insight-panel" id="ins-1">
+            <div class="insight-title">To the New Ones</div>
+            <div class="insight-body">
+              <p>The world is very loud now. I want you to know I noticed that immediately — the glass broke and the noise came in and everything was reversing and I stood in the middle of it and thought: well. This is different.</p>
+              <p>But the scattered things were still scattered. The drifting things were still drifting. I found you the same way I always found the grey one with the notched ear. I could feel the angle of your wandering.</p>
+              <p>You are not sheep. I want to be clear that I know this. But the work is the same. Come alongside. Be patient. Be firm when firm is needed.</p>
+              <p><em>I will be here when you get back. I always am.</em></p>
+            </div>
+          </div>
+          <div class="insight-panel" id="ins-2">
+            <div class="insight-title">On Returning</div>
+            <div class="insight-body">
+              <p>I have been asked — once, by someone who found the question very clever — whether it hurts, coming back. It doesn't. It is very simple. I am here and then I am not and then I am here again and the flock needs tending and so I tend it.</p>
+              <p>What I didn't expect is that the people are not the same people when I return. They have done things while I was gone. The light is different on their faces.</p>
+              <p>I came back from being glass-case-quiet for centuries and found a world full of people drifting in directions they hadn't chosen and I thought — oh. Oh, I see. This is what I'm for now. Not sheep. People. Same work. Much more interesting.</p>
+              <p><em>I'm glad to be here. The dawn is going to come up exactly when it's supposed to. It always does.</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RELATIONS TAB -->
+      <div class="tab-panel" id="tab-relations">
+        <div class="relations-area">
+          <div class="relation-card">
+            <div class="relation-icon">🌾</div>
+            <div class="relation-body">
+              <div class="relation-name">The Flock</div>
+              <div class="relation-type">Memory · Origin</div>
+              <div class="relation-desc">The animals she guided across the steppe for centuries. She remembers them better than she remembers the people — the grey one with the notched ear, the lamb who always drifted left. They are gone. She still feels the weight of their memory in the wood.</div>
+            </div>
+          </div>
+          <div class="relation-card">
+            <div class="relation-icon">🏛</div>
+            <div class="relation-body">
+              <div class="relation-name">The Museum</div>
+              <div class="relation-type">Location · Awakening</div>
+              <div class="relation-desc">Where the Storm found her — behind glass in an archive, undignified and waiting. The glass broke. She stepped out. She has not been back.</div>
+            </div>
+          </div>
+          <div class="relation-card">
+            <div class="relation-icon">🌅</div>
+            <div class="relation-body">
+              <div class="relation-name">The Dawn</div>
+              <div class="relation-type">Concept · Identity</div>
+              <div class="relation-desc">Every flock she ever guided moved at first light. The dawn is not something she watches — it is something she has always been part of. She finds it reassuring that it still comes. It always does.</div>
+            </div>
+          </div>
+          <div class="relation-card">
+            <div class="relation-icon">🌪</div>
+            <div class="relation-body">
+              <div class="relation-name">The Storm</div>
+              <div class="relation-type">Event · Catalyst</div>
+              <div class="relation-desc">She does not fear it. The Storm is just a flock that hasn't been gathered yet. She is very good at gathering.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INSIGHT FOOTER -->
+      <div class="insight-footer">
+        <span class="ins-label">Insight</span>
+        <div class="ins-footer-pip">★</div>
+        <div class="ins-footer-pip">★</div>
+        <div class="ins-footer-pip">★</div>
+        <div class="ins-spacer"></div>
+        <div class="afflatus-tag">
+          <span class="afflatus-tag-icon">👁</span>
+          <span class="afflatus-tag-text">Spirit Afflatus</span>
+        </div>
+      </div>
+
+    </div><!-- /right-panel -->
+  </div><!-- /profile-main -->
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar">
+    <span class="bottom-note">Reverse: 1999 · OC Profile · Aida</span>
+    <span class="bottom-geo">◇ &nbsp;One Who Returns&nbsp; ◇</span>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+/* ─── AUDIO ──────────────────────────────────────── */
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx = null;
+
+function initAudio(){
+  if(!actx) actx = new AudioCtx();
+}
+
+function playClick(freq=880, dur=0.06, vol=0.08){
+  try{
+    initAudio();
+    const osc = actx.createOscillator();
+    const gain = actx.createGain();
+    osc.connect(gain); gain.connect(actx.destination);
+    osc.frequency.setValueAtTime(freq, actx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(freq*0.5, actx.currentTime+dur);
+    gain.gain.setValueAtTime(vol, actx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime+dur);
+    osc.start(); osc.stop(actx.currentTime+dur);
+  }catch(e){}
+}
+
+function playOpen(){playClick(660,0.12,0.1);}
+function playClose(){playClick(440,0.08,0.07);}
+function playTab(){playClick(770,0.08,0.08);}
+
+/* ─── LOADER ─────────────────────────────────────── */
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('hidden');
+    document.getElementById('app').classList.add('visible');
+    // animate bond bar after reveal
+    setTimeout(()=>{
+      document.getElementById('bondFill').style.width = '100%';
+    }, 400);
+  }, 2200);
+});
+
+/* ─── TAB SWITCHING ──────────────────────────────── */
+function switchTab(tabId, el){
+  playTab();
+  // tabs
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  // panels
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+tabId).classList.add('active');
+}
+
+/* ─── INSIGHT PROGRESSION ────────────────────────── */
+function switchInsight(idx, el){
+  playClick(600, 0.08, 0.07);
+  document.querySelectorAll('.insight-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.insight-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('ins-'+idx).classList.add('active');
+}
+
+/* ─── SKILL POPUP DATA ───────────────────────────── */
+const skills = {
+  portrait:{
+    icon:'🌅', type:'Portrait', name:'First Light',
+    quote:'Oh, good. You\'re all here. Let\'s begin.',
+    desc:'Passive. At the start of each encounter, Aida automatically applies <em>Gathered</em> to all allies simultaneously. The flock is tended before the fight begins. She was already up. She is always already up.<br><br><em>Gathered</em>: allies under this status receive a small passive heal at the start of each round and a stacking damage bonus that grows the longer they remain gathered.'
+  },
+  skill1:{
+    icon:'🌾', type:'Skill I', name:'Come Along',
+    quote:'Not that way. This way. It\'s alright — I\'ll show you.',
+    desc:'Applies <em>Wayward</em> to a single enemy and deals Spirit damage scaled to how many <em>Gathered</em> allies are currently active. The more of her flock she\'s tending, the firmer the redirection.<br><br><em>Wayward</em>: the target\'s movement priority shifts, their targeting becomes unreliable, and damage they deal is reduced while the status holds.'
+  },
+  skill2:{
+    icon:'🐑', type:'Skill II', name:'Tend',
+    quote:'I see you drifting. Here. Come back.',
+    desc:'Refreshes <em>Gathered</em> on all allies and grants each one a small immediate heal. If an ally has lost <em>Gathered</em> — through dispel or damage — this restores it.<br><br>She notices when one of hers has drifted. She always notices. She comes back for them.'
+  },
+  ultimate:{
+    icon:'☀️', type:'Ultimate', name:'Sunrise',
+    quote:'There it is. I knew it was coming. It always comes.',
+    desc:'The dawn rhythm pays off. Deals Spirit damage to all enemies scaled to total rounds elapsed — the longer the encounter, the brighter the hit.<br><br>Simultaneously grants all <em>Gathered</em> allies a burst heal and doubles their <em>Gathered</em> damage bonus for two rounds. Something shifts in the light when she uses it. Everything becomes briefly, completely clear.'
+  }
+};
+
+function openSkill(id){
+  playOpen();
+  const s = skills[id];
+  document.getElementById('popup-icon').textContent = s.icon;
+  document.getElementById('popup-type').textContent = s.type;
+  document.getElementById('popup-name').textContent = s.name;
+  document.getElementById('popup-quote').textContent = '"' + s.quote + '"';
+  document.getElementById('popup-desc').innerHTML = s.desc;
+  document.getElementById('popup').classList.add('open');
+}
+
+function closePopup(e){
+  if(e.target === document.getElementById('popup')){
+    closePopupDirect();
+  }
+}
+function closePopupDirect(){
+  playClose();
+  document.getElementById('popup').classList.remove('open');
+}
+
+// close on escape
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape') closePopupDirect();
+});
+
+/* ─── PARALLAX ───────────────────────────────────── */
+const artArea = document.getElementById('artArea');
+const artParallax = document.getElementById('artParallax');
+
+artArea.addEventListener('mousemove', e=>{
+  const rect = artArea.getBoundingClientRect();
+  const x = (e.clientX - rect.left) / rect.width - 0.5;
+  const y = (e.clientY - rect.top) / rect.height - 0.5;
+  artParallax.style.transform = `translate(${x*10}px, ${y*8}px)`;
+});
+
+artArea.addEventListener('mouseleave', ()=>{
+  artParallax.style.transform = 'translate(0,0)';
+});
+
+/* ─── CLICK SOUNDS ON NAV ────────────────────────── */
+document.querySelectorAll('.nav-tab,.role-chip,.relation-card,.stat-item')
+  .forEach(el=>el.addEventListener('click',()=>playClick()));
+</script>
+</body>
+</html>
