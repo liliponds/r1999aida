@@ -8,11 +8,14 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --bg:#100d08;--bg-mid:#1a1410;--bg-panel:#221c14;--bg-card:#1a1208;
-  --accent:#c8956a;--accent-l:#e8b882;--accent-p:#f4deb8;
-  --gold:#d4a84a;--rose:#c87868;--sky:#7ab0c8;
-  --text:#e8dcc8;--text-mid:#a89878;--text-dim:#6a5848;
-  --border:rgba(200,149,106,0.22);--border-b:rgba(200,149,106,0.55);
+  /* Updated to match Aida's design — deep red dress, cream inner layer, gold trim, teal accents */
+  --bg:#0e0908;--bg-mid:#1a1010;--bg-panel:#211410;--bg-card:#180e0a;
+  --accent:#c84838;--accent-l:#e87858;--accent-p:#f4c8b0;
+  --gold:#d4a84a;--rose:#c84838;--sky:#4a9898;
+  --text:#f0e8e0;--text-mid:#b89888;--text-dim:#7a5848;
+  --border:rgba(180,70,50,0.28);--border-b:rgba(200,80,60,0.6);
+  --red:#9e2820;--red-l:#c83828;--cream:#f0e8d8;
+  --teal:#3a8888;--gold-warm:#d4a84a;
 }
 html,body{width:100%;min-height:100vh;background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;overflow-x:hidden;}
 body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='4' fill='none' stroke='%23c8956a' stroke-width='1'/%3E%3Ccircle cx='10' cy='10' r='1' fill='%23c8956a'/%3E%3C/svg%3E") 10 10,crosshair;}
@@ -56,7 +59,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
 
 /* LEFT PANEL */
 .left-panel{border-right:1px solid var(--border);display:flex;flex-direction:column;}
-.art-area{width:100%;height:360px;position:relative;overflow:hidden;border-bottom:1px solid var(--border);background:radial-gradient(ellipse at 50% 100%,rgba(212,168,74,0.2) 0%,transparent 65%),linear-gradient(180deg,#0e0a04 0%,#1e1608 60%,#0e0a04 100%);cursor:crosshair;}
+.art-area{width:100%;height:360px;position:relative;overflow:hidden;border-bottom:1px solid var(--border);background:radial-gradient(ellipse at 50% 100%,rgba(160,40,30,0.25) 0%,transparent 65%),linear-gradient(180deg,#0e0806 0%,#1e1008 60%,#0e0806 100%);cursor:crosshair;}
 .art-parallax{position:absolute;inset:0;transition:transform 0.1s ease-out;display:flex;align-items:center;justify-content:center;}
 .art-placeholder{display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;z-index:2;}
 .art-placeholder-box{width:110px;height:160px;border:1px dashed rgba(200,149,106,0.35);display:flex;align-items:center;justify-content:center;font-size:40px;background:rgba(212,168,74,0.03);position:relative;}
@@ -65,22 +68,22 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
 .art-placeholder-box::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0;}
 .art-hint{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.1em;color:rgba(106,88,72,0.6);text-transform:uppercase;}
 .geo{position:absolute;border-radius:50%;border:1px solid rgba(200,149,106,0.07);pointer-events:none;}
-.dawn-glow{position:absolute;bottom:0;left:0;right:0;height:130px;background:linear-gradient(0deg,rgba(212,168,74,0.16) 0%,transparent 100%);pointer-events:none;}
+.dawn-glow{position:absolute;bottom:0;left:0;right:0;height:130px;background:linear-gradient(0deg,rgba(160,40,30,0.2) 0%,transparent 100%);pointer-events:none;}
 .afflatus-badge{position:absolute;top:12px;left:12px;z-index:3;width:52px;height:52px;border:1px solid var(--border-b);background:rgba(16,12,8,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:all 0.3s;}
 .afflatus-badge:hover{border-color:var(--gold);box-shadow:0 0 12px rgba(212,168,74,0.2);}
 .aff-icon{font-size:20px;line-height:1;}
-.aff-label{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.08em;color:var(--sky);text-transform:uppercase;}
-.corner-deco{position:absolute;width:14px;height:14px;border-color:var(--accent);border-style:solid;opacity:0.4;}
+.aff-label{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.08em;color:var(--teal);text-transform:uppercase;}
+.corner-deco{position:absolute;width:14px;height:14px;border-color:var(--red-l);border-style:solid;opacity:0.4;}
 .c-tl{top:5px;left:5px;border-width:1px 0 0 1px;}.c-tr{top:5px;right:5px;border-width:1px 1px 0 0;}.c-bl{bottom:5px;left:5px;border-width:0 0 1px 1px;}.c-br{bottom:5px;right:5px;border-width:0 1px 1px 0;}
 .stars-row{padding:9px 14px 4px;display:flex;gap:3px;}
-.star{font-size:14px;color:var(--gold);line-height:1;}.star.dim{color:rgba(106,88,72,0.3);}
+.star{font-size:14px;color:var(--gold-warm);line-height:1;}.star.dim{color:rgba(120,80,60,0.3);}
 .name-block{padding:3px 14px 12px;border-bottom:1px solid var(--border);}
 .char-name{font-family:'Cinzel',serif;font-size:28px;font-weight:600;letter-spacing:0.07em;color:var(--accent-l);line-height:1;}
 .char-title{font-size:11.5px;font-style:italic;color:var(--text-mid);margin-top:3px;letter-spacing:0.04em;}
 .bond-row{padding:8px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
 .bond-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.06em;color:var(--text-dim);min-width:34px;}
-.bond-track{flex:1;height:3px;background:rgba(200,149,106,0.12);position:relative;overflow:hidden;}
-.bond-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--gold),var(--accent-l));transition:width 1.8s cubic-bezier(0.22,1,0.36,1);}
+.bond-track{flex:1;height:3px;background:rgba(160,40,30,0.15);position:relative;overflow:hidden;}
+.bond-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--red),var(--accent-l));transition:width 1.8s cubic-bezier(0.22,1,0.36,1);}
 .bond-pct{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--accent);}
 .roles-row{padding:8px 14px;display:flex;gap:5px;flex-wrap:wrap;border-bottom:1px solid var(--border);}
 .role-chip{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.07em;color:var(--text-mid);text-transform:uppercase;padding:3px 8px;border:1px solid var(--border);background:rgba(200,149,106,0.05);transition:all 0.2s;cursor:default;}
@@ -167,12 +170,12 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
 /* ═══ GALLERY TAB ═══ */
 .gallery-wrap{
   flex:1;display:flex;position:relative;overflow:hidden;min-height:520px;
-  background:radial-gradient(ellipse 55% 65% at 52% 55%,rgba(200,100,55,0.14) 0%,rgba(160,70,30,0.08) 40%,transparent 70%),
-  linear-gradient(180deg,#0a0804 0%,#161008 60%,#0a0804 100%);
+  background:radial-gradient(ellipse 55% 65% at 52% 55%,rgba(140,25,15,0.2) 0%,rgba(100,15,10,0.1) 40%,transparent 70%),
+  linear-gradient(180deg,#0e0806 0%,#180c08 60%,#0e0806 100%);
 }
 
 /* decorative grid lines */
-.g-deco{position:absolute;background:rgba(200,149,106,0.06);pointer-events:none;z-index:0;}
+.g-deco{position:absolute;background:rgba(180,60,40,0.08);pointer-events:none;z-index:0;}
 .g-h1{top:28%;left:0;right:0;height:1px;}
 .g-h2{bottom:22%;left:0;right:0;height:1px;}
 .g-v1{top:0;bottom:0;left:32%;width:1px;}
@@ -182,7 +185,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
 .g-sidenav{
   width:120px;flex-shrink:0;border-right:1px solid var(--border);
   padding:20px 0;display:flex;flex-direction:column;gap:2px;
-  background:rgba(14,10,6,0.65);z-index:2;
+  background:rgba(14,8,6,0.7);z-index:2;
 }
 .g-nav-item{
   display:flex;align-items:center;gap:10px;
@@ -193,7 +196,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
   transform:rotate(45deg);flex-shrink:0;transition:all 0.2s;background:transparent;
 }
 .g-nav-item.active::before{background:var(--accent);border-color:var(--accent);}
-.g-nav-item.active{background:rgba(200,149,106,0.06);}
+.g-nav-item.active{background:rgba(180,60,40,0.08);}
 .g-nav-label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:0.08em;color:var(--text-dim);text-transform:uppercase;transition:color 0.2s;}
 .g-nav-item.active .g-nav-label{color:var(--accent-l);}
 .g-nav-item:hover .g-nav-label{color:var(--accent);}
@@ -204,20 +207,20 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
   align-items:center;padding:16px 0;position:relative;z-index:1;
 }
 
-/* atmospheric circle */
+/* atmospheric circle — deep red matching her dress */
 .g-circle{
   position:absolute;width:370px;height:370px;border-radius:50%;
-  background:radial-gradient(ellipse at 40% 35%,rgba(190,90,50,0.17) 0%,rgba(160,70,30,0.1) 35%,rgba(120,50,15,0.05) 60%,transparent 80%);
+  background:radial-gradient(ellipse at 40% 35%,rgba(158,40,32,0.22) 0%,rgba(120,25,20,0.14) 35%,rgba(80,15,12,0.06) 60%,transparent 80%);
   left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;
 }
 .g-circle-ring{
   position:absolute;width:410px;height:410px;border-radius:50%;
-  border:1px solid rgba(200,149,106,0.09);
+  border:1px solid rgba(180,60,40,0.14);
   left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;
 }
 .g-circle-ring2{
   position:absolute;width:460px;height:460px;border-radius:50%;
-  border:1px solid rgba(200,149,106,0.04);
+  border:1px solid rgba(180,60,40,0.07);
   left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;
 }
 
@@ -330,6 +333,538 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
 .bottom-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;border:1px solid var(--border);border-top:none;background:var(--bg-panel);}
 .bottom-note{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;}
 .bottom-geo{font-size:10px;color:var(--text-dim);letter-spacing:0.25em;}
+
+/* ═══ RESPONSIVE — TABLET ═══ */
+@media(max-width:768px){
+  #app{padding:12px 10px;}
+
+  /* nav — shrink tab labels */
+  .top-nav{padding:6px 10px;flex-wrap:wrap;gap:4px;}
+  .nav-tab{padding:4px 10px;font-size:9px;letter-spacing:0.06em;}
+  .nav-logo{display:none;}
+
+  /* stack left + right panels */
+  .profile-main{grid-template-columns:1fr;}
+  .left-panel{border-right:none;border-bottom:1px solid var(--border);}
+
+  /* art area shorter on tablet */
+  .art-area{height:280px;}
+
+  /* skill cards 2x2 */
+  .cards-row{grid-template-columns:repeat(2,1fr);padding:10px 14px;}
+
+  /* remove fixed max-heights so content flows */
+  .lore-area,.relations-area,.story-scroll{max-height:none;overflow-y:visible;}
+
+  /* gallery — stack sidenav on top */
+  .gallery-wrap{flex-direction:column;min-height:auto;}
+  .g-sidenav{
+    width:100%;flex-direction:row;border-right:none;
+    border-bottom:1px solid var(--border);
+    padding:8px 12px;gap:0;overflow-x:auto;
+  }
+  .g-nav-item{padding:8px 14px;flex-shrink:0;}
+  .g-exhibit{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto auto;
+    padding:16px 14px;gap:20px;
+  }
+  .g-details{order:2;padding:0;}
+  .g-art-col{order:1;min-height:280px;}
+  .g-info{order:3;padding:0;}
+  .g-circle{width:260px;height:260px;}
+  .g-circle-ring{width:300px;height:300px;}
+  .g-circle-ring2{width:340px;height:340px;}
+  .g-watermark{font-size:60px;}
+  .g-deco{display:none;}
+
+  /* insight footer wraps */
+  .insight-footer{flex-wrap:wrap;gap:8px;}
+  .ins-spacer{display:none;}
+
+  /* bottom bar stacks */
+  .bottom-bar{flex-direction:column;gap:4px;align-items:flex-start;padding:8px 12px;}
+}
+
+/* ═══ MAIN CHARACTER SCREEN ═══ */
+#main-screen{
+  position:fixed;inset:0;z-index:10;
+  background:#0e0906;
+  display:flex;flex-direction:column;
+  transition:opacity 0.6s ease,visibility 0.6s ease;
+}
+#main-screen.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+
+/* top icon bar */
+.ms-topbar{
+  display:flex;align-items:center;gap:0;
+  padding:10px 20px;
+  position:relative;z-index:2;
+}
+.ms-icon-btn{
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(220,200,180,0.55);
+  font-size:16px;cursor:pointer;
+  transition:color 0.2s;
+  flex-shrink:0;
+}
+.ms-icon-btn:hover{color:var(--accent-l);}
+.ms-icon-sep{width:1px;height:20px;background:rgba(200,149,106,0.12);margin:0 4px;}
+.ms-topbar-right{
+  position:absolute;right:20px;top:14px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;letter-spacing:0.3em;
+  color:rgba(200,149,106,0.25);text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
+.ms-topbar-right::before{content:'✦';font-size:8px;color:rgba(200,149,106,0.3);}
+
+/* main body — three column layout */
+.ms-body{
+  flex:1;
+  display:grid;
+  grid-template-columns:280px 1fr 340px;
+  position:relative;
+  overflow:hidden;
+}
+
+/* ── LEFT PANEL ── */
+.ms-left{
+  padding:16px 20px 20px;
+  display:flex;flex-direction:column;
+  gap:0;
+  position:relative;z-index:2;
+}
+
+/* afflatus emblem */
+.ms-emblem{
+  width:110px;height:110px;
+  border-radius:50%;
+  border:2px solid rgba(200,80,60,0.4);
+  background:radial-gradient(circle,rgba(158,40,32,0.3) 0%,rgba(20,10,8,0.9) 70%);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:4px;
+  margin-bottom:16px;
+  position:relative;
+}
+.ms-emblem::before{
+  content:'';position:absolute;inset:5px;
+  border-radius:50%;
+  border:1px solid rgba(200,80,60,0.25);
+}
+.ms-emblem-ring-text{
+  position:absolute;
+  font-family:'Share Tech Mono',monospace;
+  font-size:6px;letter-spacing:0.12em;
+  color:rgba(200,149,106,0.4);
+  text-transform:uppercase;
+  top:14px;
+}
+.ms-emblem-icon{font-size:28px;line-height:1;}
+.ms-emblem-type{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.12em;
+  color:var(--accent-l);text-transform:uppercase;
+  font-weight:bold;
+}
+.ms-emblem-sub{
+  font-family:'Share Tech Mono',monospace;
+  font-size:6px;letter-spacing:0.1em;
+  color:rgba(200,149,106,0.45);text-transform:uppercase;
+}
+
+/* stars */
+.ms-stars{
+  display:flex;gap:4px;align-items:center;
+  margin-bottom:10px;
+}
+.ms-star{font-size:16px;color:var(--gold-warm);line-height:1;}
+.ms-star.dim{color:rgba(120,80,60,0.3);}
+
+/* name row with icon */
+.ms-name-row{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;
+}
+.ms-name-icon{font-size:22px;opacity:0.8;}
+.ms-name{
+  font-family:'Cinzel',serif;
+  font-size:30px;font-weight:600;
+  color:var(--text);letter-spacing:0.04em;line-height:1;
+}
+
+/* bond */
+.ms-bond{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;
+}
+.ms-bond-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;letter-spacing:0.06em;
+  color:var(--accent-l);min-width:36px;
+}
+.ms-bond-track{
+  flex:1;height:4px;
+  background:rgba(160,40,30,0.15);
+  position:relative;overflow:hidden;
+}
+.ms-bond-fill{
+  position:absolute;left:0;top:0;bottom:0;width:0;
+  background:linear-gradient(90deg,var(--red),#e05050);
+  transition:width 1.8s cubic-bezier(0.22,1,0.36,1);
+}
+.ms-bond-pct{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;color:var(--text-mid);min-width:36px;
+}
+
+/* role tags */
+.ms-roles{
+  display:flex;gap:16px;
+  margin-bottom:18px;
+}
+.ms-role{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;letter-spacing:0.06em;
+  color:var(--text-mid);text-transform:uppercase;
+}
+
+/* personal stats */
+.ms-stats-heading{
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;letter-spacing:0.08em;
+  color:var(--accent-l);text-transform:uppercase;
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:6px;cursor:default;
+}
+.ms-stats-heading::after{content:'▶';font-size:8px;color:var(--accent);}
+
+.ms-stats-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px 16px;
+}
+.ms-stat{display:flex;align-items:baseline;gap:8px;}
+.ms-stat-icon{font-size:11px;color:var(--accent);flex-shrink:0;}
+.ms-stat-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.04em;
+  color:var(--text-dim);text-transform:uppercase;
+  flex:1;
+}
+.ms-stat-value{
+  font-family:'Cinzel',serif;
+  font-size:15px;color:var(--text);
+  font-weight:400;
+}
+.ms-stat-full{grid-column:span 2;}
+
+/* enter profile hint */
+.ms-enter-hint{
+  margin-top:auto;
+  padding-top:16px;
+}
+.ms-enter-btn{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.12em;
+  color:var(--text-dim);text-transform:uppercase;
+  padding:6px 12px;
+  border:1px solid var(--border);
+  background:transparent;cursor:pointer;
+  transition:all 0.2s;
+  display:flex;align-items:center;gap:6px;
+}
+.ms-enter-btn:hover{border-color:var(--accent);color:var(--accent-l);}
+.ms-enter-btn::after{content:'›';font-size:14px;}
+
+/* ── CENTER PANEL ── */
+.ms-center{
+  position:relative;
+  display:flex;align-items:flex-end;justify-content:center;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+/* background glow behind character */
+.ms-char-glow{
+  position:absolute;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(158,40,32,0.18) 0%,rgba(100,20,10,0.08) 50%,transparent 75%);
+  bottom:0;left:50%;transform:translateX(-50%);
+  pointer-events:none;
+}
+
+/* subtle vertical lines like the reference */
+.ms-rain{
+  position:absolute;inset:0;
+  background-image:repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 80px,
+    rgba(200,149,106,0.015) 80px,
+    rgba(200,149,106,0.015) 81px
+  );
+  pointer-events:none;
+}
+
+/* decorative spark symbols */
+.ms-spark{
+  position:absolute;
+  color:var(--red-l);
+  font-size:20px;
+  opacity:0.6;
+  pointer-events:none;
+  animation:spark-pulse 3s ease-in-out infinite;
+}
+@keyframes spark-pulse{
+  0%,100%{opacity:0.4;transform:scale(1);}
+  50%{opacity:0.8;transform:scale(1.15);}
+}
+
+/* character art */
+.ms-char-art{
+  position:relative;z-index:2;
+  height:92%;
+  max-height:680px;
+  object-fit:contain;object-position:bottom center;
+  filter:drop-shadow(0 0 40px rgba(158,40,32,0.2)) drop-shadow(0 20px 60px rgba(0,0,0,0.8));
+  transition:transform 0.4s ease, filter 0.4s ease;
+  display:block;
+}
+.ms-center:hover .ms-char-art{
+  transform:scale(1.015) translateY(-4px);
+  filter:drop-shadow(0 0 60px rgba(158,40,32,0.3)) drop-shadow(0 20px 60px rgba(0,0,0,0.8));
+}
+
+.ms-char-placeholder{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  height:80%;gap:12px;padding-bottom:20px;
+}
+.ms-char-placeholder-box{
+  width:180px;height:320px;
+  border:1px dashed rgba(200,149,106,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:48px;
+  background:rgba(158,40,32,0.04);
+}
+
+/* signature */
+.ms-signature{
+  position:absolute;bottom:28px;right:40px;z-index:3;
+  font-family:'Cinzel',serif;
+  font-size:28px;color:var(--red-l);
+  opacity:0.7;transform:rotate(-6deg);
+  pointer-events:none;font-style:italic;
+  letter-spacing:0.02em;
+}
+
+/* enter overlay on hover */
+.ms-enter-overlay{
+  position:absolute;inset:0;z-index:4;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity 0.3s;
+  background:radial-gradient(ellipse at center,rgba(158,40,32,0.12) 0%,transparent 70%);
+}
+.ms-center:hover .ms-enter-overlay{opacity:1;}
+.ms-enter-circle{
+  width:80px;height:80px;border-radius:50%;
+  border:1px solid rgba(200,149,106,0.5);
+  background:rgba(14,9,6,0.8);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:4px;
+}
+.ms-enter-arrow{font-size:20px;color:var(--accent-l);}
+.ms-enter-text{
+  font-family:'Share Tech Mono',monospace;
+  font-size:7px;letter-spacing:0.1em;
+  color:var(--text-dim);text-transform:uppercase;
+}
+
+/* ── RIGHT PANEL ── */
+.ms-right{
+  padding:0 20px 20px 10px;
+  display:flex;flex-direction:column;
+  gap:0;
+  position:relative;z-index:2;
+}
+
+/* DOCUMENT header */
+.ms-doc-header{
+  padding:12px 0 10px;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:14px;
+}
+.ms-doc-title{
+  font-family:'Share Tech Mono',monospace;
+  font-size:12px;letter-spacing:0.3em;
+  color:rgba(200,149,106,0.3);text-transform:uppercase;
+}
+.ms-doc-spark{font-size:10px;color:rgba(200,149,106,0.25);}
+
+/* level + insight row */
+.ms-li-row{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:6px;margin-bottom:12px;
+}
+.ms-li-block{
+  border:1px solid var(--border);
+  background:rgba(200,80,60,0.06);
+  padding:8px 12px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.ms-li-left{}
+.ms-li-key{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.08em;
+  color:var(--text-dim);text-transform:uppercase;
+  margin-bottom:2px;
+}
+.ms-li-val{
+  font-family:'Cinzel',serif;
+  font-size:22px;color:var(--text);font-weight:600;line-height:1;
+}
+.ms-li-sub{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;color:var(--text-dim);
+}
+.ms-li-btn{
+  width:28px;height:28px;
+  border:1px solid var(--border);
+  background:rgba(200,80,60,0.1);
+  color:var(--accent-l);font-size:18px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all 0.2s;line-height:1;
+}
+.ms-li-btn:hover{background:rgba(200,80,60,0.2);border-color:var(--accent);}
+
+.ms-insight-icon{
+  width:44px;height:44px;
+  border:1px solid rgba(200,149,106,0.3);
+  background:rgba(200,149,106,0.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+}
+
+/* psychube row */
+.ms-psychube{
+  border:1px solid var(--border);
+  padding:8px 12px;
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:12px;
+  background:rgba(20,12,10,0.6);
+}
+.ms-psy-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.08em;
+  color:var(--text-dim);text-transform:uppercase;
+}
+.ms-psy-name{font-size:13px;font-style:italic;color:var(--text);}
+.ms-psy-tris{display:flex;gap:3px;align-items:flex-end;margin-left:auto;}
+
+/* skill card thumbnails — arched top like the reference */
+.ms-skill-cards{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:6px;margin-bottom:12px;
+}
+.ms-skill-thumb{
+  border:1px solid var(--border);
+  background:var(--bg-card);
+  overflow:hidden;
+  cursor:pointer;
+  transition:all 0.2s;
+  position:relative;
+}
+.ms-skill-thumb:hover{border-color:var(--accent);transform:translateY(-1px);}
+.ms-skill-thumb-art{
+  height:80px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;
+  background:radial-gradient(ellipse at 50% 100%,rgba(158,40,32,0.15) 0%,transparent 70%);
+  border-bottom:1px solid var(--border);
+  /* arched top effect */
+  clip-path:polygon(0 8%,50% 0%,100% 8%,100% 100%,0 100%);
+}
+.ms-skill-thumb-label{
+  padding:4px 6px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.04em;
+  color:var(--text-dim);text-transform:uppercase;
+  text-align:center;
+}
+
+/* portrait + resonance buttons */
+.ms-action-row{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:8px;margin-top:auto;
+}
+.ms-action-btn{
+  border:1px solid rgba(200,149,106,0.3);
+  background:rgba(240,230,210,0.07);
+  padding:14px 12px;
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;transition:all 0.2s;
+  position:relative;overflow:hidden;
+}
+.ms-action-btn:hover{
+  border-color:var(--accent);
+  background:rgba(240,230,210,0.12);
+}
+.ms-action-label{
+  font-family:'Cinzel',serif;
+  font-size:14px;color:var(--text);
+  letter-spacing:0.04em;
+}
+.ms-action-sub{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;color:var(--text-dim);
+  position:absolute;bottom:6px;right:8px;
+}
+/* crossed arrows decoration like the reference */
+.ms-action-deco{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  color:rgba(200,149,106,0.2);font-size:22px;
+}
+
+/* bottom pixel decoration */
+.ms-bottom-deco{
+  position:absolute;bottom:12px;left:20px;
+  display:flex;gap:2px;
+}
+.ms-pixel{width:4px;height:4px;background:rgba(200,80,60,0.4);}
+.ms-pixel:nth-child(odd){background:rgba(200,80,60,0.2);}
+
+/* SCREEN TRANSITION */
+#profile-screen{
+  opacity:0;visibility:hidden;
+  transition:opacity 0.5s ease,visibility 0.5s ease;
+}
+#profile-screen.visible{opacity:1;visibility:visible;}
+
+/* main screen responsive */
+@media(max-width:768px){
+  .ms-body{grid-template-columns:1fr;grid-template-rows:auto 300px auto;}
+  .ms-left{padding:12px 14px 0;}
+  .ms-center{min-height:300px;}
+  .ms-right{padding:12px 14px;}
+  .ms-emblem{width:80px;height:80px;margin-bottom:10px;}
+  .ms-emblem-icon{font-size:22px;}
+  .ms-name{font-size:22px;}
+  .ms-skill-cards{grid-template-columns:repeat(3,1fr);}
+  .ms-action-row{grid-template-columns:1fr 1fr;}
+}
+
+@media(max-width:480px){
+  .ms-topbar{padding:6px 10px;}
+  .ms-icon-btn{width:32px;height:32px;font-size:13px;}
+  .ms-body{grid-template-rows:auto 260px auto;}
+  .ms-li-row{grid-template-columns:1fr 1fr;}
+  .ms-skill-cards{grid-template-columns:repeat(3,1fr);gap:4px;}
+  .ms-skill-thumb-art{height:60px;font-size:24px;}
+}
 </style>
 </head>
 <body>
@@ -363,10 +898,226 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
   </div>
 </div>
 
+<!-- MAIN CHARACTER SCREEN -->
+<div id="main-screen">
+
+  <!-- TOP ICON BAR -->
+  <div class="ms-topbar">
+    <div class="ms-icon-btn" title="Back">◁</div>
+    <div class="ms-icon-sep"></div>
+    <div class="ms-icon-btn" title="Home">□</div>
+    <div class="ms-icon-btn" title="Afflatus">△</div>
+    <div class="ms-icon-btn" title="Resonance">⚇</div>
+    <div class="ms-icon-btn" title="Story">⌀</div>
+    <div class="ms-icon-btn" title="Archive">⊟</div>
+    <div class="ms-icon-btn" title="Info">◇</div>
+    <div class="ms-topbar-right">Document</div>
+  </div>
+
+  <!-- MAIN BODY -->
+  <div class="ms-body">
+
+    <!-- LEFT -->
+    <div class="ms-left">
+
+      <!-- Afflatus Emblem -->
+      <div class="ms-emblem">
+        <span class="ms-emblem-ring-text">Spirit · One Who Returns</span>
+        <span class="ms-emblem-icon">🌿</span>
+        <span class="ms-emblem-type">Spirit</span>
+        <span class="ms-emblem-sub">Afflatus</span>
+      </div>
+
+      <!-- Stars -->
+      <div class="ms-stars">
+        <span class="ms-star">✦</span>
+        <span class="ms-star">✦</span>
+        <span class="ms-star">✦</span>
+        <span class="ms-star">✦</span>
+        <span class="ms-star">✦</span>
+        <span class="ms-star dim">✦</span>
+      </div>
+
+      <!-- Name -->
+      <div class="ms-name-row">
+        <span class="ms-name-icon">🌾</span>
+        <div class="ms-name">Aida</div>
+      </div>
+
+      <!-- Bond -->
+      <div class="ms-bond">
+        <span class="ms-bond-label">Bond</span>
+        <div class="ms-bond-track"><div class="ms-bond-fill" id="msBondFill"></div></div>
+        <span class="ms-bond-pct">100%</span>
+      </div>
+
+      <!-- Roles -->
+      <div class="ms-roles">
+        <span class="ms-role">Carry</span>
+        <span class="ms-role">Control</span>
+        <span class="ms-role">Support</span>
+      </div>
+
+      <!-- Stats -->
+      <div class="ms-stats-heading">Personal Stats</div>
+      <div class="ms-stats-grid">
+        <div class="ms-stat">
+          <span class="ms-stat-icon">↑</span>
+          <span class="ms-stat-label">ATK</span>
+          <span class="ms-stat-value">1840</span>
+        </div>
+        <div class="ms-stat">
+          <span class="ms-stat-icon">♡</span>
+          <span class="ms-stat-label">HP</span>
+          <span class="ms-stat-value">9640</span>
+        </div>
+        <div class="ms-stat">
+          <span class="ms-stat-icon">◈</span>
+          <span class="ms-stat-label">Reality DEF</span>
+          <span class="ms-stat-value">820</span>
+        </div>
+        <div class="ms-stat">
+          <span class="ms-stat-icon">◈</span>
+          <span class="ms-stat-label">Mental DEF</span>
+          <span class="ms-stat-value">760</span>
+        </div>
+        <div class="ms-stat ms-stat-full">
+          <span class="ms-stat-icon">◆</span>
+          <span class="ms-stat-label">Critical Technique</span>
+          <span class="ms-stat-value">490</span>
+        </div>
+      </div>
+
+      <!-- Enter button -->
+      <div class="ms-enter-hint">
+        <button class="ms-enter-btn" onclick="enterProfile()">View Full Profile</button>
+      </div>
+
+      <!-- bottom pixel deco -->
+      <div class="ms-bottom-deco">
+        <div class="ms-pixel"></div><div class="ms-pixel"></div>
+        <div class="ms-pixel"></div><div class="ms-pixel"></div>
+        <div class="ms-pixel"></div><div class="ms-pixel"></div>
+        <div class="ms-pixel"></div><div class="ms-pixel"></div>
+      </div>
+
+    </div>
+
+    <!-- CENTER — character art -->
+    <div class="ms-center" onclick="enterProfile()" title="View Full Profile">
+      <div class="ms-rain"></div>
+      <div class="ms-char-glow"></div>
+
+      <!-- Decorative sparks like the reference -->
+      <div class="ms-spark" style="top:18%;right:28%;animation-delay:0s;">✳</div>
+      <div class="ms-spark" style="top:25%;right:22%;animation-delay:0.8s;font-size:14px;">✦</div>
+      <div class="ms-spark" style="top:14%;right:32%;animation-delay:1.6s;font-size:12px;">✶</div>
+
+      <!--
+        CHARACTER ART:
+        Replace this placeholder with:
+        <img src="5219.png" class="ms-char-art" alt="Aida">
+      -->
+      <img src="5219.png" class="ms-char-art" alt="Aida"
+           onerror="this.style.display='none';document.getElementById('msPlaceholder').style.display='flex';">
+      <div class="ms-char-placeholder" id="msPlaceholder" style="display:none;">
+        <div class="ms-char-placeholder-box">🌅</div>
+      </div>
+
+      <div class="ms-signature">Aida</div>
+
+      <!-- hover enter overlay -->
+      <div class="ms-enter-overlay">
+        <div class="ms-enter-circle">
+          <div class="ms-enter-arrow">›</div>
+          <div class="ms-enter-text">Profile</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT — document panel -->
+    <div class="ms-right">
+
+      <!-- Document header -->
+      <div class="ms-doc-header">
+        <span class="ms-doc-spark">✦</span>
+        <span class="ms-doc-title">D O C U M E N T</span>
+        <span class="ms-doc-spark">✦</span>
+      </div>
+
+      <!-- Level + Insight -->
+      <div class="ms-li-row">
+        <div class="ms-li-block">
+          <div class="ms-li-left">
+            <div class="ms-li-key">Level</div>
+            <div class="ms-li-val">60</div>
+            <div class="ms-li-sub">/60</div>
+          </div>
+          <div class="ms-li-btn">+</div>
+        </div>
+        <div class="ms-li-block">
+          <div class="ms-li-left">
+            <div class="ms-li-key">Insight</div>
+            <div class="ms-insight-icon">▽</div>
+          </div>
+          <div class="ms-li-btn">+</div>
+        </div>
+      </div>
+
+      <!-- Psychube -->
+      <div class="ms-psychube">
+        <div>
+          <div class="ms-psy-label">Psychube Preference ▶</div>
+          <div class="ms-psy-name">The Fool's Journey</div>
+        </div>
+        <div class="ms-psy-tris" style="margin-left:auto;">
+          <div class="tri tri-on"></div>
+          <div class="tri tri-mid"></div>
+          <div class="tri tri-off"></div>
+          <div class="tri tri-off"></div>
+        </div>
+      </div>
+
+      <!-- Skill thumbnails -->
+      <div class="ms-skill-cards">
+        <div class="ms-skill-thumb" onclick="enterProfile();setTimeout(()=>openSkill('portrait'),600)">
+          <div class="ms-skill-thumb-art">🌅</div>
+          <div class="ms-skill-thumb-label">Portrait</div>
+        </div>
+        <div class="ms-skill-thumb" onclick="enterProfile();setTimeout(()=>openSkill('skill1'),600)">
+          <div class="ms-skill-thumb-art">🌾</div>
+          <div class="ms-skill-thumb-label">Adaptive</div>
+        </div>
+        <div class="ms-skill-thumb" onclick="enterProfile();setTimeout(()=>openSkill('ultimate'),600)">
+          <div class="ms-skill-thumb-art">☀️</div>
+          <div class="ms-skill-thumb-label">Buff</div>
+        </div>
+      </div>
+
+      <!-- Portrait + Resonance buttons -->
+      <div class="ms-action-row">
+        <div class="ms-action-btn" onclick="enterProfile()">
+          <span class="ms-action-label">Portrait</span>
+          <span class="ms-action-deco">✕</span>
+        </div>
+        <div class="ms-action-btn" onclick="enterProfile()">
+          <span class="ms-action-label">Resonance</span>
+          <span class="ms-action-sub">Lv.10</span>
+          <span class="ms-action-deco">◇</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE SCREEN -->
+<div id="profile-screen">
+
 <!-- APP -->
 <div id="app">
   <div class="top-nav">
-    <button class="nav-back" onclick="playClick()">‹</button>
+    <button class="nav-back" onclick="backToMain()">‹</button>
     <div class="nav-tabs">
       <div class="nav-tab active" onclick="switchTab('profile',this)">Profile</div>
       <div class="nav-tab" onclick="switchTab('story',this)">Story</div>
@@ -383,7 +1134,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
       <div class="art-area" id="artArea">
         <div class="geo" style="width:220px;height:220px;top:70px;left:40px;"></div>
         <div class="geo" style="width:120px;height:120px;top:120px;left:90px;"></div>
-        <div class="afflatus-badge"><span class="aff-icon">👁</span><span class="aff-label">Spirit</span></div>
+        <div class="afflatus-badge"><span class="aff-icon">🌿</span><span class="aff-label">Spirit</span></div>
         <div class="art-parallax" id="artParallax">
           <div class="art-placeholder">
             <div class="art-placeholder-box">🌅</div>
@@ -537,7 +1288,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
             <div class="g-details">
               <div>
                 <div class="g-detail-label">Medium</div>
-                <div class="g-detail-value">Ancient carved wood,<br>nomadic steppe origin</div>
+                <div class="g-detail-value">Ancient carved wood,<br>hand-embroidered textile,<br>Central Asian steppe</div>
               </div>
               <div>
                 <div class="g-detail-label">Afflatus</div>
@@ -545,11 +1296,11 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
               </div>
               <div>
                 <div class="g-detail-label">Fragrance note</div>
-                <div class="g-detail-value">Morning grass, open sky,<br>warm wood, dawn air</div>
+                <div class="g-detail-value">Morning grass, worn wool,<br>smoke and open sky,<br>cedar and cold earth</div>
               </div>
               <div>
                 <div class="g-detail-label">Dimensions</div>
-                <div class="g-detail-value">Ancient. The exact<br>measurements have<br>been lost to time.</div>
+                <div class="g-detail-value">Taller than she appears.<br>The crook exceeds<br>her own height.</div>
               </div>
             </div>
 
@@ -559,17 +1310,11 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
                 <div class="g-frame-line gfl-top"></div>
                 <div class="g-frame-line gfl-left"></div>
                 <div class="g-frame-line gfl-right"></div>
-                <!--
-                  TO USE YOUR OWN ART instead of upload button:
-                  Replace the g-placeholder div with:
-                  <img id="galleryCharImg" src="your-art.png" class="g-char-img" alt="Aida">
-                  and remove the g-placeholder div.
-                -->
-                <div class="g-placeholder" id="galleryPlaceholder">
+                <div class="g-placeholder" id="galleryPlaceholder" style="display:none;">
                   <div class="g-placeholder-icon">🌅</div>
                   <div class="g-placeholder-text">Upload full body art<br>using the button above<br><br>PNG with transparent<br>background works best</div>
                 </div>
-                <img id="galleryCharImg" class="g-char-img" src="" alt="Aida" style="display:none;">
+                <img id="galleryCharImg" class="g-char-img" src="5219.png" alt="Aida" style="display:block;">
                 <div class="g-signature">Aida</div>
               </div>
             </div>
@@ -598,7 +1343,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
         <div class="ins-footer-pip">★</div>
         <div class="ins-spacer"></div>
         <div class="afflatus-tag">
-          <span class="afflatus-tag-icon">👁</span>
+          <span class="afflatus-tag-icon">🌿</span>
           <span class="afflatus-tag-text">Spirit Afflatus</span>
         </div>
       </div>
@@ -609,7 +1354,8 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
     <span class="bottom-note">Reverse: 1999 · OC Profile · Aida</span>
     <span class="bottom-geo">◇ &nbsp;One Who Returns&nbsp; ◇</span>
   </div>
-</div>
+</div><!-- /app -->
+</div><!-- /profile-screen -->
 
 <script>
 const AudioCtx=window.AudioContext||window.webkitAudioContext;let actx=null;
@@ -617,13 +1363,34 @@ function initAudio(){if(!actx)actx=new AudioCtx();}
 function playClick(f=880,d=0.06,v=0.08){try{initAudio();const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.frequency.setValueAtTime(f,actx.currentTime);o.frequency.exponentialRampToValueAtTime(f*0.5,actx.currentTime+d);g.gain.setValueAtTime(v,actx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+d);o.start();o.stop(actx.currentTime+d);}catch(e){}}
 function playOpen(){playClick(660,0.12,0.1);}function playClose(){playClick(440,0.08,0.07);}function playTab(){playClick(770,0.08,0.08);}
 
+/* ── LOADER → MAIN SCREEN ── */
 window.addEventListener('load',()=>{
   setTimeout(()=>{
     document.getElementById('loader').classList.add('hidden');
-    document.getElementById('app').classList.add('visible');
-    setTimeout(()=>{document.getElementById('bondFill').style.width='100%';},400);
+    /* show main screen first */
+    setTimeout(()=>{
+      document.getElementById('msBondFill').style.width='100%';
+    },300);
   },2200);
 });
+
+/* ── ENTER PROFILE ── */
+function enterProfile(){
+  playOpen();
+  const ms = document.getElementById('main-screen');
+  const ps = document.getElementById('profile-screen');
+  ms.classList.add('hidden');
+  ps.classList.add('visible');
+  document.getElementById('app').classList.add('visible');
+  setTimeout(()=>{document.getElementById('bondFill').style.width='100%';},400);
+}
+
+/* ── BACK TO MAIN SCREEN ── */
+function backToMain(){
+  playClose();
+  document.getElementById('profile-screen').classList.remove('visible');
+  document.getElementById('main-screen').classList.remove('hidden');
+}
 
 function switchTab(id,el){
   playTab();
