@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aida — Reverse: 1999</title>
@@ -1273,7 +1273,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
       <!-- Name -->
       <div class="ms-name-row">
         <span class="ms-name-icon">🌾</span>
-        <div class="ms-name">Aida</div>
+        <div class="ms-name" onclick="togglePortrait()" style="cursor:pointer;" title="Toggle portrait / splash art">Aida</div>
       </div>
 
       <!-- Bond -->
@@ -1356,7 +1356,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
         <div class="ms-char-placeholder-box">🌅</div>
       </div>
 
-      <div class="ms-signature">Aida</div>
+<div class="ms-signature" style="font-family:'Caveat',cursive;font-size:36px;transform:rotate(-6deg);opacity:0.75;">Aida</div>
 
       <!-- hover enter overlay -->
       <div class="ms-enter-overlay">
@@ -1646,7 +1646,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
                       <div class="g-placeholder-text">Upload full body art<br>using the button above</div>
                     </div>
                     <img id="galleryCharImg" class="g-char-img" src="5219.png" alt="Aida" style="display:block;">
-                    <div class="g-signature">Aida</div>
+                    <div class="g-signature" style="font-family:'Caveat',cursive;font-size:32px;transform:rotate(-8deg);opacity:0.7;">Aida</div>
                   </div>
                 </div>
                 <div class="g-info">
@@ -1859,7 +1859,19 @@ window.addEventListener('load',()=>{
     },300);
   },2200);
 });
-
+let portraitToggled = false;
+function togglePortrait(){
+  playClick(660,0.1,0.08);
+  portraitToggled = !portraitToggled;
+  const img = document.querySelector('.ms-char-art');
+  if(!img) return;
+  img.style.transition = 'opacity 0.3s ease';
+  img.style.opacity = '0';
+  setTimeout(()=>{
+    img.src = portraitToggled ? 'aida_splash.png' : '5219.png';
+    img.style.opacity = '1';
+  }, 300);
+}
 /* ── ENTER PROFILE ── */
 function enterProfile(){
   playOpen();
