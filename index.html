@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aida — Reverse: 1999</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Share+Tech+Mono&family=Caveat:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
@@ -278,9 +278,9 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
 /* signature */
 .g-signature{
   position:absolute;bottom:-8px;right:-24px;
-  font-family:'Caveat',cursive;font-size:26px;font-weight:500;
-  color:var(--rose);opacity:0.7;transform:rotate(-8deg);
-  pointer-events:none;letter-spacing:0.02em;
+  font-family:'Cinzel',serif;font-size:20px;
+  color:var(--rose);opacity:0.65;transform:rotate(-8deg);
+  pointer-events:none;font-style:italic;letter-spacing:0.02em;
 }
 
 /* RIGHT info column */
@@ -986,10 +986,10 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
 /* signature */
 .ms-signature{
   position:absolute;bottom:28px;right:40px;z-index:3;
-  font-family:'Caveat',cursive;font-weight:500;
-  font-size:34px;color:var(--red-l);
-  opacity:0.72;transform:rotate(-6deg);
-  pointer-events:none;
+  font-family:'Cinzel',serif;
+  font-size:28px;color:var(--red-l);
+  opacity:0.7;transform:rotate(-6deg);
+  pointer-events:none;font-style:italic;
   letter-spacing:0.02em;
 }
 
@@ -1273,7 +1273,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
       <!-- Name -->
       <div class="ms-name-row">
         <span class="ms-name-icon">🌾</span>
-        <div class="ms-name" onclick="togglePortrait()" style="cursor:pointer;user-select:none;" title="Toggle portrait / splash art">Aida</div>
+        <div class="ms-name">Aida</div>
       </div>
 
       <!-- Bond -->
@@ -1848,21 +1848,6 @@ const AudioCtx=window.AudioContext||window.webkitAudioContext;let actx=null;
 function initAudio(){if(!actx)actx=new AudioCtx();}
 function playClick(f=880,d=0.06,v=0.08){try{initAudio();const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.frequency.setValueAtTime(f,actx.currentTime);o.frequency.exponentialRampToValueAtTime(f*0.5,actx.currentTime+d);g.gain.setValueAtTime(v,actx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+d);o.start();o.stop(actx.currentTime+d);}catch(e){}}
 function playOpen(){playClick(660,0.12,0.1);}function playClose(){playClick(440,0.08,0.07);}function playTab(){playClick(770,0.08,0.08);}
-
-/* ── PORTRAIT TOGGLE ── */
-let portraitToggled=false;
-function togglePortrait(){
-  playClick(660,0.1,0.08);
-  portraitToggled=!portraitToggled;
-  const img=document.querySelector('.ms-char-art');
-  if(!img)return;
-  img.style.transition='opacity 0.35s ease';
-  img.style.opacity='0';
-  setTimeout(()=>{
-    img.src=portraitToggled?'aida_splash.png':'5219.png';
-    img.style.opacity='1';
-  },350);
-}
 
 /* ── LOADER → MAIN SCREEN ── */
 window.addEventListener('load',()=>{
