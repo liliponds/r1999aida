@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aida — Reverse: 1999</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  /* Updated to match Aida's design — deep red dress, cream inner layer, gold trim, teal accents */
+  --bg:#0e0908;--bg-mid:#1a1010;--bg-panel:#211410;--bg-card:#180e0a;
+  --accent:#c84838;--accent-l:#e87858;--accent-p:#f4c8b0;
+  --gold:#d4a84a;--rose:#c84838;--sky:#4a9898;
+  --text:#f0e8e0;--text-mid:#b89888;--text-dim:#7a5848;
+  --border:rgba(180,70,50,0.28);--border-b:rgba(200,80,60,0.6);
+  --red:#9e2820;--red-l:#c83828;--cream:#f0e8d8;
+  --teal:#3a8888;--gold-warm:#d4a84a;
+}
+html,body{width:100%;min-height:100vh;background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;overflow-x:hidden;}
+body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='4' fill='none' stroke='%23c8956a' stroke-width='1'/%3E%3Ccircle cx='10' cy='10' r='1' fill='%23c8956a'/%3E%3C/svg%3E") 10 10,crosshair;}
+.bg-layer{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 60% 50% at 15% 50%,rgba(212,168,74,0.04) 0%,transparent 100%),radial-gradient(ellipse 40% 60% at 85% 30%,rgba(122,176,200,0.03) 0%,transparent 100%);}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");}
+.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,168,74,0.04),transparent);pointer-events:none;z-index:3;animation:scanline 6s linear infinite;}
+@keyframes scanline{0%{transform:translateY(-100%);}100%{transform:translateY(100vh);}}
+
+/* LOADER */
+#loader{position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity 0.6s ease,visibility 0.6s ease;}
+#loader.hidden{opacity:0;visibility:hidden;}
+.loader-emblem{width:80px;height:80px;border:1px solid var(--border-b);display:flex;align-items:center;justify-content:center;position:relative;animation:spin 3s linear infinite;}
+.loader-emblem::before{content:'';position:absolute;inset:6px;border:1px solid rgba(200,149,106,0.3);animation:spin 2s linear infinite reverse;}
+.loader-emblem-inner{font-size:28px;animation:spin 3s linear infinite reverse;}
+@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+.loader-bar-wrap{width:200px;height:2px;background:rgba(200,149,106,0.15);position:relative;overflow:hidden;}
+.loader-bar{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--gold),var(--accent-l));animation:load-fill 1.8s ease forwards 0.3s;}
+@keyframes load-fill{0%{width:0;}100%{width:100%;}}
+.loader-text{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;animation:blink 1s ease infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+/* APP */
+#app{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:24px 16px;opacity:0;transform:translateY(16px);transition:opacity 0.8s ease,transform 0.8s ease;}
+#app.visible{opacity:1;transform:translateY(0);}
+
+/* TOP NAV */
+.top-nav{display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--bg-panel);border:1px solid var(--border);border-bottom:none;}
+.nav-back{width:26px;height:26px;border:1px solid var(--border);background:transparent;color:var(--text-dim);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all 0.2s;}
+.nav-back:hover{border-color:var(--accent);color:var(--accent);}
+.nav-tabs{display:flex;gap:2px;margin-left:8px;}
+.nav-tab{padding:4px 16px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;border:1px solid transparent;cursor:pointer;transition:all 0.25s;position:relative;}
+.nav-tab::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform 0.25s;}
+.nav-tab.active{color:var(--accent-l);border-color:var(--border);background:rgba(200,149,106,0.07);}
+.nav-tab.active::after{transform:scaleX(1);}
+.nav-tab:hover:not(.active){color:var(--accent);border-color:var(--border);}
+.nav-spacer{flex:1;}
+.nav-logo{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;}
+
+/* PROFILE MAIN */
+.profile-main{display:grid;grid-template-columns:300px 1fr;border:1px solid var(--border);background:var(--bg-panel);min-height:640px;}
+
+/* LEFT PANEL */
+.left-panel{border-right:1px solid var(--border);display:flex;flex-direction:column;}
+.art-area{width:100%;height:360px;position:relative;overflow:hidden;border-bottom:1px solid var(--border);background:radial-gradient(ellipse at 50% 100%,rgba(160,40,30,0.25) 0%,transparent 65%),linear-gradient(180deg,#0e0806 0%,#1e1008 60%,#0e0806 100%);cursor:crosshair;}
+.art-parallax{position:absolute;inset:0;transition:transform 0.1s ease-out;display:flex;align-items:center;justify-content:center;}
+.art-placeholder{display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;z-index:2;}
+.art-placeholder-box{width:110px;height:160px;border:1px dashed rgba(200,149,106,0.35);display:flex;align-items:center;justify-content:center;font-size:40px;background:rgba(212,168,74,0.03);position:relative;}
+.art-placeholder-box::before,.art-placeholder-box::after{content:'';position:absolute;width:10px;height:10px;border-color:var(--accent);border-style:solid;}
+.art-placeholder-box::before{top:-1px;left:-1px;border-width:1px 0 0 1px;}
+.art-placeholder-box::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0;}
+.art-hint{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.1em;color:rgba(106,88,72,0.6);text-transform:uppercase;}
+.geo{position:absolute;border-radius:50%;border:1px solid rgba(200,149,106,0.07);pointer-events:none;}
+.dawn-glow{position:absolute;bottom:0;left:0;right:0;height:130px;background:linear-gradient(0deg,rgba(160,40,30,0.2) 0%,transparent 100%);pointer-events:none;}
+.afflatus-badge{position:absolute;top:12px;left:12px;z-index:3;width:52px;height:52px;border:1px solid var(--border-b);background:rgba(16,12,8,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:all 0.3s;}
+.afflatus-badge:hover{border-color:var(--gold);box-shadow:0 0 12px rgba(212,168,74,0.2);}
+.aff-icon{font-size:20px;line-height:1;}
+.aff-label{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.08em;color:var(--teal);text-transform:uppercase;}
+.corner-deco{position:absolute;width:14px;height:14px;border-color:var(--red-l);border-style:solid;opacity:0.4;}
+.c-tl{top:5px;left:5px;border-width:1px 0 0 1px;}.c-tr{top:5px;right:5px;border-width:1px 1px 0 0;}.c-bl{bottom:5px;left:5px;border-width:0 0 1px 1px;}.c-br{bottom:5px;right:5px;border-width:0 1px 1px 0;}
+.stars-row{padding:9px 14px 4px;display:flex;gap:3px;}
+.star{font-size:14px;color:var(--gold-warm);line-height:1;}.star.dim{color:rgba(120,80,60,0.3);}
+.name-block{padding:3px 14px 12px;border-bottom:1px solid var(--border);}
+.char-name{font-family:'Cinzel',serif;font-size:28px;font-weight:600;letter-spacing:0.07em;color:var(--accent-l);line-height:1;}
+.char-title{font-size:11.5px;font-style:italic;color:var(--text-mid);margin-top:3px;letter-spacing:0.04em;}
+.bond-row{padding:8px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.bond-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.06em;color:var(--text-dim);min-width:34px;}
+.bond-track{flex:1;height:3px;background:rgba(160,40,30,0.15);position:relative;overflow:hidden;}
+.bond-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--red),var(--accent-l));transition:width 1.8s cubic-bezier(0.22,1,0.36,1);}
+.bond-pct{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--accent);}
+.roles-row{padding:8px 14px;display:flex;gap:5px;flex-wrap:wrap;border-bottom:1px solid var(--border);}
+.role-chip{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.07em;color:var(--text-mid);text-transform:uppercase;padding:3px 8px;border:1px solid var(--border);background:rgba(200,149,106,0.05);transition:all 0.2s;cursor:default;}
+.role-chip:hover{border-color:var(--accent);color:var(--accent-l);}
+.stats-section{padding:10px 14px;flex:1;}
+.stats-heading{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.stats-heading::after{content:'';flex:1;height:1px;background:var(--border);}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.stat-item{padding:6px 8px;background:var(--bg-card);border:1px solid var(--border);border-left:2px solid rgba(212,168,74,0.3);transition:all 0.25s;cursor:default;}
+.stat-item:hover{border-color:var(--border-b);border-left-color:var(--gold);background:rgba(212,168,74,0.06);box-shadow:0 0 8px rgba(212,168,74,0.08);}
+.stat-label{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.07em;color:var(--text-dim);text-transform:uppercase;margin-bottom:3px;}
+.stat-value{font-family:'Cinzel',serif;font-size:17px;color:var(--accent-p);line-height:1;}
+.stat-full{grid-column:span 2;}
+
+/* RIGHT PANEL */
+.right-panel{display:flex;flex-direction:column;}
+.doc-header{padding:10px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(34,28,20,0.7);}
+.doc-label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:0.2em;color:rgba(200,149,106,0.4);text-transform:uppercase;}
+.doc-label::before{content:'✦ ';color:var(--accent);font-size:8px;}
+.level-row{display:flex;gap:16px;align-items:center;}
+.li-item{display:flex;flex-direction:column;align-items:center;gap:1px;}
+.li-key{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.06em;color:var(--text-dim);text-transform:uppercase;}
+.li-val{font-family:'Cinzel',serif;font-size:16px;color:var(--accent-l);font-weight:600;line-height:1;}
+.li-sub{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--text-dim);}
+.insight-pips{display:flex;gap:3px;margin-top:2px;}
+.ins-pip{width:10px;height:10px;background:rgba(212,168,74,0.45);border:1px solid var(--gold);}
+.psychube-row{padding:7px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.psy-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.08em;color:var(--text-dim);text-transform:uppercase;}
+.psy-name{font-size:13px;font-style:italic;color:var(--accent-l);}
+.psy-lv{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);margin-left:3px;}
+.psy-tris{display:flex;gap:3px;margin-left:auto;align-items:flex-end;}
+.tri{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;}
+.tri-on{border-bottom:9px solid var(--accent);}.tri-mid{border-bottom:9px solid rgba(200,149,106,0.35);}.tri-off{border-bottom:9px solid rgba(106,88,72,0.2);}
+.cards-row{padding:10px 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;border-bottom:1px solid var(--border);}
+.skill-card{background:var(--bg-card);border:1px solid var(--border);cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;}
+.skill-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(212,168,74,0.1) 0%,transparent 70%);opacity:0;transition:opacity 0.3s;}
+.skill-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.4);}
+.skill-card:hover::before{opacity:1;}
+.skill-card:active{transform:translateY(0);}
+.skill-card-art{height:72px;display:flex;align-items:center;justify-content:center;font-size:28px;border-bottom:1px solid var(--border);position:relative;}
+.skill-card-art::before,.skill-card-art::after{content:'';position:absolute;width:7px;height:7px;border-color:rgba(200,149,106,0.35);border-style:solid;}
+.skill-card-art::before{top:4px;left:4px;border-width:1px 0 0 1px;}.skill-card-art::after{bottom:4px;right:4px;border-width:0 1px 1px 0;}
+.skill-card-foot{padding:6px 8px;}
+.skill-card-name{font-family:'Cinzel',serif;font-size:10px;color:var(--accent-l);display:block;font-weight:600;}
+.skill-card-sub{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--text-dim);letter-spacing:0.04em;display:block;margin-top:2px;}
+
+/* TAB PANELS */
+.tab-panel{display:none;flex:1;flex-direction:column;}
+.tab-panel.active{display:flex;}
+
+/* LORE */
+.lore-area{flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;max-height:320px;}
+.lore-area::-webkit-scrollbar{width:3px;}.lore-area::-webkit-scrollbar-thumb{background:var(--border);}
+.lore-heading{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.15em;color:var(--accent);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.lore-heading::after{content:'';flex:1;height:1px;background:var(--border);}
+.lore-text{font-size:13.5px;line-height:1.78;color:var(--text-mid);font-weight:300;}
+.lore-em{color:var(--accent-l);font-style:italic;}
+.lore-quote{border-left:2px solid var(--gold);padding-left:12px;margin:8px 0;font-style:italic;color:var(--text-mid);font-size:13px;line-height:1.7;}
+
+/* STORY */
+.insight-nav{display:flex;border-bottom:1px solid var(--border);padding:0 20px;}
+.insight-btn{padding:8px 16px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;border:none;border-bottom:2px solid transparent;background:transparent;cursor:pointer;transition:all 0.2s;}
+.insight-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.insight-btn:hover:not(.active){color:var(--accent);}
+.story-scroll{overflow-y:auto;max-height:280px;flex:1;}
+.story-scroll::-webkit-scrollbar{width:3px;}.story-scroll::-webkit-scrollbar-thumb{background:var(--border);}
+.insight-panel{display:none;padding:16px 20px;}
+.insight-panel.active{display:block;}
+.insight-title{font-family:'Cinzel',serif;font-size:14px;color:var(--accent-l);margin-bottom:10px;letter-spacing:0.05em;}
+.insight-body{font-size:13px;line-height:1.85;color:var(--text-mid);font-weight:300;}
+.insight-body p{margin-bottom:10px;}.insight-body p:last-child{margin-bottom:0;}
+.insight-body em{color:var(--accent-l);}
+
+/* RELATIONS */
+.relations-area{flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;max-height:320px;}
+.relations-area::-webkit-scrollbar{width:3px;}.relations-area::-webkit-scrollbar-thumb{background:var(--border);}
+.relation-card{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border);transition:all 0.2s;cursor:default;}
+.relation-card:hover{border-color:var(--accent);background:rgba(212,168,74,0.04);}
+.relation-icon{font-size:24px;line-height:1;flex-shrink:0;margin-top:2px;}
+.relation-name{font-family:'Cinzel',serif;font-size:13px;color:var(--accent-l);margin-bottom:3px;}
+.relation-type{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.08em;color:var(--sky);text-transform:uppercase;margin-bottom:5px;}
+.relation-desc{font-size:12px;line-height:1.65;color:var(--text-mid);font-weight:300;}
+
+/* ═══ GALLERY TAB ═══ */
+.gallery-wrap{
+  flex:1;display:flex;position:relative;overflow:hidden;min-height:520px;
+  background:radial-gradient(ellipse 55% 65% at 52% 55%,rgba(140,25,15,0.2) 0%,rgba(100,15,10,0.1) 40%,transparent 70%),
+  linear-gradient(180deg,#0e0806 0%,#180c08 60%,#0e0806 100%);
+}
+
+/* decorative grid lines */
+.g-deco{position:absolute;background:rgba(180,60,40,0.08);pointer-events:none;z-index:0;}
+.g-h1{top:28%;left:0;right:0;height:1px;}
+.g-h2{bottom:22%;left:0;right:0;height:1px;}
+.g-v1{top:0;bottom:0;left:32%;width:1px;}
+.g-v2{top:0;bottom:0;right:30%;width:1px;}
+
+/* left sidenav */
+.g-sidenav{
+  width:120px;flex-shrink:0;border-right:1px solid var(--border);
+  padding:20px 0;display:flex;flex-direction:column;gap:2px;
+  background:rgba(14,8,6,0.7);z-index:2;
+}
+.g-nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;cursor:pointer;transition:all 0.2s;
+}
+.g-nav-item::before{
+  content:'';width:8px;height:8px;border:1px solid var(--border-b);
+  transform:rotate(45deg);flex-shrink:0;transition:all 0.2s;background:transparent;
+}
+.g-nav-item.active::before{background:var(--accent);border-color:var(--accent);}
+.g-nav-item.active{background:rgba(180,60,40,0.08);}
+.g-nav-label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:0.08em;color:var(--text-dim);text-transform:uppercase;transition:color 0.2s;}
+.g-nav-item.active .g-nav-label{color:var(--accent-l);}
+.g-nav-item:hover .g-nav-label{color:var(--accent);}
+
+/* exhibit area */
+.g-exhibit{
+  flex:1;display:grid;grid-template-columns:210px 1fr 255px;
+  align-items:center;padding:16px 0;position:relative;z-index:1;
+}
+
+/* atmospheric circle — deep red matching her dress */
+.g-circle{
+  position:absolute;width:370px;height:370px;border-radius:50%;
+  background:radial-gradient(ellipse at 40% 35%,rgba(158,40,32,0.22) 0%,rgba(120,25,20,0.14) 35%,rgba(80,15,12,0.06) 60%,transparent 80%);
+  left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;
+}
+.g-circle-ring{
+  position:absolute;width:410px;height:410px;border-radius:50%;
+  border:1px solid rgba(180,60,40,0.14);
+  left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;
+}
+.g-circle-ring2{
+  position:absolute;width:460px;height:460px;border-radius:50%;
+  border:1px solid rgba(180,60,40,0.07);
+  left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;
+}
+
+/* watermark */
+.g-watermark{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Cinzel',serif;font-size:88px;font-weight:700;
+  color:rgba(200,149,106,0.035);letter-spacing:0.15em;
+  pointer-events:none;white-space:nowrap;user-select:none;
+}
+
+/* LEFT column */
+.g-details{padding:0 16px;display:flex;flex-direction:column;gap:14px;z-index:2;}
+.g-detail-label{
+  font-family:'Cinzel',serif;font-size:15px;color:var(--text);
+  margin-bottom:2px;display:flex;align-items:center;gap:6px;
+}
+.g-detail-label::before{content:'◆';color:var(--accent);font-size:9px;}
+.g-detail-value{font-size:12.5px;color:var(--text-mid);font-weight:300;padding-left:17px;line-height:1.55;}
+
+/* CENTER art column */
+.g-art-col{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:flex-end;height:100%;position:relative;z-index:2;
+}
+.g-art-frame{
+  position:relative;width:240px;
+  display:flex;align-items:flex-end;justify-content:center;
+  min-height:360px;
+}
+.g-frame-line{position:absolute;pointer-events:none;}
+.gfl-top{top:0;left:8%;right:8%;height:1px;background:rgba(200,149,106,0.18);}
+.gfl-left{top:4%;bottom:4%;left:0;width:1px;background:rgba(200,149,106,0.18);}
+.gfl-right{top:4%;bottom:4%;right:0;width:1px;background:rgba(200,149,106,0.18);}
+
+/* char art */
+.g-char-img{
+  width:100%;max-height:460px;
+  object-fit:contain;object-position:bottom center;
+  display:block;
+  filter:drop-shadow(0 16px 48px rgba(0,0,0,0.7)) drop-shadow(0 0 24px rgba(212,140,60,0.08));
+}
+.g-placeholder{
+  width:200px;height:360px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:12px;border:1px dashed rgba(200,149,106,0.22);
+  background:rgba(212,168,74,0.02);
+}
+.g-placeholder-icon{font-size:44px;}
+.g-placeholder-text{
+  font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.09em;
+  color:rgba(106,88,72,0.55);text-transform:uppercase;text-align:center;line-height:1.9;
+}
+
+/* signature */
+.g-signature{
+  position:absolute;bottom:-8px;right:-24px;
+  font-family:'Cinzel',serif;font-size:20px;
+  color:var(--rose);opacity:0.65;transform:rotate(-8deg);
+  pointer-events:none;font-style:italic;letter-spacing:0.02em;
+}
+
+/* RIGHT info column */
+.g-info{padding:0 20px;display:flex;flex-direction:column;gap:14px;z-index:2;}
+.g-name-row{display:flex;align-items:center;gap:10px;}
+.g-name-icon{font-size:26px;}
+.g-name{font-family:'Cinzel',serif;font-size:30px;font-weight:600;color:var(--text);letter-spacing:0.04em;line-height:1;}
+.g-desc{font-size:13px;line-height:1.82;color:var(--text-mid);font-weight:300;}
+.g-bond{display:flex;align-items:baseline;gap:8px;padding-top:10px;border-top:1px solid var(--border);}
+.g-bond-label{font-family:'Cinzel',serif;font-size:16px;color:var(--text-mid);}
+.g-bond-value{font-family:'Cinzel',serif;font-size:26px;font-weight:600;color:var(--text);}
+
+/* upload */
+.g-upload-hint{position:absolute;top:10px;right:10px;z-index:10;}
+.g-upload-btn{
+  font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.1em;
+  color:var(--text-dim);text-transform:uppercase;padding:5px 10px;
+  border:1px solid var(--border);background:rgba(16,12,8,0.85);cursor:pointer;transition:all 0.2s;
+}
+.g-upload-btn:hover{border-color:var(--accent);color:var(--accent);}
+#galleryFileInput{display:none;}
+
+/* INSIGHT FOOTER */
+.insight-footer{padding:9px 20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:6px;}
+.ins-label{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;margin-right:3px;}
+.ins-footer-pip{width:22px;height:22px;border:1px solid var(--gold);background:rgba(212,168,74,0.1);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--gold);}
+.ins-spacer{flex:1;}
+.afflatus-tag{display:flex;align-items:center;gap:5px;padding:4px 10px;border:1px solid var(--border);background:var(--bg-card);}
+.afflatus-tag-icon{font-size:11px;}
+.afflatus-tag-text{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.1em;color:var(--sky);text-transform:uppercase;}
+
+/* POPUP */
+.popup-overlay{position:fixed;inset:0;z-index:500;background:rgba(10,8,4,0.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all 0.25s;}
+.popup-overlay.open{opacity:1;visibility:visible;}
+.popup-box{width:440px;max-width:90vw;background:var(--bg-panel);border:1px solid var(--border-b);position:relative;transform:scale(0.94) translateY(8px);transition:transform 0.25s ease;box-shadow:0 24px 80px rgba(0,0,0,0.6);}
+.popup-overlay.open .popup-box{transform:scale(1) translateY(0);}
+.popup-header{padding:14px 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.popup-icon{font-size:32px;line-height:1;}
+.popup-skill-type{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:3px;}
+.popup-skill-name{font-family:'Cinzel',serif;font-size:18px;color:var(--accent-l);font-weight:600;letter-spacing:0.05em;}
+.popup-close{position:absolute;top:12px;right:12px;width:24px;height:24px;border:1px solid var(--border);background:transparent;color:var(--text-dim);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.popup-close:hover{border-color:var(--accent);color:var(--accent);}
+.popup-body{padding:14px 16px 16px;}
+.popup-quote{border-left:2px solid var(--gold);padding-left:10px;margin-bottom:12px;font-style:italic;color:var(--text-mid);font-size:12.5px;line-height:1.7;}
+.popup-desc{font-size:13px;line-height:1.75;color:var(--text-mid);font-weight:300;}
+.popup-corner{position:absolute;width:10px;height:10px;border-color:var(--accent);border-style:solid;opacity:0.5;}
+.pc-tl{top:4px;left:4px;border-width:1px 0 0 1px;}.pc-br{bottom:4px;right:4px;border-width:0 1px 1px 0;}
+
+/* BOTTOM BAR */
+.bottom-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;border:1px solid var(--border);border-top:none;background:var(--bg-panel);}
+.bottom-note{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;}
+.bottom-geo{font-size:10px;color:var(--text-dim);letter-spacing:0.25em;}
+
+/* ═══ UTTU MAGAZINE ═══ */
+.uttu-wrap{flex:1;display:flex;min-height:480px;position:relative;background:var(--bg-mid);}
+
+/* sidenav */
+.uttu-sidenav{
+  width:120px;flex-shrink:0;
+  border-right:1px solid var(--border);
+  padding:24px 0;
+  display:flex;flex-direction:column;gap:2px;
+  background:rgba(14,8,6,0.7);
+  z-index:2;
+}
+.uttu-nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;cursor:pointer;transition:all 0.2s;
+}
+.uttu-nav-diamond{
+  width:10px;height:10px;
+  border:1px solid var(--border-b);
+  transform:rotate(45deg);flex-shrink:0;
+  transition:all 0.2s;background:transparent;
+}
+.uttu-nav-item.active .uttu-nav-diamond{background:var(--accent);border-color:var(--accent);}
+.uttu-nav-item.active{background:rgba(180,60,40,0.08);}
+.uttu-nav-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;letter-spacing:0.08em;
+  color:var(--text-dim);text-transform:uppercase;transition:color 0.2s;
+}
+.uttu-nav-item.active .uttu-nav-label{color:var(--accent-l);}
+.uttu-nav-item:hover .uttu-nav-label{color:var(--accent);}
+
+/* content area */
+.uttu-content{flex:1;position:relative;overflow:hidden;}
+.uttu-page{display:none;width:100%;height:100%;position:relative;}
+.uttu-page.active{display:flex;flex-direction:column;}
+
+/* UTTU watermark top-right */
+.uttu-logo{
+  position:absolute;top:10px;right:12px;
+  font-family:'Cinzel',serif;font-size:11px;
+  letter-spacing:0.2em;color:rgba(200,149,106,0.18);
+  text-transform:uppercase;pointer-events:none;z-index:1;
+}
+
+/* ── VOICE PAGE ── */
+#uttu-voice{flex-direction:row;overflow:hidden;}
+.voice-art-bg{
+  position:absolute;inset:0;z-index:0;
+  display:flex;align-items:flex-end;justify-content:center;
+  overflow:hidden;
+}
+.voice-art-bg img{
+  height:100%;max-height:460px;
+  object-fit:contain;object-position:bottom center;
+  opacity:0.18;
+  filter:drop-shadow(0 0 30px rgba(0,0,0,0.8));
+}
+.voice-art-fade{
+  position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(14,8,6,0.3) 0%,transparent 30%,transparent 60%,rgba(14,8,6,0.3) 100%),
+  linear-gradient(0deg,rgba(14,8,6,0.6) 0%,transparent 40%);
+}
+.voice-watermark{
+  position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  font-family:'Cinzel',serif;font-size:160px;font-weight:700;
+  color:rgba(200,149,106,0.03);
+  pointer-events:none;user-select:none;z-index:0;
+}
+.voice-panel{
+  position:relative;z-index:2;
+  width:320px;flex-shrink:0;
+  margin-left:auto;
+  padding:16px 20px 16px 0;
+  display:flex;flex-direction:column;gap:0;
+}
+.voice-header{
+  padding:6px 0 10px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:8px;
+}
+.voice-header-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;letter-spacing:0.1em;
+  color:var(--text-dim);
+  padding:4px 10px;
+  border:1px solid var(--border);
+  background:rgba(20,12,10,0.8);
+}
+.voice-list{display:flex;flex-direction:column;gap:2px;overflow-y:auto;max-height:380px;}
+.voice-list::-webkit-scrollbar{width:2px;}
+.voice-list::-webkit-scrollbar-thumb{background:var(--border);}
+.voice-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 10px;cursor:pointer;
+  border-left:2px solid transparent;
+  transition:all 0.2s;
+  background:rgba(14,8,6,0.6);
+}
+.voice-item:hover{border-left-color:var(--accent);background:rgba(180,60,40,0.08);}
+.voice-item.playing{border-left-color:var(--red-l);}
+.voice-play{
+  font-size:11px;color:var(--accent);
+  flex-shrink:0;margin-top:2px;
+  transition:transform 0.2s;
+}
+.voice-item:hover .voice-play{transform:scale(1.2);}
+.voice-line-name{
+  font-family:'Cinzel',serif;
+  font-size:12px;color:var(--text);
+  min-width:110px;flex-shrink:0;
+}
+.voice-line-text{
+  font-size:11px;color:var(--text-dim);
+  font-style:italic;line-height:1.5;
+}
+.voice-locked{opacity:0.5;cursor:default;}
+.voice-locked:hover{border-left-color:transparent;background:rgba(14,8,6,0.6);}
+
+/* ── ITEM PAGE ── */
+#uttu-item{
+  background:rgba(16,10,8,0.8);
+  align-items:center;justify-content:center;
+  padding:20px;
+}
+.item-cards{
+  display:flex;gap:16px;
+  align-items:flex-start;justify-content:center;
+  width:100%;
+  overflow-x:auto;
+  padding:8px 0;
+}
+.item-card{
+  width:240px;flex-shrink:0;
+  background:#f0ece4;
+  border:1px solid #ccc;
+  padding:0;
+  cursor:pointer;
+  transition:transform 0.2s,box-shadow 0.2s;
+  display:flex;flex-direction:column;
+  max-height:420px;overflow:hidden;
+}
+.item-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+.item-card-header{
+  display:flex;align-items:center;gap:4px;
+  padding:6px 8px;
+  border-bottom:1px solid #ddd;
+  background:#e8e4dc;
+}
+.item-card-tag{
+  font-size:7px;letter-spacing:0.06em;
+  color:#888;text-transform:uppercase;
+}
+.item-tag-highlight{
+  margin-left:auto;
+  background:#e8e0d0;
+  border:1px solid #ccc;
+  padding:1px 4px;
+  color:#666;
+}
+.item-card-art{
+  font-size:48px;text-align:center;
+  padding:20px 0 10px;
+  background:#f4f0e8;
+  border-bottom:1px solid #e8e4dc;
+}
+.item-card-name{
+  font-family:'Cinzel',serif;
+  font-size:14px;color:#333;
+  padding:10px 12px 4px;
+  font-weight:600;
+}
+.item-card-cost{
+  font-size:12px;color:#666;
+  padding:0 12px 8px;
+  border-bottom:1px solid #e8e4dc;
+}
+.item-card-desc{
+  font-size:11.5px;color:#444;
+  line-height:1.7;
+  padding:10px 12px;
+  flex:1;overflow-y:auto;
+}
+.item-card-desc::-webkit-scrollbar{width:2px;}
+.item-card-desc::-webkit-scrollbar-thumb{background:#ccc;}
+.item-card-footer{
+  font-size:8px;letter-spacing:0.1em;
+  color:#999;text-transform:uppercase;
+  padding:6px 12px;
+  border-top:1px solid #e8e4dc;
+  background:#e8e4dc;
+  text-align:center;
+}
+.item-card-locked{opacity:0.7;cursor:default;}
+.item-card-locked:hover{transform:none;box-shadow:none;}
+
+/* ── STORY PAGE ── */
+#uttu-story{
+  background:rgba(16,10,8,0.9);
+  justify-content:flex-end;
+}
+.story-chapnav{
+  position:absolute;bottom:0;left:0;right:0;
+  display:flex;align-items:center;
+  background:rgba(14,8,6,0.95);
+  border-top:1px solid var(--border);
+  padding:0 20px;
+  height:44px;
+  z-index:3;
+}
+.story-chap{
+  display:flex;align-items:center;gap:6px;
+  padding:0 20px;height:100%;
+  cursor:pointer;border-bottom:2px solid transparent;
+  transition:all 0.2s;
+}
+.story-chap.active{border-bottom-color:var(--red-l);}
+.story-chap-num{
+  font-family:'Cinzel',serif;
+  font-size:16px;color:var(--text);font-weight:600;
+}
+.story-chap.active .story-chap-num{color:var(--accent-l);}
+.story-chap-name{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.08em;
+  color:var(--text-dim);text-transform:uppercase;
+}
+.story-chap-lock{
+  margin-left:auto;
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.08em;
+  color:var(--text-dim);text-transform:uppercase;
+}
+/* book */
+.story-book{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  padding:16px 20px 60px;
+}
+.story-book-inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  width:100%;max-width:860px;
+  background:#f8f5ee;
+  box-shadow:0 8px 40px rgba(0,0,0,0.7);
+  min-height:340px;
+  position:relative;
+}
+/* center spine */
+.story-book-inner::after{
+  content:'';
+  position:absolute;top:0;bottom:0;left:50%;
+  width:1px;background:#ddd;
+}
+.story-left-page,.story-right-page{
+  padding:20px 24px;
+  display:flex;flex-direction:column;
+}
+.story-header-row{
+  display:flex;gap:16px;
+  border-bottom:1px solid #ddd;
+  padding-bottom:6px;margin-bottom:14px;
+}
+.story-header-label{
+  font-size:7px;letter-spacing:0.1em;
+  color:#aaa;text-transform:uppercase;
+}
+.story-left-art{
+  font-size:52px;text-align:center;
+  padding:16px 0;
+  background:rgba(200,149,106,0.06);
+  border:1px solid #e8e4d8;
+  margin-bottom:12px;
+}
+.story-left-title{
+  font-family:'Cinzel',serif;
+  font-size:16px;color:#333;
+  font-weight:600;text-align:center;
+  font-style:italic;
+}
+.story-left-footer{
+  margin-top:auto;
+  display:flex;justify-content:space-between;
+  padding-top:10px;border-top:1px solid #ddd;
+  font-size:7px;letter-spacing:0.1em;color:#aaa;
+  text-transform:uppercase;
+}
+.story-text{
+  font-size:12.5px;line-height:1.85;
+  color:#333;font-family:'Georgia',serif;
+  flex:1;overflow-y:auto;
+}
+.story-text::-webkit-scrollbar{width:2px;}
+.story-text::-webkit-scrollbar-thumb{background:#ddd;}
+.story-text p{margin-bottom:10px;}
+.story-text p:last-child{margin-bottom:0;}
+.story-next-btn{
+  position:absolute;right:8px;top:50%;
+  transform:translateY(-50%);
+  font-size:20px;color:#999;cursor:pointer;
+  transition:color 0.2s;
+}
+.story-next-btn:hover{color:#666;}
+.story-scroll-hint{
+  text-align:center;color:#bbb;font-size:11px;
+  margin-top:8px;
+}
+.story-right-footer{
+  margin-top:auto;padding-top:10px;
+  border-top:1px solid #ddd;
+  display:flex;justify-content:space-between;
+  font-size:7px;letter-spacing:0.1em;
+  color:#aaa;text-transform:uppercase;
+}
+
+/* UTTU responsive */
+@media(max-width:768px){
+  .uttu-sidenav{width:80px;}
+  .uttu-nav-label{font-size:8px;letter-spacing:0.04em;}
+  .voice-panel{width:260px;}
+  .item-cards{flex-direction:column;align-items:center;}
+  .item-card{width:90%;max-width:320px;}
+  .story-book-inner{grid-template-columns:1fr;}
+  .story-left-page{display:none;}
+  .story-right-page{min-height:280px;}
+}
+@media(max-width:480px){
+  .uttu-sidenav{width:60px;}
+  .uttu-nav-label{display:none;}
+  .voice-panel{width:100%;margin-left:0;padding:10px;}
+  .story-chapnav{padding:0 8px;}
+  .story-chap{padding:0 10px;}
+}
+</style>
+@media(max-width:768px){
+  #app{padding:12px 10px;}
+
+  /* nav — shrink tab labels */
+  .top-nav{padding:6px 10px;flex-wrap:wrap;gap:4px;}
+  .nav-tab{padding:4px 10px;font-size:9px;letter-spacing:0.06em;}
+  .nav-logo{display:none;}
+
+  /* stack left + right panels */
+  .profile-main{grid-template-columns:1fr;}
+  .left-panel{border-right:none;border-bottom:1px solid var(--border);}
+
+  /* art area shorter on tablet */
+  .art-area{height:280px;}
+
+  /* skill cards 2x2 */
+  .cards-row{grid-template-columns:repeat(2,1fr);padding:10px 14px;}
+
+  /* remove fixed max-heights so content flows */
+  .lore-area,.relations-area,.story-scroll{max-height:none;overflow-y:visible;}
+
+  /* gallery — stack sidenav on top */
+  .gallery-wrap{flex-direction:column;min-height:auto;}
+  .g-sidenav{
+    width:100%;flex-direction:row;border-right:none;
+    border-bottom:1px solid var(--border);
+    padding:8px 12px;gap:0;overflow-x:auto;
+  }
+  .g-nav-item{padding:8px 14px;flex-shrink:0;}
+  .g-exhibit{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto auto;
+    padding:16px 14px;gap:20px;
+  }
+  .g-details{order:2;padding:0;}
+  .g-art-col{order:1;min-height:280px;}
+  .g-info{order:3;padding:0;}
+  .g-circle{width:260px;height:260px;}
+  .g-circle-ring{width:300px;height:300px;}
+  .g-circle-ring2{width:340px;height:340px;}
+  .g-watermark{font-size:60px;}
+  .g-deco{display:none;}
+
+  /* insight footer wraps */
+  .insight-footer{flex-wrap:wrap;gap:8px;}
+  .ins-spacer{display:none;}
+
+  /* bottom bar stacks */
+  .bottom-bar{flex-direction:column;gap:4px;align-items:flex-start;padding:8px 12px;}
+}
+
+/* ═══ MAIN CHARACTER SCREEN ═══ */
+#main-screen{
+  position:fixed;inset:0;z-index:10;
+  background:#0e0906;
+  display:flex;flex-direction:column;
+  transition:opacity 0.6s ease,visibility 0.6s ease;
+}
+#main-screen.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+
+/* top icon bar */
+.ms-topbar{
+  display:flex;align-items:center;gap:0;
+  padding:10px 20px;
+  position:relative;z-index:2;
+}
+.ms-icon-btn{
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(220,200,180,0.55);
+  font-size:16px;cursor:pointer;
+  transition:color 0.2s;
+  flex-shrink:0;
+}
+.ms-icon-btn:hover{color:var(--accent-l);}
+.ms-icon-sep{width:1px;height:20px;background:rgba(200,149,106,0.12);margin:0 4px;}
+.ms-topbar-right{
+  position:absolute;right:20px;top:14px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;letter-spacing:0.3em;
+  color:rgba(200,149,106,0.25);text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
+.ms-topbar-right::before{content:'✦';font-size:8px;color:rgba(200,149,106,0.3);}
+
+/* main body — three column layout */
+.ms-body{
+  flex:1;
+  display:grid;
+  grid-template-columns:280px 1fr 340px;
+  position:relative;
+  overflow:hidden;
+}
+
+/* ── LEFT PANEL ── */
+.ms-left{
+  padding:16px 20px 20px;
+  display:flex;flex-direction:column;
+  gap:0;
+  position:relative;z-index:2;
+}
+
+/* afflatus emblem */
+.ms-emblem{
+  width:110px;height:110px;
+  border-radius:50%;
+  border:2px solid rgba(200,80,60,0.4);
+  background:radial-gradient(circle,rgba(158,40,32,0.3) 0%,rgba(20,10,8,0.9) 70%);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:4px;
+  margin-bottom:16px;
+  position:relative;
+}
+.ms-emblem::before{
+  content:'';position:absolute;inset:5px;
+  border-radius:50%;
+  border:1px solid rgba(200,80,60,0.25);
+}
+.ms-emblem-ring-text{
+  position:absolute;
+  font-family:'Share Tech Mono',monospace;
+  font-size:6px;letter-spacing:0.12em;
+  color:rgba(200,149,106,0.4);
+  text-transform:uppercase;
+  top:14px;
+}
+.ms-emblem-icon{font-size:28px;line-height:1;}
+.ms-emblem-type{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.12em;
+  color:var(--accent-l);text-transform:uppercase;
+  font-weight:bold;
+}
+.ms-emblem-sub{
+  font-family:'Share Tech Mono',monospace;
+  font-size:6px;letter-spacing:0.1em;
+  color:rgba(200,149,106,0.45);text-transform:uppercase;
+}
+
+/* stars */
+.ms-stars{
+  display:flex;gap:4px;align-items:center;
+  margin-bottom:10px;
+}
+.ms-star{font-size:16px;color:var(--gold-warm);line-height:1;}
+.ms-star.dim{color:rgba(120,80,60,0.3);}
+
+/* name row with icon */
+.ms-name-row{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;
+}
+.ms-name-icon{font-size:22px;opacity:0.8;}
+.ms-name{
+  font-family:'Cinzel',serif;
+  font-size:30px;font-weight:600;
+  color:var(--text);letter-spacing:0.04em;line-height:1;
+}
+
+/* bond */
+.ms-bond{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;
+}
+.ms-bond-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;letter-spacing:0.06em;
+  color:var(--accent-l);min-width:36px;
+}
+.ms-bond-track{
+  flex:1;height:4px;
+  background:rgba(160,40,30,0.15);
+  position:relative;overflow:hidden;
+}
+.ms-bond-fill{
+  position:absolute;left:0;top:0;bottom:0;width:0;
+  background:linear-gradient(90deg,var(--red),#e05050);
+  transition:width 1.8s cubic-bezier(0.22,1,0.36,1);
+}
+.ms-bond-pct{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;color:var(--text-mid);min-width:36px;
+}
+
+/* role tags */
+.ms-roles{
+  display:flex;gap:16px;
+  margin-bottom:18px;
+}
+.ms-role{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;letter-spacing:0.06em;
+  color:var(--text-mid);text-transform:uppercase;
+}
+
+/* personal stats */
+.ms-stats-heading{
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;letter-spacing:0.08em;
+  color:var(--accent-l);text-transform:uppercase;
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:6px;cursor:default;
+}
+.ms-stats-heading::after{content:'▶';font-size:8px;color:var(--accent);}
+
+.ms-stats-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px 16px;
+}
+.ms-stat{display:flex;align-items:baseline;gap:8px;}
+.ms-stat-icon{font-size:11px;color:var(--accent);flex-shrink:0;}
+.ms-stat-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.04em;
+  color:var(--text-dim);text-transform:uppercase;
+  flex:1;
+}
+.ms-stat-value{
+  font-family:'Cinzel',serif;
+  font-size:15px;color:var(--text);
+  font-weight:400;
+}
+.ms-stat-full{grid-column:span 2;}
+
+/* enter profile hint */
+.ms-enter-hint{
+  margin-top:auto;
+  padding-top:16px;
+}
+.ms-enter-btn{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.12em;
+  color:var(--text-dim);text-transform:uppercase;
+  padding:6px 12px;
+  border:1px solid var(--border);
+  background:transparent;cursor:pointer;
+  transition:all 0.2s;
+  display:flex;align-items:center;gap:6px;
+}
+.ms-enter-btn:hover{border-color:var(--accent);color:var(--accent-l);}
+.ms-enter-btn::after{content:'›';font-size:14px;}
+
+/* ── CENTER PANEL ── */
+.ms-center{
+  position:relative;
+  display:flex;align-items:flex-end;justify-content:center;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+/* background glow behind character */
+.ms-char-glow{
+  position:absolute;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(158,40,32,0.18) 0%,rgba(100,20,10,0.08) 50%,transparent 75%);
+  bottom:0;left:50%;transform:translateX(-50%);
+  pointer-events:none;
+}
+
+/* subtle vertical lines like the reference */
+.ms-rain{
+  position:absolute;inset:0;
+  background-image:repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 80px,
+    rgba(200,149,106,0.015) 80px,
+    rgba(200,149,106,0.015) 81px
+  );
+  pointer-events:none;
+}
+
+/* decorative spark symbols */
+.ms-spark{
+  position:absolute;
+  color:var(--red-l);
+  font-size:20px;
+  opacity:0.6;
+  pointer-events:none;
+  animation:spark-pulse 3s ease-in-out infinite;
+}
+@keyframes spark-pulse{
+  0%,100%{opacity:0.4;transform:scale(1);}
+  50%{opacity:0.8;transform:scale(1.15);}
+}
+
+/* character art */
+.ms-char-art{
+  position:relative;z-index:2;
+  height:92%;
+  max-height:680px;
+  object-fit:contain;object-position:bottom center;
+  filter:drop-shadow(0 0 40px rgba(158,40,32,0.2)) drop-shadow(0 20px 60px rgba(0,0,0,0.8));
+  transition:transform 0.4s ease, filter 0.4s ease;
+  display:block;
+}
+.ms-center:hover .ms-char-art{
+  transform:scale(1.015) translateY(-4px);
+  filter:drop-shadow(0 0 60px rgba(158,40,32,0.3)) drop-shadow(0 20px 60px rgba(0,0,0,0.8));
+}
+
+.ms-char-placeholder{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  height:80%;gap:12px;padding-bottom:20px;
+}
+.ms-char-placeholder-box{
+  width:180px;height:320px;
+  border:1px dashed rgba(200,149,106,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:48px;
+  background:rgba(158,40,32,0.04);
+}
+
+/* signature */
+.ms-signature{
+  position:absolute;bottom:28px;right:40px;z-index:3;
+  font-family:'Cinzel',serif;
+  font-size:28px;color:var(--red-l);
+  opacity:0.7;transform:rotate(-6deg);
+  pointer-events:none;font-style:italic;
+  letter-spacing:0.02em;
+}
+
+/* enter overlay on hover */
+.ms-enter-overlay{
+  position:absolute;inset:0;z-index:4;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity 0.3s;
+  background:radial-gradient(ellipse at center,rgba(158,40,32,0.12) 0%,transparent 70%);
+}
+.ms-center:hover .ms-enter-overlay{opacity:1;}
+.ms-enter-circle{
+  width:80px;height:80px;border-radius:50%;
+  border:1px solid rgba(200,149,106,0.5);
+  background:rgba(14,9,6,0.8);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:4px;
+}
+.ms-enter-arrow{font-size:20px;color:var(--accent-l);}
+.ms-enter-text{
+  font-family:'Share Tech Mono',monospace;
+  font-size:7px;letter-spacing:0.1em;
+  color:var(--text-dim);text-transform:uppercase;
+}
+
+/* ── RIGHT PANEL ── */
+.ms-right{
+  padding:0 20px 20px 10px;
+  display:flex;flex-direction:column;
+  gap:0;
+  position:relative;z-index:2;
+}
+
+/* DOCUMENT header */
+.ms-doc-header{
+  padding:12px 0 10px;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:14px;
+}
+.ms-doc-title{
+  font-family:'Share Tech Mono',monospace;
+  font-size:12px;letter-spacing:0.3em;
+  color:rgba(200,149,106,0.3);text-transform:uppercase;
+}
+.ms-doc-spark{font-size:10px;color:rgba(200,149,106,0.25);}
+
+/* level + insight row */
+.ms-li-row{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:6px;margin-bottom:12px;
+}
+.ms-li-block{
+  border:1px solid var(--border);
+  background:rgba(200,80,60,0.06);
+  padding:8px 12px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.ms-li-left{}
+.ms-li-key{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.08em;
+  color:var(--text-dim);text-transform:uppercase;
+  margin-bottom:2px;
+}
+.ms-li-val{
+  font-family:'Cinzel',serif;
+  font-size:22px;color:var(--text);font-weight:600;line-height:1;
+}
+.ms-li-sub{
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;color:var(--text-dim);
+}
+.ms-li-btn{
+  width:28px;height:28px;
+  border:1px solid var(--border);
+  background:rgba(200,80,60,0.1);
+  color:var(--accent-l);font-size:18px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all 0.2s;line-height:1;
+}
+.ms-li-btn:hover{background:rgba(200,80,60,0.2);border-color:var(--accent);}
+
+.ms-insight-icon{
+  width:44px;height:44px;
+  border:1px solid rgba(200,149,106,0.3);
+  background:rgba(200,149,106,0.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+}
+
+/* psychube row */
+.ms-psychube{
+  border:1px solid var(--border);
+  padding:8px 12px;
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:12px;
+  background:rgba(20,12,10,0.6);
+}
+.ms-psy-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.08em;
+  color:var(--text-dim);text-transform:uppercase;
+}
+.ms-psy-name{font-size:13px;font-style:italic;color:var(--text);}
+.ms-psy-tris{display:flex;gap:3px;align-items:flex-end;margin-left:auto;}
+
+/* skill card thumbnails — arched top like the reference */
+.ms-skill-cards{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:6px;margin-bottom:12px;
+}
+.ms-skill-thumb{
+  border:1px solid var(--border);
+  background:var(--bg-card);
+  overflow:hidden;
+  cursor:pointer;
+  transition:all 0.2s;
+  position:relative;
+}
+.ms-skill-thumb:hover{border-color:var(--accent);transform:translateY(-1px);}
+.ms-skill-thumb-art{
+  height:80px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;
+  background:radial-gradient(ellipse at 50% 100%,rgba(158,40,32,0.15) 0%,transparent 70%);
+  border-bottom:1px solid var(--border);
+  /* arched top effect */
+  clip-path:polygon(0 8%,50% 0%,100% 8%,100% 100%,0 100%);
+}
+.ms-skill-thumb-label{
+  padding:4px 6px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.04em;
+  color:var(--text-dim);text-transform:uppercase;
+  text-align:center;
+}
+
+/* portrait + resonance buttons */
+.ms-action-row{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:8px;margin-top:auto;
+}
+.ms-action-btn{
+  border:1px solid rgba(200,149,106,0.3);
+  background:rgba(240,230,210,0.07);
+  padding:14px 12px;
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;transition:all 0.2s;
+  position:relative;overflow:hidden;
+}
+.ms-action-btn:hover{
+  border-color:var(--accent);
+  background:rgba(240,230,210,0.12);
+}
+.ms-action-label{
+  font-family:'Cinzel',serif;
+  font-size:14px;color:var(--text);
+  letter-spacing:0.04em;
+}
+.ms-action-sub{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;color:var(--text-dim);
+  position:absolute;bottom:6px;right:8px;
+}
+/* crossed arrows decoration like the reference */
+.ms-action-deco{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  color:rgba(200,149,106,0.2);font-size:22px;
+}
+
+/* bottom pixel decoration */
+.ms-bottom-deco{
+  position:absolute;bottom:12px;left:20px;
+  display:flex;gap:2px;
+}
+.ms-pixel{width:4px;height:4px;background:rgba(200,80,60,0.4);}
+.ms-pixel:nth-child(odd){background:rgba(200,80,60,0.2);}
+
+/* SCREEN TRANSITION */
+#profile-screen{
+  opacity:0;visibility:hidden;
+  transition:opacity 0.5s ease,visibility 0.5s ease;
+}
+#profile-screen.visible{opacity:1;visibility:visible;}
+
+/* main screen responsive */
+@media(max-width:768px){
+  .ms-body{grid-template-columns:1fr;grid-template-rows:auto 300px auto;}
+  .ms-left{padding:12px 14px 0;}
+  .ms-center{min-height:300px;}
+  .ms-right{padding:12px 14px;}
+  .ms-emblem{width:80px;height:80px;margin-bottom:10px;}
+  .ms-emblem-icon{font-size:22px;}
+  .ms-name{font-size:22px;}
+  .ms-skill-cards{grid-template-columns:repeat(3,1fr);}
+  .ms-action-row{grid-template-columns:1fr 1fr;}
+}
+
+@media(max-width:480px){
+  .ms-topbar{padding:6px 10px;}
+  .ms-icon-btn{width:32px;height:32px;font-size:13px;}
+  .ms-body{grid-template-rows:auto 260px auto;}
+  .ms-li-row{grid-template-columns:1fr 1fr;}
+  .ms-skill-cards{grid-template-columns:repeat(3,1fr);gap:4px;}
+  .ms-skill-thumb-art{height:60px;font-size:24px;}
+}
+</style>
+</head>
+<body>
+<div class="bg-layer"></div>
+<div class="grain"></div>
+<div class="scanline"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-emblem"><div class="loader-emblem-inner">🌅</div></div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  <div class="loader-text">Loading Profile Data</div>
+</div>
+
+<!-- SKILL POPUP -->
+<div class="popup-overlay" id="popup" onclick="closePopup(event)">
+  <div class="popup-box">
+    <div class="popup-corner pc-tl"></div><div class="popup-corner pc-br"></div>
+    <div class="popup-header">
+      <div class="popup-icon" id="popup-icon">🌅</div>
+      <div>
+        <div class="popup-skill-type" id="popup-type"></div>
+        <div class="popup-skill-name" id="popup-name"></div>
+      </div>
+      <button class="popup-close" onclick="closePopupDirect()">✕</button>
+    </div>
+    <div class="popup-body">
+      <div class="popup-quote" id="popup-quote"></div>
+      <div class="popup-desc" id="popup-desc"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CHARACTER SCREEN -->
+<div id="main-screen">
+
+  <!-- TOP ICON BAR -->
+  <div class="ms-topbar">
+    <div class="ms-icon-btn" title="Back">◁</div>
+    <div class="ms-icon-sep"></div>
+    <div class="ms-icon-btn" title="Home">□</div>
+    <div class="ms-icon-btn" title="Afflatus">△</div>
+    <div class="ms-icon-btn" title="Resonance">⚇</div>
+    <div class="ms-icon-btn" title="Story">⌀</div>
+    <div class="ms-icon-btn" title="Archive">⊟</div>
+    <div class="ms-icon-btn" title="Info">◇</div>
+    <div class="ms-topbar-right">Document</div>
+  </div>
+
+  <!-- MAIN BODY -->
+  <div class="ms-body">
+
+    <!-- LEFT -->
+    <div class="ms-left">
+
+      <!-- Afflatus Emblem -->
+      <div class="ms-emblem">
+        <span class="ms-emblem-ring-text">Spirit · One Who Returns</span>
+        <span class="ms-emblem-icon">🌿</span>
+        <span class="ms-emblem-type">Spirit</span>
+        <span class="ms-emblem-sub">Afflatus</span>
+      </div>
+
+      <!-- Stars -->
+      <div class="ms-stars">
+        <span class="ms-star">✦</span>
+        <span class="ms-star">✦</span>
+        <span class="ms-star">✦</span>
+        <span class="ms-star">✦</span>
+        <span class="ms-star">✦</span>
+        <span class="ms-star dim">✦</span>
+      </div>
+
+      <!-- Name -->
+      <div class="ms-name-row">
+        <span class="ms-name-icon">🌾</span>
+        <div class="ms-name">Aida</div>
+      </div>
+
+      <!-- Bond -->
+      <div class="ms-bond">
+        <span class="ms-bond-label">Bond</span>
+        <div class="ms-bond-track"><div class="ms-bond-fill" id="msBondFill"></div></div>
+        <span class="ms-bond-pct">100%</span>
+      </div>
+
+      <!-- Roles -->
+      <div class="ms-roles">
+        <span class="ms-role">Carry</span>
+        <span class="ms-role">Control</span>
+        <span class="ms-role">Support</span>
+      </div>
+
+      <!-- Stats -->
+      <div class="ms-stats-heading">Personal Stats</div>
+      <div class="ms-stats-grid">
+        <div class="ms-stat">
+          <span class="ms-stat-icon">↑</span>
+          <span class="ms-stat-label">ATK</span>
+          <span class="ms-stat-value">1840</span>
+        </div>
+        <div class="ms-stat">
+          <span class="ms-stat-icon">♡</span>
+          <span class="ms-stat-label">HP</span>
+          <span class="ms-stat-value">9640</span>
+        </div>
+        <div class="ms-stat">
+          <span class="ms-stat-icon">◈</span>
+          <span class="ms-stat-label">Reality DEF</span>
+          <span class="ms-stat-value">820</span>
+        </div>
+        <div class="ms-stat">
+          <span class="ms-stat-icon">◈</span>
+          <span class="ms-stat-label">Mental DEF</span>
+          <span class="ms-stat-value">760</span>
+        </div>
+        <div class="ms-stat ms-stat-full">
+          <span class="ms-stat-icon">◆</span>
+          <span class="ms-stat-label">Critical Technique</span>
+          <span class="ms-stat-value">490</span>
+        </div>
+      </div>
+
+      <!-- Enter button -->
+      <div class="ms-enter-hint">
+        <button class="ms-enter-btn" onclick="enterProfile()">View Full Profile</button>
+      </div>
+
+      <!-- bottom pixel deco -->
+      <div class="ms-bottom-deco">
+        <div class="ms-pixel"></div><div class="ms-pixel"></div>
+        <div class="ms-pixel"></div><div class="ms-pixel"></div>
+        <div class="ms-pixel"></div><div class="ms-pixel"></div>
+        <div class="ms-pixel"></div><div class="ms-pixel"></div>
+      </div>
+
+    </div>
+
+    <!-- CENTER — character art -->
+    <div class="ms-center" onclick="enterProfile()" title="View Full Profile">
+      <div class="ms-rain"></div>
+      <div class="ms-char-glow"></div>
+
+      <!-- Decorative sparks like the reference -->
+      <div class="ms-spark" style="top:18%;right:28%;animation-delay:0s;">✳</div>
+      <div class="ms-spark" style="top:25%;right:22%;animation-delay:0.8s;font-size:14px;">✦</div>
+      <div class="ms-spark" style="top:14%;right:32%;animation-delay:1.6s;font-size:12px;">✶</div>
+
+      <!--
+        CHARACTER ART:
+        Replace this placeholder with:
+        <img src="5219.png" class="ms-char-art" alt="Aida">
+      -->
+      <img src="5219.png" class="ms-char-art" alt="Aida"
+           onerror="this.style.display='none';document.getElementById('msPlaceholder').style.display='flex';">
+      <div class="ms-char-placeholder" id="msPlaceholder" style="display:none;">
+        <div class="ms-char-placeholder-box">🌅</div>
+      </div>
+
+      <div class="ms-signature">Aida</div>
+
+      <!-- hover enter overlay -->
+      <div class="ms-enter-overlay">
+        <div class="ms-enter-circle">
+          <div class="ms-enter-arrow">›</div>
+          <div class="ms-enter-text">Profile</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT — document panel -->
+    <div class="ms-right">
+
+      <!-- Document header -->
+      <div class="ms-doc-header">
+        <span class="ms-doc-spark">✦</span>
+        <span class="ms-doc-title">D O C U M E N T</span>
+        <span class="ms-doc-spark">✦</span>
+      </div>
+
+      <!-- Level + Insight -->
+      <div class="ms-li-row">
+        <div class="ms-li-block">
+          <div class="ms-li-left">
+            <div class="ms-li-key">Level</div>
+            <div class="ms-li-val">60</div>
+            <div class="ms-li-sub">/60</div>
+          </div>
+          <div class="ms-li-btn">+</div>
+        </div>
+        <div class="ms-li-block">
+          <div class="ms-li-left">
+            <div class="ms-li-key">Insight</div>
+            <div class="ms-insight-icon">▽</div>
+          </div>
+          <div class="ms-li-btn">+</div>
+        </div>
+      </div>
+
+      <!-- Psychube -->
+      <div class="ms-psychube">
+        <div>
+          <div class="ms-psy-label">Psychube Preference ▶</div>
+          <div class="ms-psy-name">The Fool's Journey</div>
+        </div>
+        <div class="ms-psy-tris" style="margin-left:auto;">
+          <div class="tri tri-on"></div>
+          <div class="tri tri-mid"></div>
+          <div class="tri tri-off"></div>
+          <div class="tri tri-off"></div>
+        </div>
+      </div>
+
+      <!-- Skill thumbnails -->
+      <div class="ms-skill-cards">
+        <div class="ms-skill-thumb" onclick="enterProfile();setTimeout(()=>openSkill('portrait'),600)">
+          <div class="ms-skill-thumb-art">🌅</div>
+          <div class="ms-skill-thumb-label">Portrait</div>
+        </div>
+        <div class="ms-skill-thumb" onclick="enterProfile();setTimeout(()=>openSkill('skill1'),600)">
+          <div class="ms-skill-thumb-art">🌾</div>
+          <div class="ms-skill-thumb-label">Adaptive</div>
+        </div>
+        <div class="ms-skill-thumb" onclick="enterProfile();setTimeout(()=>openSkill('ultimate'),600)">
+          <div class="ms-skill-thumb-art">☀️</div>
+          <div class="ms-skill-thumb-label">Buff</div>
+        </div>
+      </div>
+
+      <!-- Portrait + Resonance buttons -->
+      <div class="ms-action-row">
+        <div class="ms-action-btn" onclick="enterProfile()">
+          <span class="ms-action-label">Portrait</span>
+          <span class="ms-action-deco">✕</span>
+        </div>
+        <div class="ms-action-btn" onclick="enterProfile()">
+          <span class="ms-action-label">Resonance</span>
+          <span class="ms-action-sub">Lv.10</span>
+          <span class="ms-action-deco">◇</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE SCREEN -->
+<div id="profile-screen">
+
+<!-- APP -->
+<div id="app">
+  <div class="top-nav">
+    <button class="nav-back" onclick="backToMain()">‹</button>
+    <div class="nav-tabs">
+      <div class="nav-tab active" onclick="switchTab('profile',this)">Profile</div>
+      <div class="nav-tab" onclick="switchTab('story',this)">Story</div>
+      <div class="nav-tab" onclick="switchTab('relations',this)">Relations</div>
+      <div class="nav-tab" onclick="switchTab('gallery',this)">Gallery</div>
+    </div>
+    <div class="nav-spacer"></div>
+    <div class="nav-logo">Reverse : 1999 · OC</div>
+  </div>
+
+  <div class="profile-main">
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <div class="art-area" id="artArea">
+        <div class="geo" style="width:220px;height:220px;top:70px;left:40px;"></div>
+        <div class="geo" style="width:120px;height:120px;top:120px;left:90px;"></div>
+        <div class="afflatus-badge"><span class="aff-icon">🌿</span><span class="aff-label">Spirit</span></div>
+        <div class="art-parallax" id="artParallax">
+          <div class="art-placeholder">
+            <div class="art-placeholder-box">🌅</div>
+            <span class="art-hint">Portrait art here</span>
+          </div>
+        </div>
+        <div class="dawn-glow"></div>
+        <div class="corner-deco c-tl"></div><div class="corner-deco c-tr"></div>
+        <div class="corner-deco c-bl"></div><div class="corner-deco c-br"></div>
+      </div>
+      <div class="stars-row">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        <span class="star">★</span><span class="star">★</span><span class="star dim">★</span>
+      </div>
+      <div class="name-block">
+        <div class="char-name">Aida</div>
+        <div class="char-title">One Who Returns · Ancient Shepherd's Crook</div>
+      </div>
+      <div class="bond-row">
+        <span class="bond-label">Bond</span>
+        <div class="bond-track"><div class="bond-fill" id="bondFill"></div></div>
+        <span class="bond-pct">100%</span>
+      </div>
+      <div class="roles-row">
+        <span class="role-chip">⚔ Carry</span>
+        <span class="role-chip">◈ Control</span>
+        <span class="role-chip">✦ Support</span>
+      </div>
+      <div class="stats-section">
+        <div class="stats-heading">Personal Stats</div>
+        <div class="stats-grid">
+          <div class="stat-item"><div class="stat-label">ATK</div><div class="stat-value">1840</div></div>
+          <div class="stat-item"><div class="stat-label">HP</div><div class="stat-value">9640</div></div>
+          <div class="stat-item"><div class="stat-label">RLT DEF</div><div class="stat-value">820</div></div>
+          <div class="stat-item"><div class="stat-label">MNT DEF</div><div class="stat-value">760</div></div>
+          <div class="stat-item stat-full"><div class="stat-label">Critical Technique</div><div class="stat-value">490</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <div class="doc-header">
+        <span class="doc-label">Document</span>
+        <div class="level-row">
+          <div class="li-item"><span class="li-key">Level</span><span class="li-val">60</span><span class="li-sub">/60</span></div>
+          <div class="li-item">
+            <span class="li-key">Insight</span><span class="li-val">III</span>
+            <div class="insight-pips"><div class="ins-pip"></div><div class="ins-pip"></div><div class="ins-pip"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="psychube-row">
+        <span class="psy-label">Psychube ▶</span>
+        <span class="psy-name">The Fool's Journey</span>
+        <span class="psy-lv">Lv.60</span>
+        <div class="psy-tris"><div class="tri tri-on"></div><div class="tri tri-mid"></div><div class="tri tri-off"></div></div>
+      </div>
+      <div class="cards-row">
+        <div class="skill-card" onclick="openSkill('portrait')"><div class="skill-card-art">🌅</div><div class="skill-card-foot"><span class="skill-card-name">Portrait</span><span class="skill-card-sub">First Light</span></div></div>
+        <div class="skill-card" onclick="openSkill('skill1')"><div class="skill-card-art">🌾</div><div class="skill-card-foot"><span class="skill-card-name">Skill I</span><span class="skill-card-sub">Come Along</span></div></div>
+        <div class="skill-card" onclick="openSkill('skill2')"><div class="skill-card-art">🐑</div><div class="skill-card-foot"><span class="skill-card-name">Skill II</span><span class="skill-card-sub">Tend</span></div></div>
+        <div class="skill-card" onclick="openSkill('ultimate')"><div class="skill-card-art">☀️</div><div class="skill-card-foot"><span class="skill-card-name">Ultimate</span><span class="skill-card-sub">Sunrise</span></div></div>
+      </div>
+
+      <!-- PROFILE TAB -->
+      <div class="tab-panel active" id="tab-profile">
+        <div class="lore-area">
+          <div><div class="lore-heading">Overview</div><div class="lore-text">A shepherd's crook of the Central Asian steppe, ancient and nomadic in origin, awakened mid-Storm from a museum archive where she had spent several undignified decades behind glass. She emerged already knowing how to walk, already looking for something to guide home. <span class="lore-em">Spirit Afflatus. Unexpected carry. The crook still in her hand.</span></div></div>
+          <div><div class="lore-heading">Personality</div><div class="lore-text">Curious and wandering — she followed flocks across wide steppe country for centuries and has not stopped being interested in what's on the other side of things. She meets everything new with genuine open warmth. The backbone surfaces when it needs to. She is not loud about it.</div><div class="lore-quote">"Not that way. This way. It's alright — I'll show you."</div></div>
+          <div><div class="lore-heading">Backstory</div><div class="lore-text">She remembers the animals more than the people — the particular stubbornness of a sheep that kept drifting, the sound of the flock settling at dusk. The Storm found her in a museum case. It found her because she had been waiting for a very long time and <span class="lore-em">wanting is a kind of pressure and pressure is a kind of energy.</span></div></div>
+        </div>
+      </div>
+
+      <!-- STORY TAB -->
+      <div class="tab-panel" id="tab-story">
+        <div class="insight-nav">
+          <button class="insight-btn active" onclick="switchInsight(0,this)">Insight I</button>
+          <button class="insight-btn" onclick="switchInsight(1,this)">Insight II</button>
+          <button class="insight-btn" onclick="switchInsight(2,this)">Insight III</button>
+        </div>
+        <div class="story-scroll">
+          <div class="insight-panel active" id="ins-0">
+            <div class="insight-title">To the Ones I Remember</div>
+            <div class="insight-body">
+              <p>You were the stubborn one. The grey one with the notched ear who always drifted left. I knew before you did that you were going to drift — I could feel it in the shift of the wood, the particular angle of your wandering. I never minded. I just came alongside you and you came back and that was how it always went.</p>
+              <p>I don't know what happened to you. Time did what time does. I was in a case behind glass and you were — elsewhere. A long time ago.</p>
+              <p>I think about your notched ear sometimes. The way the morning light came across the grass when we were moving. You were always the first one out and the last one in and I was always there.</p>
+              <p><em>I was always there.</em></p>
+            </div>
+          </div>
+          <div class="insight-panel" id="ins-1">
+            <div class="insight-title">To the New Ones</div>
+            <div class="insight-body">
+              <p>The world is very loud now. I want you to know I noticed that immediately — the glass broke and the noise came in and everything was reversing and I stood in the middle of it and thought: well. This is different.</p>
+              <p>But the scattered things were still scattered. The drifting things were still drifting. I found you the same way I always found the grey one with the notched ear. I could feel the angle of your wandering.</p>
+              <p>You are not sheep. I want to be clear that I know this. But the work is the same. Come alongside. Be patient. Be firm when firm is needed.</p>
+              <p><em>I will be here when you get back. I always am.</em></p>
+            </div>
+          </div>
+          <div class="insight-panel" id="ins-2">
+            <div class="insight-title">On Returning</div>
+            <div class="insight-body">
+              <p>I have been asked — once, by someone who found the question very clever — whether it hurts, coming back. It doesn't. I am here and then I am not and then I am here again and the flock needs tending and so I tend it.</p>
+              <p>What I didn't expect is that the people are not the same people when I return. They have done things while I was gone. The light is different on their faces.</p>
+              <p>I came back from being glass-case-quiet for centuries and found a world full of people drifting in directions they hadn't chosen and I thought — oh. Oh, I see. This is what I'm for now. Not sheep. People. Same work. Much more interesting.</p>
+              <p><em>I'm glad to be here. The dawn is going to come up exactly when it's supposed to. It always does.</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RELATIONS TAB -->
+      <div class="tab-panel" id="tab-relations">
+        <div class="relations-area">
+          <div class="relation-card"><div class="relation-icon">🌾</div><div><div class="relation-name">The Flock</div><div class="relation-type">Memory · Origin</div><div class="relation-desc">The animals she guided across the steppe for centuries. She remembers them better than she remembers the people — the grey one with the notched ear, the lamb who always drifted left. They are gone. She still feels their memory in the wood.</div></div></div>
+          <div class="relation-card"><div class="relation-icon">🏛</div><div><div class="relation-name">The Museum</div><div class="relation-type">Location · Awakening</div><div class="relation-desc">Where the Storm found her — behind glass in an archive, undignified and waiting. The glass broke. She stepped out. She has not been back.</div></div></div>
+          <div class="relation-card"><div class="relation-icon">🌅</div><div><div class="relation-name">The Dawn</div><div class="relation-type">Concept · Identity</div><div class="relation-desc">Every flock she ever guided moved at first light. The dawn is not something she watches — it is something she has always been part of. She finds it reassuring that it still comes.</div></div></div>
+          <div class="relation-card"><div class="relation-icon">🌪</div><div><div class="relation-name">The Storm</div><div class="relation-type">Event · Catalyst</div><div class="relation-desc">She does not fear it. The Storm is just a flock that hasn't been gathered yet. She is very good at gathering.</div></div></div>
+        </div>
+      </div>
+
+      <!-- GALLERY / UTTU MAGAZINE TAB -->
+      <div class="tab-panel" id="tab-gallery">
+        <div class="uttu-wrap">
+
+          <!-- LEFT SIDENAV -->
+          <div class="uttu-sidenav">
+            <div class="uttu-nav-item active" onclick="setUNav(this,'uttu-cover')">
+              <span class="uttu-nav-diamond active-d"></span>
+              <span class="uttu-nav-label">Cover</span>
+            </div>
+            <div class="uttu-nav-item" onclick="setUNav(this,'uttu-voice')">
+              <span class="uttu-nav-diamond"></span>
+              <span class="uttu-nav-label">Voice</span>
+            </div>
+            <div class="uttu-nav-item" onclick="setUNav(this,'uttu-item')">
+              <span class="uttu-nav-diamond"></span>
+              <span class="uttu-nav-label">Item</span>
+            </div>
+            <div class="uttu-nav-item" onclick="setUNav(this,'uttu-story')">
+              <span class="uttu-nav-diamond"></span>
+              <span class="uttu-nav-label">Story</span>
+            </div>
+          </div>
+
+          <!-- CONTENT AREA -->
+          <div class="uttu-content">
+
+            <!-- ══ COVER PAGE ══ -->
+            <div class="uttu-page active" id="uttu-cover">
+              <div class="g-deco g-h1"></div><div class="g-deco g-h2"></div>
+              <div class="g-deco g-v1"></div><div class="g-deco g-v2"></div>
+              <div class="uttu-logo">UTTU</div>
+              <div class="g-upload-hint">
+                <button class="g-upload-btn" onclick="document.getElementById('galleryFileInput').click()">⊕ Upload Art</button>
+                <input type="file" id="galleryFileInput" accept="image/*" onchange="handleArtUpload(event)">
+              </div>
+              <div class="g-exhibit">
+                <div class="g-circle"></div>
+                <div class="g-circle-ring"></div>
+                <div class="g-circle-ring2"></div>
+                <div class="g-watermark">AIDA</div>
+                <div class="g-details">
+                  <div><div class="g-detail-label">Medium</div><div class="g-detail-value">Ancient carved wood,<br>hand-embroidered textile,<br>Central Asian steppe</div></div>
+                  <div><div class="g-detail-label">Afflatus</div><div class="g-detail-value">Spirit —<br>One Who Returns</div></div>
+                  <div><div class="g-detail-label">Fragrance note</div><div class="g-detail-value">Morning grass, worn wool,<br>smoke and open sky,<br>cedar and cold earth</div></div>
+                  <div><div class="g-detail-label">Dimensions</div><div class="g-detail-value">Taller than she appears.<br>The crook exceeds<br>her own height.</div></div>
+                </div>
+                <div class="g-art-col">
+                  <div class="g-art-frame">
+                    <div class="g-frame-line gfl-top"></div>
+                    <div class="g-frame-line gfl-left"></div>
+                    <div class="g-frame-line gfl-right"></div>
+                    <div class="g-placeholder" id="galleryPlaceholder" style="display:none;">
+                      <div class="g-placeholder-icon">🌅</div>
+                      <div class="g-placeholder-text">Upload full body art<br>using the button above</div>
+                    </div>
+                    <img id="galleryCharImg" class="g-char-img" src="5219.png" alt="Aida" style="display:block;">
+                    <div class="g-signature">Aida</div>
+                  </div>
+                </div>
+                <div class="g-info">
+                  <div class="g-name-row"><span class="g-name-icon">🌾</span><div class="g-name">Aida</div></div>
+                  <div class="g-desc">An Arcanist of the ancient Central Asian steppe. She was first documented in the nomadic herding cultures before recorded history and has walked alongside the scattered things ever since. Originally a shepherd's crook found in a museum archive, she is currently moving through Storm-affected territory. She is looking for her flock. She always finds them.</div>
+                  <div class="g-bond"><span class="g-bond-label">Bond</span><span class="g-bond-value">100%</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ VOICE PAGE ══ -->
+            <div class="uttu-page" id="uttu-voice">
+              <div class="uttu-logo">UTTU</div>
+              <!-- character art background -->
+              <div class="voice-art-bg">
+                <img src="5219.png" alt="Aida"
+                     onerror="this.style.display='none'">
+                <div class="voice-art-fade"></div>
+              </div>
+              <!-- watermark letter -->
+              <div class="voice-watermark">A</div>
+              <!-- voice lines -->
+              <div class="voice-panel">
+                <div class="voice-header">
+                  <span class="voice-header-label">▶ English</span>
+                </div>
+                <div class="voice-list">
+                  <div class="voice-item" onclick="playVoiceLine(this)">
+                    <div class="voice-play">▶</div>
+                    <div class="voice-line-name">First Encounter</div>
+                    <div class="voice-line-text">"Oh, good. You're all here. Let's begin."</div>
+                  </div>
+                  <div class="voice-item" onclick="playVoiceLine(this)">
+                    <div class="voice-play">▶</div>
+                    <div class="voice-line-name">Idle</div>
+                    <div class="voice-line-text">"Not that way. This way. It's alright — I'll show you."</div>
+                  </div>
+                  <div class="voice-item" onclick="playVoiceLine(this)">
+                    <div class="voice-play">▶</div>
+                    <div class="voice-line-name">Skill: Come Along</div>
+                    <div class="voice-line-text">"I see you drifting. Here. Come back."</div>
+                  </div>
+                  <div class="voice-item" onclick="playVoiceLine(this)">
+                    <div class="voice-play">▶</div>
+                    <div class="voice-line-name">Ultimate: Sunrise</div>
+                    <div class="voice-line-text">"There it is. I knew it was coming. It always comes."</div>
+                  </div>
+                  <div class="voice-item" onclick="playVoiceLine(this)">
+                    <div class="voice-play">▶</div>
+                    <div class="voice-line-name">Returning</div>
+                    <div class="voice-line-text">"I went away for a moment. I'm back now. Let's sort it out."</div>
+                  </div>
+                  <div class="voice-item" onclick="playVoiceLine(this)">
+                    <div class="voice-play">▶</div>
+                    <div class="voice-line-name">Morning</div>
+                    <div class="voice-line-text">"The dawn is going to come up exactly when it's supposed to. It always does."</div>
+                  </div>
+                  <div class="voice-item voice-locked">
+                    <div class="voice-play">🔒</div>
+                    <div class="voice-line-name">Bond: Morning</div>
+                    <div class="voice-line-text">Unlocks at 100% bond</div>
+                  </div>
+                  <!-- Add more voice lines here -->
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ ITEM PAGE ══ -->
+            <div class="uttu-page" id="uttu-item">
+              <div class="uttu-logo">UTTU</div>
+              <div class="item-cards">
+
+                <!-- Item 1 -->
+                <div class="item-card" onclick="expandItem(this)">
+                  <div class="item-card-header">
+                    <span class="item-card-tag">ITEM · ITEM</span>
+                    <span class="item-card-tag">BELONGINGS</span>
+                    <span class="item-card-tag item-tag-highlight">ITEM</span>
+                  </div>
+                  <div class="item-card-art">🪵</div>
+                  <div class="item-card-name">The Ancient Crook</div>
+                  <div class="item-card-cost">◎ — </div>
+                  <div class="item-card-desc">A shepherd's crook of indeterminate age, found in a museum archive alongside no documentation. The wood is dark at the base from centuries of hands. The curve at the top is worn to a precise shape that fits exactly one grip. It is taller than she is. She carries it as if she always has, because she always has.</div>
+                  <div class="item-card-footer">DISPLAY AND INTRO · ✦ · U T T U</div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="item-card" onclick="expandItem(this)">
+                  <div class="item-card-header">
+                    <span class="item-card-tag">ITEM · ITEM</span>
+                    <span class="item-card-tag">BELONGINGS</span>
+                    <span class="item-card-tag item-tag-highlight">ITEM</span>
+                  </div>
+                  <div class="item-card-art">🪬</div>
+                  <div class="item-card-name">Braided Ornaments</div>
+                  <div class="item-card-cost">◎ — </div>
+                  <div class="item-card-desc">Small carved wooden beads and bronze coins worn smooth from handling, woven into her braids. She does not remember where they came from. She does not remember a time before them. They make a quiet sound when she moves, which she finds reassuring. She has always liked knowing where everything is.</div>
+                  <div class="item-card-footer">DISPLAY AND INTRO · ✦ · U T T U</div>
+                </div>
+
+                <!-- Item 3 — locked -->
+                <div class="item-card item-card-locked">
+                  <div class="item-card-header">
+                    <span class="item-card-tag">ITEM · ITEM</span>
+                    <span class="item-card-tag">BELONGINGS</span>
+                    <span class="item-card-tag item-tag-highlight">ITEM</span>
+                  </div>
+                  <div class="item-card-art" style="font-size:28px;">🔒</div>
+                  <div class="item-card-name" style="color:var(--text-dim);">Unlocks at 100% bond</div>
+                  <div class="item-card-footer">DISPLAY AND INTRO · ✦ · U T T U</div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- ══ STORY PAGE ══ -->
+            <div class="uttu-page" id="uttu-story">
+              <div class="uttu-logo">UTTU</div>
+              <!-- chapter nav bar -->
+              <div class="story-chapnav">
+                <div class="story-chap active" onclick="setChapter(0,this)">
+                  <span class="story-chap-num">01</span>
+                  <span class="story-chap-name">Chapter</span>
+                </div>
+                <div class="story-chap" onclick="setChapter(1,this)">
+                  <span class="story-chap-num">02</span>
+                  <span class="story-chap-name">Chapter</span>
+                </div>
+                <div class="story-chap" onclick="setChapter(2,this)">
+                  <span class="story-chap-num">03</span>
+                  <span class="story-chap-name">Chapter</span>
+                </div>
+                <div class="story-chap-lock">🔒 Unlocks at 80% bond</div>
+              </div>
+              <!-- book -->
+              <div class="story-book">
+                <div class="story-book-inner">
+                  <!-- LEFT PAGE — illustration/title -->
+                  <div class="story-left-page">
+                    <div class="story-header-row">
+                      <span class="story-header-label">STORY OF THE INTERVIEWEE</span>
+                      <span class="story-header-label">HISTORY</span>
+                      <span class="story-header-label">THE PAST AND THE FUTURE</span>
+                    </div>
+                    <div class="story-left-art">🌅</div>
+                    <div class="story-left-title" id="story-title">Before There Were Words for It</div>
+                    <div class="story-left-footer">
+                      <span>THE UTTU INTERVIEW</span>
+                      <span>U T T U · M A G A Z I N E</span>
+                    </div>
+                  </div>
+                  <!-- RIGHT PAGE — text -->
+                  <div class="story-right-page">
+                    <div class="story-text" id="story-text">
+                      <p>She does not know exactly how old she is. The museum archive listed her as "pre-medieval, origin unknown," which she found both accurate and insufficient. She was made before the category existed. She was made before most categories existed.</p>
+                      <p>What she remembers is grass. Wide grass country, gold in the morning and grey at dusk. The smell of animals and cold air and something burning somewhere far away. The weight of hands — some careful, some not — and the particular resistance of the ground in early spring when the frost was still in it.</p>
+                      <p>She remembers the work. She has always remembered the work.</p>
+                    </div>
+                    <div class="story-next-btn" onclick="nextStoryPage()">›</div>
+                    <div class="story-scroll-hint">▼</div>
+                    <div class="story-right-footer">
+                      <span>THE UTTU INTERVIEW</span>
+                      <span>U T T U · M A G A Z I N E</span>
+                      <span>CONTENT</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /uttu-content -->
+        </div><!-- /uttu-wrap -->
+      </div>
+
+      <!-- INSIGHT FOOTER -->
+      <div class="insight-footer">
+        <span class="ins-label">Insight</span>
+        <div class="ins-footer-pip">★</div>
+        <div class="ins-footer-pip">★</div>
+        <div class="ins-footer-pip">★</div>
+        <div class="ins-spacer"></div>
+        <div class="afflatus-tag">
+          <span class="afflatus-tag-icon">🌿</span>
+          <span class="afflatus-tag-text">Spirit Afflatus</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <span class="bottom-note">Reverse: 1999 · OC Profile · Aida</span>
+    <span class="bottom-geo">◇ &nbsp;One Who Returns&nbsp; ◇</span>
+  </div>
+</div><!-- /app -->
+</div><!-- /profile-screen -->
+
+<script>
+const AudioCtx=window.AudioContext||window.webkitAudioContext;let actx=null;
+function initAudio(){if(!actx)actx=new AudioCtx();}
+function playClick(f=880,d=0.06,v=0.08){try{initAudio();const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.frequency.setValueAtTime(f,actx.currentTime);o.frequency.exponentialRampToValueAtTime(f*0.5,actx.currentTime+d);g.gain.setValueAtTime(v,actx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+d);o.start();o.stop(actx.currentTime+d);}catch(e){}}
+function playOpen(){playClick(660,0.12,0.1);}function playClose(){playClick(440,0.08,0.07);}function playTab(){playClick(770,0.08,0.08);}
+
+/* ── LOADER → MAIN SCREEN ── */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('hidden');
+    /* show main screen first */
+    setTimeout(()=>{
+      document.getElementById('msBondFill').style.width='100%';
+    },300);
+  },2200);
+});
+
+/* ── ENTER PROFILE ── */
+function enterProfile(){
+  playOpen();
+  const ms = document.getElementById('main-screen');
+  const ps = document.getElementById('profile-screen');
+  ms.classList.add('hidden');
+  ps.classList.add('visible');
+  document.getElementById('app').classList.add('visible');
+  setTimeout(()=>{document.getElementById('bondFill').style.width='100%';},400);
+}
+
+/* ── BACK TO MAIN SCREEN ── */
+function backToMain(){
+  playClose();
+  document.getElementById('profile-screen').classList.remove('visible');
+  document.getElementById('main-screen').classList.remove('hidden');
+}
+
+function switchTab(id,el){
+  playTab();
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+}
+
+function switchInsight(idx,el){
+  playClick(600,0.08,0.07);
+  document.querySelectorAll('.insight-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.insight-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('ins-'+idx).classList.add('active');
+}
+
+function setGNav(el){
+  playClick(550,0.08,0.07);
+  document.querySelectorAll('.g-nav-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setUNav(el,pageId){
+  playClick(550,0.08,0.07);
+  document.querySelectorAll('.uttu-nav-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.uttu-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+}
+
+function playVoiceLine(el){
+  playClick(550,0.1,0.06);
+  document.querySelectorAll('.voice-item').forEach(i=>i.classList.remove('playing'));
+  if(!el.classList.contains('voice-locked')) el.classList.add('playing');
+}
+
+function expandItem(el){
+  playClick(600,0.08,0.07);
+  el.style.maxHeight = el.style.maxHeight === 'none' ? '420px' : 'none';
+}
+
+const storyChapters=[
+  {
+    title:'Before There Were Words for It',
+    text:`<p>She does not know exactly how old she is. The museum archive listed her as "pre-medieval, origin unknown," which she found both accurate and insufficient. She was made before the category existed. She was made before most categories existed.</p><p>What she remembers is grass. Wide grass country, gold in the morning and grey at dusk. The smell of animals and cold air and something burning somewhere far away. The weight of hands — some careful, some not — and the particular resistance of the ground in early spring when the frost was still in it.</p><p>She remembers the work. She has always remembered the work.</p>`
+  },
+  {
+    title:'The Glass Case',
+    text:`<p>[Chapter 2 — add your story text here.]</p><p>She was found by someone who recognized her age without understanding it. The archive was quiet. The glass was clean. She waited.</p><p>Waiting is not something she objects to. She has a great deal of experience with it. The flock always came back. Everything comes back, eventually, if you stand still long enough and make yourself findable.</p>`
+  },
+  {
+    title:'What She Is For Now',
+    text:`<p>[Chapter 3 — add your story text here.]</p><p>The Storm broke the glass. That was all it took. She stepped out, already knowing how to walk, already looking for the angle of something drifting.</p><p>The world was very loud. She noted this. She also noted the scattered things, the lost things, the things moving in directions they hadn't chosen. She recognized the shape of the problem immediately.</p><p>Same work. Different field.</p>`
+  }
+];
+
+function setChapter(idx,el){
+  playTab();
+  document.querySelectorAll('.story-chap').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('story-title').textContent=storyChapters[idx].title;
+  document.getElementById('story-text').innerHTML=storyChapters[idx].text;
+}
+
+function nextStoryPage(){
+  playClick(600,0.08,0.07);
+  const active=document.querySelector('.story-chap.active');
+  const all=document.querySelectorAll('.story-chap');
+  for(let i=0;i<all.length;i++){
+    if(all[i]===active && i<all.length-1){
+      setChapter(i+1,all[i+1]);
+      return;
+    }
+  }
+}
+
+function handleArtUpload(e){
+  const file=e.target.files[0];if(!file)return;
+  const url=URL.createObjectURL(file);
+  const img=document.getElementById('galleryCharImg');
+  const ph=document.getElementById('galleryPlaceholder');
+  img.src=url;img.style.display='block';ph.style.display='none';
+  playOpen();
+}
+
+const skills={
+  portrait:{icon:'🌅',type:'Portrait',name:'First Light',quote:"Oh, good. You're all here. Let's begin.",desc:'Passive. At the start of each encounter, Aida automatically applies <em>Gathered</em> to all allies simultaneously. The flock is tended before the fight begins. She was already up. She is always already up.<br><br><em>Gathered</em>: allies receive a small passive heal each round and a stacking damage bonus that grows the longer they remain gathered.'},
+  skill1:{icon:'🌾',type:'Skill I',name:'Come Along',quote:"Not that way. This way. It's alright — I'll show you.",desc:'Applies <em>Wayward</em> to a single enemy and deals Spirit damage scaled to how many <em>Gathered</em> allies are currently active. The more of her flock she\'s tending, the firmer the redirection.<br><br><em>Wayward</em>: the target\'s movement priority shifts and their damage output is reduced while the status holds.'},
+  skill2:{icon:'🐑',type:'Skill II',name:'Tend',quote:"I see you drifting. Here. Come back.",desc:'Refreshes <em>Gathered</em> on all allies and grants each one a small immediate heal. If an ally has lost <em>Gathered</em> through dispel or damage, this restores it.<br><br>She notices when one of hers has drifted. She always notices. She comes back for them.'},
+  ultimate:{icon:'☀️',type:'Ultimate',name:'Sunrise',quote:"There it is. I knew it was coming. It always comes.",desc:'Deals Spirit damage to all enemies scaled to total rounds elapsed — the longer the encounter, the brighter the hit.<br><br>Simultaneously grants all <em>Gathered</em> allies a burst heal and doubles their <em>Gathered</em> damage bonus for two rounds. Something shifts in the light when she uses it. Everything becomes briefly, completely clear.'}
+};
+function openSkill(id){
+  playOpen();const s=skills[id];
+  document.getElementById('popup-icon').textContent=s.icon;
+  document.getElementById('popup-type').textContent=s.type;
+  document.getElementById('popup-name').textContent=s.name;
+  document.getElementById('popup-quote').textContent='"'+s.quote+'"';
+  document.getElementById('popup-desc').innerHTML=s.desc;
+  document.getElementById('popup').classList.add('open');
+}
+function closePopup(e){if(e.target===document.getElementById('popup'))closePopupDirect();}
+function closePopupDirect(){playClose();document.getElementById('popup').classList.remove('open');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePopupDirect();});
+
+const artArea=document.getElementById('artArea'),artParallax=document.getElementById('artParallax');
+artArea.addEventListener('mousemove',e=>{const r=artArea.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-0.5;const y=(e.clientY-r.top)/r.height-0.5;artParallax.style.transform=`translate(${x*10}px,${y*8}px)`;});
+artArea.addEventListener('mouseleave',()=>{artParallax.style.transform='translate(0,0)';});
+document.querySelectorAll('.nav-tab,.role-chip,.relation-card,.stat-item').forEach(el=>el.addEventListener('click',()=>playClick()));
+</script>
+</body>
+</html>
