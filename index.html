@@ -334,7 +334,339 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
 .bottom-note{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;}
 .bottom-geo{font-size:10px;color:var(--text-dim);letter-spacing:0.25em;}
 
-/* ═══ RESPONSIVE — TABLET ═══ */
+/* ═══ UTTU MAGAZINE ═══ */
+.uttu-wrap{flex:1;display:flex;min-height:480px;position:relative;background:var(--bg-mid);}
+
+/* sidenav */
+.uttu-sidenav{
+  width:120px;flex-shrink:0;
+  border-right:1px solid var(--border);
+  padding:24px 0;
+  display:flex;flex-direction:column;gap:2px;
+  background:rgba(14,8,6,0.7);
+  z-index:2;
+}
+.uttu-nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;cursor:pointer;transition:all 0.2s;
+}
+.uttu-nav-diamond{
+  width:10px;height:10px;
+  border:1px solid var(--border-b);
+  transform:rotate(45deg);flex-shrink:0;
+  transition:all 0.2s;background:transparent;
+}
+.uttu-nav-item.active .uttu-nav-diamond{background:var(--accent);border-color:var(--accent);}
+.uttu-nav-item.active{background:rgba(180,60,40,0.08);}
+.uttu-nav-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;letter-spacing:0.08em;
+  color:var(--text-dim);text-transform:uppercase;transition:color 0.2s;
+}
+.uttu-nav-item.active .uttu-nav-label{color:var(--accent-l);}
+.uttu-nav-item:hover .uttu-nav-label{color:var(--accent);}
+
+/* content area */
+.uttu-content{flex:1;position:relative;overflow:hidden;}
+.uttu-page{display:none;width:100%;height:100%;position:relative;}
+.uttu-page.active{display:flex;flex-direction:column;}
+
+/* UTTU watermark top-right */
+.uttu-logo{
+  position:absolute;top:10px;right:12px;
+  font-family:'Cinzel',serif;font-size:11px;
+  letter-spacing:0.2em;color:rgba(200,149,106,0.18);
+  text-transform:uppercase;pointer-events:none;z-index:1;
+}
+
+/* ── VOICE PAGE ── */
+#uttu-voice{flex-direction:row;overflow:hidden;}
+.voice-art-bg{
+  position:absolute;inset:0;z-index:0;
+  display:flex;align-items:flex-end;justify-content:center;
+  overflow:hidden;
+}
+.voice-art-bg img{
+  height:100%;max-height:460px;
+  object-fit:contain;object-position:bottom center;
+  opacity:0.18;
+  filter:drop-shadow(0 0 30px rgba(0,0,0,0.8));
+}
+.voice-art-fade{
+  position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(14,8,6,0.3) 0%,transparent 30%,transparent 60%,rgba(14,8,6,0.3) 100%),
+  linear-gradient(0deg,rgba(14,8,6,0.6) 0%,transparent 40%);
+}
+.voice-watermark{
+  position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  font-family:'Cinzel',serif;font-size:160px;font-weight:700;
+  color:rgba(200,149,106,0.03);
+  pointer-events:none;user-select:none;z-index:0;
+}
+.voice-panel{
+  position:relative;z-index:2;
+  width:320px;flex-shrink:0;
+  margin-left:auto;
+  padding:16px 20px 16px 0;
+  display:flex;flex-direction:column;gap:0;
+}
+.voice-header{
+  padding:6px 0 10px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:8px;
+}
+.voice-header-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;letter-spacing:0.1em;
+  color:var(--text-dim);
+  padding:4px 10px;
+  border:1px solid var(--border);
+  background:rgba(20,12,10,0.8);
+}
+.voice-list{display:flex;flex-direction:column;gap:2px;overflow-y:auto;max-height:380px;}
+.voice-list::-webkit-scrollbar{width:2px;}
+.voice-list::-webkit-scrollbar-thumb{background:var(--border);}
+.voice-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 10px;cursor:pointer;
+  border-left:2px solid transparent;
+  transition:all 0.2s;
+  background:rgba(14,8,6,0.6);
+}
+.voice-item:hover{border-left-color:var(--accent);background:rgba(180,60,40,0.08);}
+.voice-item.playing{border-left-color:var(--red-l);}
+.voice-play{
+  font-size:11px;color:var(--accent);
+  flex-shrink:0;margin-top:2px;
+  transition:transform 0.2s;
+}
+.voice-item:hover .voice-play{transform:scale(1.2);}
+.voice-line-name{
+  font-family:'Cinzel',serif;
+  font-size:12px;color:var(--text);
+  min-width:110px;flex-shrink:0;
+}
+.voice-line-text{
+  font-size:11px;color:var(--text-dim);
+  font-style:italic;line-height:1.5;
+}
+.voice-locked{opacity:0.5;cursor:default;}
+.voice-locked:hover{border-left-color:transparent;background:rgba(14,8,6,0.6);}
+
+/* ── ITEM PAGE ── */
+#uttu-item{
+  background:rgba(16,10,8,0.8);
+  align-items:center;justify-content:center;
+  padding:20px;
+}
+.item-cards{
+  display:flex;gap:16px;
+  align-items:flex-start;justify-content:center;
+  width:100%;
+  overflow-x:auto;
+  padding:8px 0;
+}
+.item-card{
+  width:240px;flex-shrink:0;
+  background:#f0ece4;
+  border:1px solid #ccc;
+  padding:0;
+  cursor:pointer;
+  transition:transform 0.2s,box-shadow 0.2s;
+  display:flex;flex-direction:column;
+  max-height:420px;overflow:hidden;
+}
+.item-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+.item-card-header{
+  display:flex;align-items:center;gap:4px;
+  padding:6px 8px;
+  border-bottom:1px solid #ddd;
+  background:#e8e4dc;
+}
+.item-card-tag{
+  font-size:7px;letter-spacing:0.06em;
+  color:#888;text-transform:uppercase;
+}
+.item-tag-highlight{
+  margin-left:auto;
+  background:#e8e0d0;
+  border:1px solid #ccc;
+  padding:1px 4px;
+  color:#666;
+}
+.item-card-art{
+  font-size:48px;text-align:center;
+  padding:20px 0 10px;
+  background:#f4f0e8;
+  border-bottom:1px solid #e8e4dc;
+}
+.item-card-name{
+  font-family:'Cinzel',serif;
+  font-size:14px;color:#333;
+  padding:10px 12px 4px;
+  font-weight:600;
+}
+.item-card-cost{
+  font-size:12px;color:#666;
+  padding:0 12px 8px;
+  border-bottom:1px solid #e8e4dc;
+}
+.item-card-desc{
+  font-size:11.5px;color:#444;
+  line-height:1.7;
+  padding:10px 12px;
+  flex:1;overflow-y:auto;
+}
+.item-card-desc::-webkit-scrollbar{width:2px;}
+.item-card-desc::-webkit-scrollbar-thumb{background:#ccc;}
+.item-card-footer{
+  font-size:8px;letter-spacing:0.1em;
+  color:#999;text-transform:uppercase;
+  padding:6px 12px;
+  border-top:1px solid #e8e4dc;
+  background:#e8e4dc;
+  text-align:center;
+}
+.item-card-locked{opacity:0.7;cursor:default;}
+.item-card-locked:hover{transform:none;box-shadow:none;}
+
+/* ── STORY PAGE ── */
+#uttu-story{
+  background:rgba(16,10,8,0.9);
+  justify-content:flex-end;
+}
+.story-chapnav{
+  position:absolute;bottom:0;left:0;right:0;
+  display:flex;align-items:center;
+  background:rgba(14,8,6,0.95);
+  border-top:1px solid var(--border);
+  padding:0 20px;
+  height:44px;
+  z-index:3;
+}
+.story-chap{
+  display:flex;align-items:center;gap:6px;
+  padding:0 20px;height:100%;
+  cursor:pointer;border-bottom:2px solid transparent;
+  transition:all 0.2s;
+}
+.story-chap.active{border-bottom-color:var(--red-l);}
+.story-chap-num{
+  font-family:'Cinzel',serif;
+  font-size:16px;color:var(--text);font-weight:600;
+}
+.story-chap.active .story-chap-num{color:var(--accent-l);}
+.story-chap-name{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;letter-spacing:0.08em;
+  color:var(--text-dim);text-transform:uppercase;
+}
+.story-chap-lock{
+  margin-left:auto;
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:0.08em;
+  color:var(--text-dim);text-transform:uppercase;
+}
+/* book */
+.story-book{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  padding:16px 20px 60px;
+}
+.story-book-inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  width:100%;max-width:860px;
+  background:#f8f5ee;
+  box-shadow:0 8px 40px rgba(0,0,0,0.7);
+  min-height:340px;
+  position:relative;
+}
+/* center spine */
+.story-book-inner::after{
+  content:'';
+  position:absolute;top:0;bottom:0;left:50%;
+  width:1px;background:#ddd;
+}
+.story-left-page,.story-right-page{
+  padding:20px 24px;
+  display:flex;flex-direction:column;
+}
+.story-header-row{
+  display:flex;gap:16px;
+  border-bottom:1px solid #ddd;
+  padding-bottom:6px;margin-bottom:14px;
+}
+.story-header-label{
+  font-size:7px;letter-spacing:0.1em;
+  color:#aaa;text-transform:uppercase;
+}
+.story-left-art{
+  font-size:52px;text-align:center;
+  padding:16px 0;
+  background:rgba(200,149,106,0.06);
+  border:1px solid #e8e4d8;
+  margin-bottom:12px;
+}
+.story-left-title{
+  font-family:'Cinzel',serif;
+  font-size:16px;color:#333;
+  font-weight:600;text-align:center;
+  font-style:italic;
+}
+.story-left-footer{
+  margin-top:auto;
+  display:flex;justify-content:space-between;
+  padding-top:10px;border-top:1px solid #ddd;
+  font-size:7px;letter-spacing:0.1em;color:#aaa;
+  text-transform:uppercase;
+}
+.story-text{
+  font-size:12.5px;line-height:1.85;
+  color:#333;font-family:'Georgia',serif;
+  flex:1;overflow-y:auto;
+}
+.story-text::-webkit-scrollbar{width:2px;}
+.story-text::-webkit-scrollbar-thumb{background:#ddd;}
+.story-text p{margin-bottom:10px;}
+.story-text p:last-child{margin-bottom:0;}
+.story-next-btn{
+  position:absolute;right:8px;top:50%;
+  transform:translateY(-50%);
+  font-size:20px;color:#999;cursor:pointer;
+  transition:color 0.2s;
+}
+.story-next-btn:hover{color:#666;}
+.story-scroll-hint{
+  text-align:center;color:#bbb;font-size:11px;
+  margin-top:8px;
+}
+.story-right-footer{
+  margin-top:auto;padding-top:10px;
+  border-top:1px solid #ddd;
+  display:flex;justify-content:space-between;
+  font-size:7px;letter-spacing:0.1em;
+  color:#aaa;text-transform:uppercase;
+}
+
+/* UTTU responsive */
+@media(max-width:768px){
+  .uttu-sidenav{width:80px;}
+  .uttu-nav-label{font-size:8px;letter-spacing:0.04em;}
+  .voice-panel{width:260px;}
+  .item-cards{flex-direction:column;align-items:center;}
+  .item-card{width:90%;max-width:320px;}
+  .story-book-inner{grid-template-columns:1fr;}
+  .story-left-page{display:none;}
+  .story-right-page{min-height:280px;}
+}
+@media(max-width:480px){
+  .uttu-sidenav{width:60px;}
+  .uttu-nav-label{display:none;}
+  .voice-panel{width:100%;margin-left:0;padding:10px;}
+  .story-chapnav{padding:0 8px;}
+  .story-chap{padding:0 10px;}
+}
+</style>
 @media(max-width:768px){
   #app{padding:12px 10px;}
 
@@ -921,9 +1253,12 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
     <div class="ms-left">
 
       <!-- Afflatus Emblem -->
-<div class="ms-emblem">
-  <img src="spirit afflatus.png" style="width:90px;height:90px;object-fit:contain;">
-</div>
+      <div class="ms-emblem">
+        <span class="ms-emblem-ring-text">Spirit · One Who Returns</span>
+        <span class="ms-emblem-icon">🌿</span>
+        <span class="ms-emblem-type">Spirit</span>
+        <span class="ms-emblem-sub">Afflatus</span>
+      </div>
 
       <!-- Stars -->
       <div class="ms-stars">
@@ -1131,10 +1466,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
       <div class="art-area" id="artArea">
         <div class="geo" style="width:220px;height:220px;top:70px;left:40px;"></div>
         <div class="geo" style="width:120px;height:120px;top:120px;left:90px;"></div>
-<div class="afflatus-badge">
-  <img src="spirit afflatus.png" style="width:36px;height:36px;object-fit:contain;">
-  <span class="aff-label">Spirit</span>
-</div>
+        <div class="afflatus-badge"><span class="aff-icon">🌿</span><span class="aff-label">Spirit</span></div>
         <div class="art-parallax" id="artParallax">
           <div class="art-placeholder">
             <div class="art-placeholder-box">🌅</div>
@@ -1257,82 +1589,236 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
         </div>
       </div>
 
-      <!-- GALLERY TAB -->
+      <!-- GALLERY / UTTU MAGAZINE TAB -->
       <div class="tab-panel" id="tab-gallery">
-        <div class="gallery-wrap">
-          <div class="g-deco g-h1"></div><div class="g-deco g-h2"></div>
-          <div class="g-deco g-v1"></div><div class="g-deco g-v2"></div>
+        <div class="uttu-wrap">
 
-          <!-- upload btn -->
-          <div class="g-upload-hint">
-            <button class="g-upload-btn" onclick="document.getElementById('galleryFileInput').click()">⊕ Upload Art</button>
-            <input type="file" id="galleryFileInput" accept="image/*" onchange="handleArtUpload(event)">
-          </div>
-
-          <!-- sidenav -->
-          <div class="g-sidenav">
-            <div class="g-nav-item active" onclick="setGNav(this)"><span class="g-nav-label">Cover</span></div>
-            <div class="g-nav-item" onclick="setGNav(this)"><span class="g-nav-label">Voice</span></div>
-            <div class="g-nav-item" onclick="setGNav(this)"><span class="g-nav-label">Item</span></div>
-            <div class="g-nav-item" onclick="setGNav(this)"><span class="g-nav-label">Story</span></div>
-          </div>
-
-          <!-- exhibit -->
-          <div class="g-exhibit">
-            <div class="g-circle"></div>
-            <div class="g-circle-ring"></div>
-            <div class="g-circle-ring2"></div>
-            <div class="g-watermark">AIDA</div>
-
-            <!-- LEFT details -->
-            <div class="g-details">
-              <div>
-                <div class="g-detail-label">Medium</div>
-                <div class="g-detail-value">Ancient carved wood,<br>hand-embroidered textile,<br>Central Asian steppe</div>
-              </div>
-              <div>
-                <div class="g-detail-label">Afflatus</div>
-                <div class="g-detail-value">Spirit —<br>One Who Returns</div>
-              </div>
-              <div>
-                <div class="g-detail-label">Fragrance note</div>
-                <div class="g-detail-value">Morning grass, worn wool,<br>smoke and open sky,<br>cedar and cold earth</div>
-              </div>
-              <div>
-                <div class="g-detail-label">Dimensions</div>
-                <div class="g-detail-value">Taller than she appears.<br>The crook exceeds<br>her own height.</div>
-              </div>
+          <!-- LEFT SIDENAV -->
+          <div class="uttu-sidenav">
+            <div class="uttu-nav-item active" onclick="setUNav(this,'uttu-cover')">
+              <span class="uttu-nav-diamond active-d"></span>
+              <span class="uttu-nav-label">Cover</span>
             </div>
+            <div class="uttu-nav-item" onclick="setUNav(this,'uttu-voice')">
+              <span class="uttu-nav-diamond"></span>
+              <span class="uttu-nav-label">Voice</span>
+            </div>
+            <div class="uttu-nav-item" onclick="setUNav(this,'uttu-item')">
+              <span class="uttu-nav-diamond"></span>
+              <span class="uttu-nav-label">Item</span>
+            </div>
+            <div class="uttu-nav-item" onclick="setUNav(this,'uttu-story')">
+              <span class="uttu-nav-diamond"></span>
+              <span class="uttu-nav-label">Story</span>
+            </div>
+          </div>
 
-            <!-- CENTER art -->
-            <div class="g-art-col">
-              <div class="g-art-frame">
-                <div class="g-frame-line gfl-top"></div>
-                <div class="g-frame-line gfl-left"></div>
-                <div class="g-frame-line gfl-right"></div>
-                <div class="g-placeholder" id="galleryPlaceholder" style="display:none;">
-                  <div class="g-placeholder-icon">🌅</div>
-                  <div class="g-placeholder-text">Upload full body art<br>using the button above<br><br>PNG with transparent<br>background works best</div>
+          <!-- CONTENT AREA -->
+          <div class="uttu-content">
+
+            <!-- ══ COVER PAGE ══ -->
+            <div class="uttu-page active" id="uttu-cover">
+              <div class="g-deco g-h1"></div><div class="g-deco g-h2"></div>
+              <div class="g-deco g-v1"></div><div class="g-deco g-v2"></div>
+              <div class="uttu-logo">UTTU</div>
+              <div class="g-upload-hint">
+                <button class="g-upload-btn" onclick="document.getElementById('galleryFileInput').click()">⊕ Upload Art</button>
+                <input type="file" id="galleryFileInput" accept="image/*" onchange="handleArtUpload(event)">
+              </div>
+              <div class="g-exhibit">
+                <div class="g-circle"></div>
+                <div class="g-circle-ring"></div>
+                <div class="g-circle-ring2"></div>
+                <div class="g-watermark">AIDA</div>
+                <div class="g-details">
+                  <div><div class="g-detail-label">Medium</div><div class="g-detail-value">Ancient carved wood,<br>hand-embroidered textile,<br>Central Asian steppe</div></div>
+                  <div><div class="g-detail-label">Afflatus</div><div class="g-detail-value">Spirit —<br>One Who Returns</div></div>
+                  <div><div class="g-detail-label">Fragrance note</div><div class="g-detail-value">Morning grass, worn wool,<br>smoke and open sky,<br>cedar and cold earth</div></div>
+                  <div><div class="g-detail-label">Dimensions</div><div class="g-detail-value">Taller than she appears.<br>The crook exceeds<br>her own height.</div></div>
                 </div>
-                <img id="galleryCharImg" class="g-char-img" src="5219.png" alt="Aida" style="display:block;">
-                <div class="g-signature">Aida</div>
+                <div class="g-art-col">
+                  <div class="g-art-frame">
+                    <div class="g-frame-line gfl-top"></div>
+                    <div class="g-frame-line gfl-left"></div>
+                    <div class="g-frame-line gfl-right"></div>
+                    <div class="g-placeholder" id="galleryPlaceholder" style="display:none;">
+                      <div class="g-placeholder-icon">🌅</div>
+                      <div class="g-placeholder-text">Upload full body art<br>using the button above</div>
+                    </div>
+                    <img id="galleryCharImg" class="g-char-img" src="5219.png" alt="Aida" style="display:block;">
+                    <div class="g-signature">Aida</div>
+                  </div>
+                </div>
+                <div class="g-info">
+                  <div class="g-name-row"><span class="g-name-icon">🌾</span><div class="g-name">Aida</div></div>
+                  <div class="g-desc">An Arcanist of the ancient Central Asian steppe. She was first documented in the nomadic herding cultures before recorded history and has walked alongside the scattered things ever since. Originally a shepherd's crook found in a museum archive, she is currently moving through Storm-affected territory. She is looking for her flock. She always finds them.</div>
+                  <div class="g-bond"><span class="g-bond-label">Bond</span><span class="g-bond-value">100%</span></div>
+                </div>
               </div>
             </div>
 
-            <!-- RIGHT info -->
-            <div class="g-info">
-              <div class="g-name-row">
-                <span class="g-name-icon">🌾</span>
-                <div class="g-name">Aida</div>
+            <!-- ══ VOICE PAGE ══ -->
+            <div class="uttu-page" id="uttu-voice">
+              <div class="uttu-logo">UTTU</div>
+              <!-- character art background -->
+              <div class="voice-art-bg">
+                <img src="5219.png" alt="Aida"
+                     onerror="this.style.display='none'">
+                <div class="voice-art-fade"></div>
               </div>
-              <div class="g-desc">An Arcanist of the ancient Central Asian steppe. She was first documented in the nomadic herding cultures before recorded history and has walked alongside the scattered things ever since. Originally a shepherd's crook found in a museum archive, she is currently moving through Storm-affected territory. She is looking for her flock. She always finds them.</div>
-              <div class="g-bond">
-                <span class="g-bond-label">Bond</span>
-                <span class="g-bond-value">100%</span>
+              <!-- watermark letter -->
+              <div class="voice-watermark">A</div>
+              <!-- voice lines -->
+              <div class="voice-panel">
+                <div class="voice-header">
+                  <span class="voice-header-label">▶ English</span>
+                </div>
+                <div class="voice-list">
+                  <div class="voice-item" onclick="playVoiceLine(this)">
+                    <div class="voice-play">▶</div>
+                    <div class="voice-line-name">First Encounter</div>
+                    <div class="voice-line-text">"Oh, good. You're all here. Let's begin."</div>
+                  </div>
+                  <div class="voice-item" onclick="playVoiceLine(this)">
+                    <div class="voice-play">▶</div>
+                    <div class="voice-line-name">Idle</div>
+                    <div class="voice-line-text">"Not that way. This way. It's alright — I'll show you."</div>
+                  </div>
+                  <div class="voice-item" onclick="playVoiceLine(this)">
+                    <div class="voice-play">▶</div>
+                    <div class="voice-line-name">Skill: Come Along</div>
+                    <div class="voice-line-text">"I see you drifting. Here. Come back."</div>
+                  </div>
+                  <div class="voice-item" onclick="playVoiceLine(this)">
+                    <div class="voice-play">▶</div>
+                    <div class="voice-line-name">Ultimate: Sunrise</div>
+                    <div class="voice-line-text">"There it is. I knew it was coming. It always comes."</div>
+                  </div>
+                  <div class="voice-item" onclick="playVoiceLine(this)">
+                    <div class="voice-play">▶</div>
+                    <div class="voice-line-name">Returning</div>
+                    <div class="voice-line-text">"I went away for a moment. I'm back now. Let's sort it out."</div>
+                  </div>
+                  <div class="voice-item" onclick="playVoiceLine(this)">
+                    <div class="voice-play">▶</div>
+                    <div class="voice-line-name">Morning</div>
+                    <div class="voice-line-text">"The dawn is going to come up exactly when it's supposed to. It always does."</div>
+                  </div>
+                  <div class="voice-item voice-locked">
+                    <div class="voice-play">🔒</div>
+                    <div class="voice-line-name">Bond: Morning</div>
+                    <div class="voice-line-text">Unlocks at 100% bond</div>
+                  </div>
+                  <!-- Add more voice lines here -->
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+
+            <!-- ══ ITEM PAGE ══ -->
+            <div class="uttu-page" id="uttu-item">
+              <div class="uttu-logo">UTTU</div>
+              <div class="item-cards">
+
+                <!-- Item 1 -->
+                <div class="item-card" onclick="expandItem(this)">
+                  <div class="item-card-header">
+                    <span class="item-card-tag">ITEM · ITEM</span>
+                    <span class="item-card-tag">BELONGINGS</span>
+                    <span class="item-card-tag item-tag-highlight">ITEM</span>
+                  </div>
+                  <div class="item-card-art">🪵</div>
+                  <div class="item-card-name">The Ancient Crook</div>
+                  <div class="item-card-cost">◎ — </div>
+                  <div class="item-card-desc">A shepherd's crook of indeterminate age, found in a museum archive alongside no documentation. The wood is dark at the base from centuries of hands. The curve at the top is worn to a precise shape that fits exactly one grip. It is taller than she is. She carries it as if she always has, because she always has.</div>
+                  <div class="item-card-footer">DISPLAY AND INTRO · ✦ · U T T U</div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="item-card" onclick="expandItem(this)">
+                  <div class="item-card-header">
+                    <span class="item-card-tag">ITEM · ITEM</span>
+                    <span class="item-card-tag">BELONGINGS</span>
+                    <span class="item-card-tag item-tag-highlight">ITEM</span>
+                  </div>
+                  <div class="item-card-art">🪬</div>
+                  <div class="item-card-name">Braided Ornaments</div>
+                  <div class="item-card-cost">◎ — </div>
+                  <div class="item-card-desc">Small carved wooden beads and bronze coins worn smooth from handling, woven into her braids. She does not remember where they came from. She does not remember a time before them. They make a quiet sound when she moves, which she finds reassuring. She has always liked knowing where everything is.</div>
+                  <div class="item-card-footer">DISPLAY AND INTRO · ✦ · U T T U</div>
+                </div>
+
+                <!-- Item 3 — locked -->
+                <div class="item-card item-card-locked">
+                  <div class="item-card-header">
+                    <span class="item-card-tag">ITEM · ITEM</span>
+                    <span class="item-card-tag">BELONGINGS</span>
+                    <span class="item-card-tag item-tag-highlight">ITEM</span>
+                  </div>
+                  <div class="item-card-art" style="font-size:28px;">🔒</div>
+                  <div class="item-card-name" style="color:var(--text-dim);">Unlocks at 100% bond</div>
+                  <div class="item-card-footer">DISPLAY AND INTRO · ✦ · U T T U</div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- ══ STORY PAGE ══ -->
+            <div class="uttu-page" id="uttu-story">
+              <div class="uttu-logo">UTTU</div>
+              <!-- chapter nav bar -->
+              <div class="story-chapnav">
+                <div class="story-chap active" onclick="setChapter(0,this)">
+                  <span class="story-chap-num">01</span>
+                  <span class="story-chap-name">Chapter</span>
+                </div>
+                <div class="story-chap" onclick="setChapter(1,this)">
+                  <span class="story-chap-num">02</span>
+                  <span class="story-chap-name">Chapter</span>
+                </div>
+                <div class="story-chap" onclick="setChapter(2,this)">
+                  <span class="story-chap-num">03</span>
+                  <span class="story-chap-name">Chapter</span>
+                </div>
+                <div class="story-chap-lock">🔒 Unlocks at 80% bond</div>
+              </div>
+              <!-- book -->
+              <div class="story-book">
+                <div class="story-book-inner">
+                  <!-- LEFT PAGE — illustration/title -->
+                  <div class="story-left-page">
+                    <div class="story-header-row">
+                      <span class="story-header-label">STORY OF THE INTERVIEWEE</span>
+                      <span class="story-header-label">HISTORY</span>
+                      <span class="story-header-label">THE PAST AND THE FUTURE</span>
+                    </div>
+                    <div class="story-left-art">🌅</div>
+                    <div class="story-left-title" id="story-title">Before There Were Words for It</div>
+                    <div class="story-left-footer">
+                      <span>THE UTTU INTERVIEW</span>
+                      <span>U T T U · M A G A Z I N E</span>
+                    </div>
+                  </div>
+                  <!-- RIGHT PAGE — text -->
+                  <div class="story-right-page">
+                    <div class="story-text" id="story-text">
+                      <p>She does not know exactly how old she is. The museum archive listed her as "pre-medieval, origin unknown," which she found both accurate and insufficient. She was made before the category existed. She was made before most categories existed.</p>
+                      <p>What she remembers is grass. Wide grass country, gold in the morning and grey at dusk. The smell of animals and cold air and something burning somewhere far away. The weight of hands — some careful, some not — and the particular resistance of the ground in early spring when the frost was still in it.</p>
+                      <p>She remembers the work. She has always remembered the work.</p>
+                    </div>
+                    <div class="story-next-btn" onclick="nextStoryPage()">›</div>
+                    <div class="story-scroll-hint">▼</div>
+                    <div class="story-right-footer">
+                      <span>THE UTTU INTERVIEW</span>
+                      <span>U T T U · M A G A Z I N E</span>
+                      <span>CONTENT</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /uttu-content -->
+        </div><!-- /uttu-wrap -->
       </div>
 
       <!-- INSIGHT FOOTER -->
@@ -1412,6 +1898,60 @@ function setGNav(el){
   playClick(550,0.08,0.07);
   document.querySelectorAll('.g-nav-item').forEach(i=>i.classList.remove('active'));
   el.classList.add('active');
+}
+
+function setUNav(el,pageId){
+  playClick(550,0.08,0.07);
+  document.querySelectorAll('.uttu-nav-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.uttu-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+}
+
+function playVoiceLine(el){
+  playClick(550,0.1,0.06);
+  document.querySelectorAll('.voice-item').forEach(i=>i.classList.remove('playing'));
+  if(!el.classList.contains('voice-locked')) el.classList.add('playing');
+}
+
+function expandItem(el){
+  playClick(600,0.08,0.07);
+  el.style.maxHeight = el.style.maxHeight === 'none' ? '420px' : 'none';
+}
+
+const storyChapters=[
+  {
+    title:'Before There Were Words for It',
+    text:`<p>She does not know exactly how old she is. The museum archive listed her as "pre-medieval, origin unknown," which she found both accurate and insufficient. She was made before the category existed. She was made before most categories existed.</p><p>What she remembers is grass. Wide grass country, gold in the morning and grey at dusk. The smell of animals and cold air and something burning somewhere far away. The weight of hands — some careful, some not — and the particular resistance of the ground in early spring when the frost was still in it.</p><p>She remembers the work. She has always remembered the work.</p>`
+  },
+  {
+    title:'The Glass Case',
+    text:`<p>[Chapter 2 — add your story text here.]</p><p>She was found by someone who recognized her age without understanding it. The archive was quiet. The glass was clean. She waited.</p><p>Waiting is not something she objects to. She has a great deal of experience with it. The flock always came back. Everything comes back, eventually, if you stand still long enough and make yourself findable.</p>`
+  },
+  {
+    title:'What She Is For Now',
+    text:`<p>[Chapter 3 — add your story text here.]</p><p>The Storm broke the glass. That was all it took. She stepped out, already knowing how to walk, already looking for the angle of something drifting.</p><p>The world was very loud. She noted this. She also noted the scattered things, the lost things, the things moving in directions they hadn't chosen. She recognized the shape of the problem immediately.</p><p>Same work. Different field.</p>`
+  }
+];
+
+function setChapter(idx,el){
+  playTab();
+  document.querySelectorAll('.story-chap').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('story-title').textContent=storyChapters[idx].title;
+  document.getElementById('story-text').innerHTML=storyChapters[idx].text;
+}
+
+function nextStoryPage(){
+  playClick(600,0.08,0.07);
+  const active=document.querySelector('.story-chap.active');
+  const all=document.querySelectorAll('.story-chap');
+  for(let i=0;i<all.length;i++){
+    if(all[i]===active && i<all.length-1){
+      setChapter(i+1,all[i+1]);
+      return;
+    }
+  }
 }
 
 function handleArtUpload(e){
