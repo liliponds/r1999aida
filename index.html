@@ -1110,6 +1110,239 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
   </div>
 </div>
 
+<!-- MAIL POPUP -->
+<div id="mail-popup" onclick="closeMail(event)" style="position:fixed;inset:0;z-index:200;background:rgba(8,6,4,0.82);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all 0.3s;">
+  <div style="width:480px;max-width:92vw;background:#1a1208;border:1px solid rgba(200,149,106,0.45);position:relative;box-shadow:0 24px 80px rgba(0,0,0,0.7);animation-fill-mode:both;" onclick="event.stopPropagation()">
+
+    <!-- corner decos -->
+    <div style="position:absolute;top:4px;left:4px;width:10px;height:10px;border-top:1px solid rgba(200,149,106,0.5);border-left:1px solid rgba(200,149,106,0.5);"></div>
+    <div style="position:absolute;bottom:4px;right:4px;width:10px;height:10px;border-bottom:1px solid rgba(200,149,106,0.5);border-right:1px solid rgba(200,149,106,0.5);"></div>
+
+    <!-- header -->
+    <div style="padding:12px 16px;border-bottom:1px solid rgba(200,149,106,0.2);background:rgba(158,40,32,0.08);display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.2em;color:rgba(200,149,106,0.45);text-transform:uppercase;margin-bottom:3px;">✦ &nbsp;New Message</div>
+        <div style="font-family:'Cinzel',serif;font-size:16px;color:#f0e8e0;letter-spacing:0.04em;">Greetings, Timekeeper!</div>
+      </div>
+      <button onclick="closeMail()" style="width:24px;height:24px;border:1px solid rgba(200,149,106,0.3);background:transparent;color:rgba(168,152,120,0.6);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;" onmouseover="this.style.borderColor='#c84838';this.style.color='#e87858'" onmouseout="this.style.borderColor='rgba(200,149,106,0.3)';this.style.color='rgba(168,152,120,0.6)'">✕</button>
+    </div>
+
+    <!-- meta row -->
+    <div style="padding:8px 16px;border-bottom:1px solid rgba(200,149,106,0.12);display:flex;gap:16px;">
+      <div>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:8px;color:rgba(106,88,72,0.8);letter-spacing:0.06em;text-transform:uppercase;">From &nbsp;</span>
+        <span style="font-family:'Cinzel',serif;font-size:12px;color:#e8b882;">HelioMncy</span>
+      </div>
+      <div>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:8px;color:rgba(106,88,72,0.8);letter-spacing:0.06em;text-transform:uppercase;">To &nbsp;</span>
+        <span style="font-family:'Cinzel',serif;font-size:12px;color:#e8b882;">Fellow Timekeeper</span>
+      </div>
+    </div>
+
+    <!-- body -->
+    <div style="padding:20px 20px 16px;font-family:'Cormorant Garamond',serif;font-size:14.5px;line-height:1.85;color:#b89888;font-weight:300;">
+      <p style="margin-bottom:12px;">Hello fellow Timekeeper!</p>
+      <p style="margin-bottom:12px;">My, I didn't think we'd come this far, but I've traveled quite a bit through this time. The game is so much fun, and the art is atrociously, stunningly, beautiful. I hope my page can come even a lick of the game's aesthetic.</p>
+      <p style="margin-bottom:20px;">I hope you enjoy your time here, Timekeeper.</p>
+      <p style="margin-bottom:4px;">See ya!</p>
+      <p style="font-family:'Caveat',cursive;font-size:22px;color:#c84838;opacity:0.85;transform:rotate(-2deg);display:inline-block;margin-bottom:16px;">HelioMncy</p>
+      <div style="border-top:1px solid rgba(200,149,106,0.15);padding-top:12px;font-size:12.5px;font-style:italic;color:rgba(168,152,120,0.7);">
+        P.S. Let's be friends! My ID is found in the corner :)
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div style="padding:8px 16px;border-top:1px solid rgba(200,149,106,0.12);background:rgba(20,12,8,0.5);display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.1em;color:rgba(106,88,72,0.6);text-transform:uppercase;">Reverse : 1999 · Personal Mail</span>
+      <button onclick="closeMail()" style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.1em;color:rgba(168,152,120,0.7);text-transform:uppercase;padding:5px 12px;border:1px solid rgba(200,149,106,0.25);background:transparent;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='#c84838';this.style.color='#e87858'" onmouseout="this.style.borderColor='rgba(200,149,106,0.25)';this.style.color='rgba(168,152,120,0.7)'">Close ›</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- TASKS POPUP -->
+<div id="tasks-popup" onclick="closeTasks(event)" style="position:fixed;inset:0;z-index:200;background:rgba(8,6,4,0.82);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all 0.3s;">
+  <div style="width:700px;max-width:95vw;max-height:90vh;background:#1a1208;border:1px solid rgba(200,149,106,0.45);position:relative;box-shadow:0 24px 80px rgba(0,0,0,0.7);display:flex;flex-direction:column;" onclick="event.stopPropagation()">
+
+    <!-- corner decos -->
+    <div style="position:absolute;top:4px;left:4px;width:10px;height:10px;border-top:1px solid rgba(200,149,106,0.5);border-left:1px solid rgba(200,149,106,0.5);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:4px;right:4px;width:10px;height:10px;border-bottom:1px solid rgba(200,149,106,0.5);border-right:1px solid rgba(200,149,106,0.5);pointer-events:none;"></div>
+
+    <!-- TAB BAR -->
+    <div style="display:flex;align-items:stretch;border-bottom:1px solid rgba(200,149,106,0.2);background:rgba(20,12,8,0.8);">
+      <div id="task-tab-0" onclick="setTaskTab(0)" style="display:flex;align-items:center;gap:7px;padding:10px 18px;cursor:pointer;border-bottom:2px solid #c84838;background:rgba(158,40,32,0.12);">
+        <span style="font-size:10px;color:#c84838;">◆</span>
+        <span style="font-family:'Cinzel',serif;font-size:13px;color:#f0e8e0;letter-spacing:0.04em;">Find Me Online</span>
+      </div>
+      <div id="task-tab-1" onclick="setTaskTab(1)" style="display:flex;align-items:center;gap:7px;padding:10px 18px;cursor:pointer;border-bottom:2px solid transparent;">
+        <span style="font-size:10px;color:rgba(106,88,72,0.6);">◇</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:11px;color:rgba(168,152,120,0.5);letter-spacing:0.06em;text-transform:uppercase;">Coming Soon</span>
+      </div>
+      <div style="flex:1;border-bottom:2px solid transparent;"></div>
+      <button onclick="closeTasks()" style="width:36px;border:none;border-left:1px solid rgba(200,149,106,0.15);background:transparent;color:rgba(168,152,120,0.5);cursor:pointer;font-size:13px;transition:all 0.2s;" onmouseover="this.style.color='#e87858'" onmouseout="this.style.color='rgba(168,152,120,0.5)'">✕</button>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div style="padding:8px 16px;border-bottom:1px solid rgba(200,149,106,0.12);background:rgba(20,12,8,0.5);">
+      <div style="height:3px;background:rgba(200,149,106,0.12);position:relative;overflow:hidden;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:66%;background:linear-gradient(90deg,#9e2820,#c84838);transition:width 0.6s ease;"></div>
+      </div>
+    </div>
+
+    <!-- TASK PANELS -->
+    <div style="overflow-y:auto;flex:1;" id="task-panel-0">
+
+      <!-- Task 1 — Buzzly — ACTIVE -->
+      <div style="display:flex;align-items:center;gap:0;border-bottom:1px solid rgba(200,149,106,0.1);background:#f5f0e8;position:relative;transition:background 0.2s;">
+        <!-- left progress -->
+        <div style="width:80px;flex-shrink:0;padding:18px 14px;border-right:1px solid rgba(0,0,0,0.08);text-align:center;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.08em;color:#999;text-transform:uppercase;margin-bottom:4px;">THE TASK</div>
+          <div style="font-family:'Cinzel',serif;font-size:28px;color:#555;font-weight:600;line-height:1;">1<span style="font-size:14px;color:#999;">/1</span></div>
+        </div>
+        <!-- description -->
+        <div style="flex:1;padding:16px 16px;">
+          <div style="font-size:14.5px;color:#333;line-height:1.6;font-family:'Cormorant Garamond',serif;font-weight:400;">Follow <strong>HelioMncy</strong> on <strong>Buzzly</strong> — art, OC content, and fan illustrations.</div>
+        </div>
+        <!-- reward icon -->
+        <div style="width:64px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px;">
+          <div style="width:48px;height:48px;background:linear-gradient(135deg,#2a1a0e,#4a2a18);border:1px solid rgba(200,149,106,0.4);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:3px;">🎨</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:#888;text-align:center;">Art</div>
+        </div>
+        <!-- go button -->
+        <div style="width:72px;flex-shrink:0;padding:12px 10px;display:flex;align-items:center;justify-content:center;">
+          <a href="https://buzzly.art/~lazystars" target="_blank" style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;border:1px solid rgba(158,40,32,0.4);background:rgba(255,255,255,0.8);font-family:'Cinzel',serif;font-size:13px;color:#9e2820;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='rgba(158,40,32,0.12)';this.style.borderColor='#c84838'" onmouseout="this.style.background='rgba(255,255,255,0.8)';this.style.borderColor='rgba(158,40,32,0.4)'">Go</a>
+        </div>
+      </div>
+
+      <!-- Task 2 — Toyhouse — ACTIVE -->
+      <div style="display:flex;align-items:center;gap:0;border-bottom:1px solid rgba(200,149,106,0.1);background:#f5f0e8;position:relative;transition:background 0.2s;">
+        <div style="width:80px;flex-shrink:0;padding:18px 14px;border-right:1px solid rgba(0,0,0,0.08);text-align:center;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.08em;color:#999;text-transform:uppercase;margin-bottom:4px;">THE TASK</div>
+          <div style="font-family:'Cinzel',serif;font-size:28px;color:#555;font-weight:600;line-height:1;">1<span style="font-size:14px;color:#999;">/1</span></div>
+        </div>
+        <div style="flex:1;padding:16px 16px;">
+          <div style="font-size:14.5px;color:#333;line-height:1.6;font-family:'Cormorant Garamond',serif;font-weight:400;">Follow <strong>HelioMncy</strong> on <strong>Toyhouse</strong> — OC profiles, character lore, and world building.</div>
+        </div>
+        <div style="width:64px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px;">
+          <div style="width:48px;height:48px;background:linear-gradient(135deg,#1a1a2e,#2a2a4e);border:1px solid rgba(200,149,106,0.4);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:3px;">🏠</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:#888;text-align:center;">OCs</div>
+        </div>
+        <div style="width:72px;flex-shrink:0;padding:12px 10px;display:flex;align-items:center;justify-content:center;">
+          <a href="https://toyhou.se/lazystars" target="_blank" style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;border:1px solid rgba(158,40,32,0.4);background:rgba(255,255,255,0.8);font-family:'Cinzel',serif;font-size:13px;color:#9e2820;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='rgba(158,40,32,0.12)';this.style.borderColor='#c84838'" onmouseout="this.style.background='rgba(255,255,255,0.8)';this.style.borderColor='rgba(158,40,32,0.4)'">Go</a>
+        </div>
+      </div>
+
+      <!-- Task 3 — TikTok — LOCKED -->
+      <div style="display:flex;align-items:center;gap:0;border-bottom:1px solid rgba(200,149,106,0.1);background:#ede8e0;opacity:0.65;position:relative;">
+        <div style="width:80px;flex-shrink:0;padding:18px 14px;border-right:1px solid rgba(0,0,0,0.06);text-align:center;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.08em;color:#bbb;text-transform:uppercase;margin-bottom:4px;">THE TASK</div>
+          <div style="font-family:'Cinzel',serif;font-size:28px;color:#aaa;font-weight:600;line-height:1;">0<span style="font-size:14px;color:#bbb;">/1</span></div>
+        </div>
+        <div style="flex:1;padding:16px 16px;">
+          <div style="font-size:14.5px;color:#888;line-height:1.6;font-family:'Cormorant Garamond',serif;font-weight:400;">Follow <strong>HelioMncy</strong> on <strong>TikTok</strong> — coming soon.</div>
+        </div>
+        <div style="width:64px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px;">
+          <div style="width:48px;height:48px;background:linear-gradient(135deg,#1a1a1a,#2a2a2a);border:1px solid rgba(200,149,106,0.2);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:3px;">🎵</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:#aaa;text-align:center;">Video</div>
+        </div>
+        <div style="width:72px;flex-shrink:0;padding:12px 10px;display:flex;align-items:center;justify-content:center;">
+          <div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;border:1px solid rgba(150,130,100,0.3);background:rgba(200,190,170,0.3);font-size:16px;">🔒</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- COMING SOON PANEL (hidden by default) -->
+    <div style="display:none;padding:40px 20px;text-align:center;flex:1;" id="task-panel-1">
+      <div style="font-size:36px;margin-bottom:12px;">🔒</div>
+      <div style="font-family:'Cinzel',serif;font-size:16px;color:rgba(168,152,120,0.6);letter-spacing:0.06em;">More links coming soon</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(106,88,72,0.5);margin-top:8px;letter-spacing:0.1em;text-transform:uppercase;">Check back later, Timekeeper</div>
+    </div>
+
+    <!-- footer -->
+    <div style="padding:8px 16px;border-top:1px solid rgba(200,149,106,0.15);background:rgba(20,12,8,0.6);display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.1em;color:rgba(106,88,72,0.6);text-transform:uppercase;">Reverse : 1999 · Links</span>
+      <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(168,152,120,0.5);">2 / 3 Active</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- WILDERNESS MINIGAME -->
+<div id="wilderness-popup" style="position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all 0.3s;">
+  <div style="width:520px;max-width:96vw;background:#1a1a1a;border:3px solid #fff;position:relative;font-family:'Share Tech Mono',monospace;image-rendering:pixelated;">
+
+    <!-- top bar -->
+    <div style="background:#1a1a1a;padding:6px 12px;border-bottom:2px solid #333;display:flex;justify-content:space-between;align-items:center;">
+      <span style="color:#aaa;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;">WILDERNESS</span>
+      <button onclick="closeWilderness()" style="background:transparent;border:1px solid #555;color:#aaa;font-size:10px;padding:2px 8px;cursor:pointer;font-family:'Share Tech Mono',monospace;" onmouseover="this.style.borderColor='#fff';this.style.color='#fff'" onmouseout="this.style.borderColor='#555';this.style.color='#aaa'">✕</button>
+    </div>
+
+    <!-- game canvas area -->
+    <div style="background:#000;position:relative;height:220px;overflow:hidden;border-bottom:2px solid #222;">
+      <!-- grass floor -->
+      <div style="position:absolute;bottom:0;left:0;right:0;height:40px;background:#1a3a1a;border-top:2px solid #2a5a2a;"></div>
+      <!-- grass tufts -->
+      <div style="position:absolute;bottom:38px;left:10%;color:#2a5a2a;font-size:10px;">▲▲</div>
+      <div style="position:absolute;bottom:38px;left:40%;color:#2a5a2a;font-size:10px;">▲</div>
+      <div style="position:absolute;bottom:38px;left:70%;color:#2a5a2a;font-size:10px;">▲▲▲</div>
+      <div style="position:absolute;bottom:38px;left:85%;color:#1a4a1a;font-size:10px;">▲</div>
+
+      <!-- sheep sprite container -->
+      <div id="wld-sheep" style="position:absolute;bottom:40px;left:50%;transform:translateX(-50%);transition:left 0.4s ease,transform 0.2s;text-align:center;">
+        <!-- Undertale-style pixel sheep built with divs -->
+        <canvas id="sheepCanvas" width="48" height="48" style="image-rendering:pixelated;display:block;margin:0 auto;"></canvas>
+        <!-- sheep name -->
+        <div id="wld-sheep-name" style="color:#fff;font-size:9px;text-align:center;margin-top:2px;letter-spacing:0.08em;">* Woolly</div>
+      </div>
+
+      <!-- ball -->
+      <div id="wld-ball" style="position:absolute;bottom:44px;left:50%;transform:translateX(-50%);font-size:14px;display:none;transition:left 0.5s ease,bottom 0.3s ease;">●</div>
+
+      <!-- extra sheep container -->
+      <div id="wld-extra-sheep" style="position:absolute;bottom:40px;left:0;right:0;pointer-events:none;"></div>
+
+      <!-- crook -->
+      <canvas id="crookCanvas" width="120" height="160" style="position:absolute;bottom:0;right:-130px;image-rendering:pixelated;transition:right 0.8s cubic-bezier(0.34,1.56,0.64,1);display:none;"></canvas>
+
+      <!-- hearts on pet -->
+      <div id="wld-hearts" style="position:absolute;bottom:100px;left:50%;transform:translateX(-50%);font-size:16px;display:none;animation:floatUp 1s ease forwards;">♥♥♥</div>
+    </div>
+
+    <!-- HP / encounter bar -->
+    <div style="padding:8px 16px;background:#111;border-bottom:1px solid #222;display:flex;align-items:center;gap:12px;">
+      <div style="color:#fff;font-size:11px;letter-spacing:0.06em;">Woolly &nbsp;<span style="color:#aaa;font-size:9px;">LV 1</span></div>
+      <div style="flex:1;">
+        <div style="height:8px;background:#400;position:relative;">
+          <div id="wld-hp-bar" style="position:absolute;left:0;top:0;bottom:0;width:100%;background:#f00;transition:width 0.4s;"></div>
+        </div>
+      </div>
+      <div id="wld-hp-text" style="color:#f00;font-size:10px;">HP 20 / 20</div>
+    </div>
+
+    <!-- dialogue box -->
+    <div style="padding:12px 16px;background:#111;min-height:56px;border-bottom:1px solid #222;position:relative;">
+      <div id="wld-dialogue" style="color:#fff;font-size:11px;line-height:1.7;letter-spacing:0.04em;">* A fluffy sheep is wandering the steppe.<br>* It looks at you curiously.</div>
+      <div id="wld-cursor" style="display:inline;color:#fff;animation:blink 0.7s step-end infinite;">▼</div>
+    </div>
+
+    <!-- action buttons — Undertale style -->
+    <div style="padding:14px 16px;background:#000;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <button onclick="wldAction('pet')" id="wld-btn-pet" style="padding:10px 6px;background:#000;border:2px solid #fff;color:#fff;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:0.1em;cursor:pointer;transition:all 0.15s;text-transform:uppercase;" onmouseover="this.style.background='#fff';this.style.color='#000'" onmouseout="this.style.background='#000';this.style.color='#fff'">♥ PET</button>
+      <button onclick="wldAction('play')" id="wld-btn-play" style="padding:10px 6px;background:#000;border:2px solid #fff;color:#fff;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:0.1em;cursor:pointer;transition:all 0.15s;text-transform:uppercase;" onmouseover="this.style.background='#fff';this.style.color='#000'" onmouseout="this.style.background='#000';this.style.color='#fff'">● PLAY</button>
+      <button onclick="wldAction('call')" id="wld-btn-call" style="padding:10px 6px;background:#000;border:2px solid #adf;color:#adf;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:0.1em;cursor:pointer;transition:all 0.15s;text-transform:uppercase;" onmouseover="this.style.background='#adf';this.style.color='#000'" onmouseout="this.style.background='#000';this.style.color='#adf'">♪ CALL <span id="wld-call-count" style="font-size:9px;opacity:0.7;">(0/5)</span></button>
+      <button onclick="wldAction('guide')" id="wld-btn-guide" style="padding:10px 6px;background:#000;border:2px solid #c84838;color:#c84838;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:0.1em;cursor:pointer;transition:all 0.15s;text-transform:uppercase;" onmouseover="this.style.background='#c84838';this.style.color='#fff'" onmouseout="this.style.background='#000';this.style.color='#c84838'">↩ GUIDE</button>
+    </div>
+
+  </div>
+</div>
+
+<style>
+@keyframes floatUp{0%{opacity:1;transform:translateX(-50%) translateY(0);}100%{opacity:0;transform:translateX(-50%) translateY(-40px);}}
+@keyframes sheepBounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-6px);}}
+@keyframes sheepWag{0%,100%{transform:translateX(-50%) rotate(0deg);}25%{transform:translateX(-50%) rotate(-3deg);}75%{transform:translateX(-50%) rotate(3deg);}}
+</style>
+
 <!-- HOME SCREEN -->
 <div id="main-screen">
 
@@ -1146,22 +1379,22 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
     <!-- LEFT NAV -->
     <div class="hs-left">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
-        <div class="hs-level"><div class="hs-level-num">—</div></div>
+        <div class="hs-level"><div class="hs-level-num">48</div></div>
         <div class="hs-player-info">
-          <div class="hs-player-name">Traveller</div>
-          <div class="hs-player-id">ID: ——</div>
+          <div class="hs-player-name">HelioMncy</div>
+          <div class="hs-player-id">ID: 403223124</div>
         </div>
       </div>
       <div class="hs-top-icons">
-        <div class="hs-nav-icon" onclick="enterProfile()">
+        <div class="hs-nav-icon" onclick="openMail()">
           <div class="hs-nav-glyph">✉</div>
           <span class="hs-nav-label">Mail</span>
         </div>
-        <div class="hs-nav-icon" onclick="enterProfile()">
+        <div class="hs-nav-icon" onclick="openTasks()">
           <div class="hs-nav-glyph">📋</div>
           <span class="hs-nav-label">Tasks</span>
         </div>
-        <div class="hs-nav-icon" onclick="enterProfile()">
+        <div class="hs-nav-icon" onclick="window.open('https://re1999.bluepoch.com/en','_blank');playClick();">
           <div class="hs-nav-glyph">🏠</div>
           <span class="hs-nav-label">Warehouse</span>
         </div>
@@ -1200,7 +1433,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
         <div class="hs-event-enter">Enter</div>
       </div>
       <div class="hs-nav-grid">
-        <div class="hs-nav-btn" onclick="enterProfile()">
+        <div class="hs-nav-btn" onclick="openWilderness()">
           <span class="hs-nav-btn-icon">🌾</span>
           <span class="hs-nav-btn-label">Wilderness</span>
           <span class="hs-nav-btn-sub">explore</span>
@@ -1636,6 +1869,420 @@ const AudioCtx=window.AudioContext||window.webkitAudioContext;let actx=null;
 function initAudio(){if(!actx)actx=new AudioCtx();}
 function playClick(f=880,d=0.06,v=0.08){try{initAudio();const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.frequency.setValueAtTime(f,actx.currentTime);o.frequency.exponentialRampToValueAtTime(f*0.5,actx.currentTime+d);g.gain.setValueAtTime(v,actx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+d);o.start();o.stop(actx.currentTime+d);}catch(e){}}
 function playOpen(){playClick(660,0.12,0.1);}function playClose(){playClick(440,0.08,0.07);}function playTab(){playClick(770,0.08,0.08);}
+
+/* ══ WILDERNESS MINIGAME ══ */
+let wldState = { hp:20, maxHp:20, turn:0, busy:false };
+
+function beep(freq=440,dur=0.1,type='square',vol=0.15){
+  try{
+    initAudio();
+    const o=actx.createOscillator(),g=actx.createGain();
+    o.connect(g);g.connect(actx.destination);
+    o.type=type;o.frequency.setValueAtTime(freq,actx.currentTime);
+    g.gain.setValueAtTime(vol,actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+dur);
+    o.start();o.stop(actx.currentTime+dur);
+  }catch(e){}
+}
+
+function drawSheep(canvas, variant='normal'){
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,48,48);
+  const S=3; // pixel size
+  // color palette
+  const W='#f0ece0'; // wool white
+  const G='#c8c0a8'; // wool grey
+  const B='#2a1a0a'; // body/outline
+  const P='#f0a8a8'; // pink (ears/nose)
+  const E='#1a1a2a'; // eyes
+
+  // wool body — fluffy cloud shape
+  const wool=[
+    [1,2],[2,1],[3,1],[4,1],[5,1],[6,2],[7,2],
+    [0,3],[1,2],[7,2],[8,3],
+    [0,4],[8,4],
+    [1,5],[7,5],
+    [1,6],[2,6],[3,6],[4,6],[5,6],[6,6],[7,6],
+  ];
+  // draw wool base
+  ctx.fillStyle=W;
+  ctx.fillRect(1*S,1*S,7*S,6*S);
+  // rounded wool bumps
+  [[2,0],[4,0],[6,0],[1,1],[3,1],[5,1],[7,1]].forEach(([x,y])=>{
+    ctx.fillStyle=variant==='happy'?'#fff':W;
+    ctx.fillRect(x*S,y*S,S,S);
+  });
+  // outline
+  ctx.fillStyle=B;
+  [[0,2],[0,3],[0,4],[9,2],[9,3],[9,4],[1,0],[2,0],[3,0],[4,0],[5,0],[6,0],[7,0],[8,0]].forEach(([x,y])=>{
+    ctx.fillRect(x*S,y*S,S,S);
+  });
+  // face area
+  ctx.fillStyle='#e8e0c8';
+  ctx.fillRect(3*S,3*S,4*S,3*S);
+  // eyes
+  ctx.fillStyle=E;
+  ctx.fillRect(4*S,3*S,S,S);
+  ctx.fillRect(6*S,3*S,S,S);
+  if(variant==='happy'){
+    // happy eyes (^)
+    ctx.fillStyle=W;
+    ctx.fillRect(4*S,3*S,S,S);
+    ctx.fillRect(6*S,3*S,S,S);
+    ctx.fillStyle=E;
+    ctx.fillRect(4*S,4*S,S,S);
+    ctx.fillRect(6*S,4*S,S,S);
+  }
+  // nose
+  ctx.fillStyle=P;
+  ctx.fillRect(5*S,5*S,S,S);
+  // legs
+  ctx.fillStyle=B;
+  [[2,7],[3,7],[6,7],[7,7],[2,8],[3,8],[6,8],[7,8]].forEach(([x,y])=>{
+    ctx.fillRect(x*S,y*S,S,S);
+  });
+  // ears
+  ctx.fillStyle=P;
+  ctx.fillRect(1*S,2*S,S,S);
+  ctx.fillRect(8*S,2*S,S,S);
+  ctx.fillStyle=B;
+  ctx.fillRect(0*S,1*S,S*2,S);
+  ctx.fillRect(8*S,1*S,S*2,S);
+}
+
+function drawCrook(canvas){
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,120,160);
+  const S=4;
+  ctx.fillStyle='#6a3a10';
+  // shaft
+  for(let y=4;y<40;y++){
+    ctx.fillRect(14*S,y*S,S,S);
+  }
+  // hook curve
+  [[14,3],[13,2],[12,1],[11,1],[10,2],[10,3],[11,4],[12,4],[13,4]].forEach(([x,y])=>{
+    ctx.fillRect(x*S,y*S,S,S);
+  });
+  // highlight
+  ctx.fillStyle='#8a5a28';
+  for(let y=5;y<38;y+=3){
+    ctx.fillRect(15*S,y*S,S,S);
+  }
+}
+
+function setDialogue(text, delay=0){
+  setTimeout(()=>{
+    document.getElementById('wld-dialogue').innerHTML = text;
+  }, delay);
+}
+
+function setButtons(enabled){
+  ['wld-btn-pet','wld-btn-play','wld-btn-guide','wld-btn-call'].forEach(id=>{
+    const btn=document.getElementById(id);
+    if(btn){ btn.disabled=!enabled; btn.style.opacity=enabled?'1':'0.4'; }
+  });
+  // disable call if at max
+  if(enabled){
+    const callBtn=document.getElementById('wld-btn-call');
+    if(callBtn && wldState.extraSheep>=5){
+      callBtn.disabled=true;callBtn.style.opacity='0.3';
+    }
+  }
+}
+
+function updateHp(){
+  const {hp,maxHp}=wldState;
+  const pct=Math.max(0,hp/maxHp*100);
+  document.getElementById('wld-hp-bar').style.width=pct+'%';
+  document.getElementById('wld-hp-bar').style.background=pct>50?'#f00':pct>25?'#fa0':'#f88';
+  document.getElementById('wld-hp-text').textContent=`HP ${hp} / ${maxHp}`;
+}
+
+function openWilderness(){
+  playOpen();
+  wldState={hp:20,maxHp:20,turn:0,busy:false,extraSheep:0};
+  const popup=document.getElementById('wilderness-popup');
+  popup.style.opacity='1';popup.style.visibility='visible';
+  // draw sheep
+  const canvas=document.getElementById('sheepCanvas');
+  drawSheep(canvas,'normal');
+  // draw crook (hidden)
+  drawCrook(document.getElementById('crookCanvas'));
+  // reset state
+  document.getElementById('wld-sheep').style.left='50%';
+  document.getElementById('wld-sheep').style.animation='';
+  document.getElementById('wld-ball').style.display='none';
+  document.getElementById('wld-hearts').style.display='none';
+  document.getElementById('crookCanvas').style.right='-130px';
+  document.getElementById('crookCanvas').style.display='none';
+  document.getElementById('wld-extra-sheep').innerHTML='';
+  document.getElementById('wld-call-count').textContent='(0/5)';
+  setButtons(true);
+  updateHp();
+  setDialogue('* A fluffy sheep is wandering the steppe.<br>* It looks at you curiously.');
+}
+
+function closeWilderness(){
+  playClose();
+  const popup=document.getElementById('wilderness-popup');
+  popup.style.opacity='0';popup.style.visibility='hidden';
+}
+
+function wldAction(action){
+  if(wldState.busy) return;
+  wldState.busy=true;
+  setButtons(false);
+  wldState.turn++;
+
+  const sheep=document.getElementById('wld-sheep');
+  const sheepCanvas=document.getElementById('sheepCanvas');
+
+  if(action==='pet'){
+    // beep melody
+    beep(523,0.1,'square',0.12);
+    setTimeout(()=>beep(659,0.1,'square',0.12),120);
+    setTimeout(()=>beep(784,0.15,'square',0.12),240);
+    // sheep bounces happily
+    drawSheep(sheepCanvas,'happy');
+    sheep.style.animation='sheepBounce 0.4s ease infinite';
+    // show hearts
+    const hearts=document.getElementById('wld-hearts');
+    hearts.style.display='block';
+    hearts.style.animation='floatUp 1s ease forwards';
+    // dialogue
+    const petLines=[
+      '* You gently pet Woolly.<br>* Its wool is incredibly soft.<br>* Woolly seems pleased. ♥',
+      '* You scratch behind its ears.<br>* Woolly makes a happy sound.<br>* ♥♥',
+      '* Woolly leans into your hand.<br>* It trusts you completely.<br>* ♥♥♥',
+    ];
+    setDialogue(petLines[Math.min(wldState.turn-1,petLines.length-1)]);
+    setTimeout(()=>{
+      sheep.style.animation='';
+      drawSheep(sheepCanvas,'normal');
+      hearts.style.display='none';
+      wldState.busy=false;
+      setButtons(true);
+    },1800);
+
+  } else if(action==='play'){
+    // throw sound
+    beep(440,0.05,'sawtooth',0.1);
+    setTimeout(()=>beep(330,0.05,'sawtooth',0.1),80);
+    // show ball, animate throw
+    const ball=document.getElementById('wld-ball');
+    ball.style.display='block';
+    ball.style.color='#fff';
+    ball.style.left='20%';
+    ball.style.bottom='44px';
+    ball.style.transition='left 0.4s ease, bottom 0.3s ease';
+    setDialogue('* You throw a ball across the steppe!<br>* Woolly\'s ears perk up...');
+    // ball arcs right
+    setTimeout(()=>{
+      ball.style.left='75%';
+      ball.style.bottom='80px';
+    },50);
+    setTimeout(()=>{
+      ball.style.bottom='44px';
+    },350);
+    // sheep runs to ball
+    setTimeout(()=>{
+      beep(523,0.08,'square',0.1);
+      sheep.style.left='75%';
+      setDialogue('* Woolly dashes after it!');
+    },500);
+    // sheep grabs ball
+    setTimeout(()=>{
+      ball.style.display='none';
+      beep(659,0.1,'square',0.12);
+      setDialogue('* Woolly picks up the ball.<br>* It looks very proud of itself.');
+      drawSheep(sheepCanvas,'happy');
+    },1000);
+    // sheep returns
+    setTimeout(()=>{
+      sheep.style.left='50%';
+      beep(784,0.08,'square',0.1);
+      setTimeout(()=>beep(880,0.12,'square',0.12),100);
+      setDialogue('* Woolly trots back and drops the ball<br>&nbsp;&nbsp;at your feet.<br>* It wags its tail expectantly.');
+      drawSheep(sheepCanvas,'normal');
+      wldState.busy=false;
+      setButtons(true);
+    },1800);
+
+  } else if(action==='call'){
+    if(wldState.extraSheep>=5){ wldState.busy=false; setButtons(true); return; }
+
+    // baa sound — descending then up
+    beep(300,0.15,'sine',0.18);
+    setTimeout(()=>beep(260,0.12,'sine',0.15),150);
+    setTimeout(()=>beep(290,0.18,'sine',0.16),280);
+
+    wldState.extraSheep++;
+    const count=wldState.extraSheep;
+    document.getElementById('wld-call-count').textContent=`(${count}/5)`;
+
+    const baaLines=[
+      '* Woolly lets out a soft baa...<br>* Another sheep wanders over!',
+      '* Woolly calls again!<br>* The flock is growing...',
+      '* Three sheep now! They mill about happily.',
+      '* Four sheep! It\'s getting crowded.<br>* They seem very content.',
+      '* Five sheep! The whole flock is here.<br>* <span style="color:#c84838;">* Woolly looks at you expectantly.</span>',
+    ];
+    setDialogue(baaLines[count-1]);
+
+    // create new sheep canvas at a random position
+    const container=document.getElementById('wld-extra-sheep');
+    const positions=[15,25,35,65,75,82];
+    const pos=positions[(count-1) % positions.length];
+    const wrapper=document.createElement('div');
+    wrapper.id=`extra-sheep-${count}`;
+    wrapper.style.cssText=`position:absolute;bottom:0;left:${pos}%;transform:translateX(-50%);opacity:0;transition:opacity 0.5s,left 0.8s ease;text-align:center;`;
+    const c=document.createElement('canvas');
+    c.width=48;c.height=48;
+    c.style.cssText='image-rendering:pixelated;display:block;margin:0 auto;';
+    wrapper.appendChild(c);
+    container.appendChild(wrapper);
+
+    // draw sheep variant (slightly different tones)
+    const variants=['normal','normal','happy','normal','happy'];
+    drawSheep(c, variants[count-1]);
+
+    // slide in from the side
+    wrapper.style.left=(pos>50?'110%':'−10%');
+    setTimeout(()=>{
+      wrapper.style.opacity='1';
+      wrapper.style.left=pos+'%';
+    },100);
+
+    // at max — trigger Aida's intervention after a pause
+    if(count>=5){
+      setTimeout(()=>{
+        // disable call button permanently
+        const callBtn=document.getElementById('wld-btn-call');
+        if(callBtn){callBtn.disabled=true;callBtn.style.opacity='0.3';}
+
+        // Aida speech bubble appears
+        setDialogue('* ...<br>* <span style="color:#e87858;">[ Aida ]</span> &nbsp;"It\'s time to come home now!"');
+
+        // beep — warm ascending
+        beep(392,0.1,'sine',0.12);
+        setTimeout(()=>beep(494,0.1,'sine',0.12),150);
+        setTimeout(()=>beep(587,0.15,'sine',0.14),300);
+
+        // crook slides in
+        const crook=document.getElementById('crookCanvas');
+        crook.style.display='block';
+        setTimeout(()=>{ crook.style.right='80px'; },500);
+
+        // guide extra sheep off one by one
+        let delay=900;
+        for(let i=count;i>=2;i--){
+          const sid=i;
+          setTimeout(()=>{
+            const sw=document.getElementById(`extra-sheep-${sid}`);
+            if(sw){
+              sw.style.left='110%';
+              sw.style.opacity='0';
+              beep(300+sid*20,0.1,'sine',0.1);
+            }
+          },delay);
+          delay+=400;
+        }
+
+        // crook slides back out
+        setTimeout(()=>{
+          crook.style.right='-130px';
+          setTimeout(()=>{ crook.style.display='none'; },900);
+          setDialogue('* The flock trots home one by one.<br>* Woolly stays behind, watching you.<br>* <span style="color:#adf;">* Woolly feels safe with you.</span>');
+          wldState.extraSheep=1;
+          document.getElementById('wld-call-count').textContent='(1/5)';
+          wldState.busy=false;
+          setButtons(true);
+        }, delay+200);
+
+      }, 1200);
+    } else {
+      setTimeout(()=>{
+        wldState.busy=false;
+        setButtons(true);
+      }, 1400);
+    }
+
+  } else if(action==='guide'){
+    // dramatic crook sound
+    beep(220,0.2,'sawtooth',0.15);
+    setTimeout(()=>beep(180,0.3,'sawtooth',0.12),200);
+    setDialogue('* You raise the shepherd\'s crook...<br>* Woolly tilts its head.');
+    // show crook, slide in
+    const crook=document.getElementById('crookCanvas');
+    crook.style.display='block';
+    setTimeout(()=>{
+      crook.style.right='120px';
+      setDialogue('* The crook slides in from the right.');
+    },400);
+    // hook sheep
+    setTimeout(()=>{
+      beep(330,0.15,'square',0.12);
+      sheep.style.transition='left 0.8s ease';
+      sheep.style.left='85%';
+      setDialogue('* The crook hooks around Woolly gently.<br>* Woolly doesn\'t resist.');
+    },1200);
+    // drag offscreen
+    setTimeout(()=>{
+      beep(440,0.08,'square',0.1);
+      setTimeout(()=>beep(523,0.08,'square',0.1),150);
+      sheep.style.left='110%';
+      crook.style.right='-130px';
+      setDialogue('* Woolly is guided safely off the path.<br>* You watch it disappear into the grass.<br>* &nbsp;<span style="color:#c84838;">The encounter ends.</span>');
+    },2200);
+    // close after
+    setTimeout(()=>{
+      beep(262,0.3,'sine',0.1);
+      setTimeout(()=>closeWilderness(),1200);
+    },3800);
+  }
+}
+
+/* ── TASKS POPUP ── */
+function openTasks(){
+  playOpen();
+  const t=document.getElementById('tasks-popup');
+  t.style.opacity='1';t.style.visibility='visible';
+}
+function closeTasks(e){
+  if(e && e.target!==document.getElementById('tasks-popup'))return;
+  playClose();
+  const t=document.getElementById('tasks-popup');
+  t.style.opacity='0';t.style.visibility='hidden';
+}
+function setTaskTab(idx){
+  playClick(600,0.08,0.07);
+  const tabs=[document.getElementById('task-tab-0'),document.getElementById('task-tab-1')];
+  const panels=[document.getElementById('task-panel-0'),document.getElementById('task-panel-1')];
+  tabs.forEach((t,i)=>{
+    if(i===idx){
+      t.style.borderBottomColor='#c84838';
+      t.style.background='rgba(158,40,32,0.12)';
+      t.querySelector('span').style.color='#f0e8e0';
+    } else {
+      t.style.borderBottomColor='transparent';
+      t.style.background='transparent';
+    }
+  });
+  panels.forEach((p,i)=>{p.style.display=i===idx?'block':'none';});
+}
+
+/* ── MAIL POPUP ── */
+function openMail(){
+  playOpen();
+  const m=document.getElementById('mail-popup');
+  m.style.opacity='1';m.style.visibility='visible';
+}
+function closeMail(e){
+  if(e && e.target!==document.getElementById('mail-popup') && e.type==='click' && e.currentTarget===document.getElementById('mail-popup')) return;
+  playClose();
+  const m=document.getElementById('mail-popup');
+  m.style.opacity='0';m.style.visibility='hidden';
+}
 
 /* ── PORTRAIT TOGGLE ── */
 let portraitToggled=false;
