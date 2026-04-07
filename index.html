@@ -648,7 +648,10 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
   color:#aaa;text-transform:uppercase;
 }
 
-/* UTTU responsive */
+@keyframes floatUp{0%{opacity:1;transform:translateX(-50%) translateY(0);}100%{opacity:0;transform:translateX(-50%) translateY(-40px);}}
+@keyframes sheepBounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-6px);}}
+@keyframes sheepWag{0%,100%{transform:translateX(-50%) rotate(0deg);}25%{transform:translateX(-50%) rotate(-3deg);}75%{transform:translateX(-50%) rotate(3deg);}}
+
 @media(max-width:768px){
   .uttu-sidenav{width:80px;}
   .uttu-nav-label{font-size:8px;letter-spacing:0.04em;}
@@ -1337,12 +1340,6 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
   </div>
 </div>
 
-<style>
-@keyframes floatUp{0%{opacity:1;transform:translateX(-50%) translateY(0);}100%{opacity:0;transform:translateX(-50%) translateY(-40px);}}
-@keyframes sheepBounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-6px);}}
-@keyframes sheepWag{0%,100%{transform:translateX(-50%) rotate(0deg);}25%{transform:translateX(-50%) rotate(-3deg);}75%{transform:translateX(-50%) rotate(3deg);}}
-</style>
-
 <!-- CREW POPUP -->
 <div id="crew-popup" onclick="closeCrew(event)" style="position:fixed;inset:0;z-index:200;background:rgba(8,6,4,0.88);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all 0.3s;">
   <div style="width:760px;max-width:96vw;background:#181210;border:1px solid rgba(200,149,106,0.4);position:relative;box-shadow:0 24px 80px rgba(0,0,0,0.8);display:flex;flex-direction:column;max-height:90vh;" onclick="event.stopPropagation()">
@@ -1479,6 +1476,99 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
   </div>
 </div>
 
+<!-- SPINDLE SUMMON ANIMATION -->
+<div id="spindle-overlay" style="position:fixed;inset:0;z-index:500;background:#000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 0.4s ease;">
+  <canvas id="spindle-canvas" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+  <!-- center glow -->
+  <div id="spindle-glow" style="position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(ellipse,rgba(212,168,74,0.8) 0%,rgba(200,80,60,0.4) 40%,transparent 70%);opacity:0;transition:opacity 0.3s;pointer-events:none;"></div>
+  <!-- character reveal text -->
+  <div id="spindle-name" style="position:absolute;bottom:20%;left:50%;transform:translateX(-50%);font-family:'Cinzel',serif;font-size:32px;font-weight:700;color:#fff;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;text-shadow:0 0 30px rgba(212,168,74,0.8),0 0 60px rgba(212,168,74,0.4);white-space:nowrap;">✦ &nbsp;Aida&nbsp; ✦</div>
+  <div id="spindle-rarity" style="position:absolute;bottom:calc(20% - 36px);left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:0.3em;color:#d4a84a;opacity:0;transition:opacity 0.4s;text-shadow:0 0 20px rgba(212,168,74,0.6);">★ ★ ★ ★ ★ ★</div>
+</div>
+
+<!-- GARMENT POPUP -->
+<div id="garment-popup" onclick="closeGarment(event)" style="position:fixed;inset:0;z-index:200;background:rgba(8,6,4,0.88);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all 0.3s;">
+  <div style="width:680px;max-width:96vw;background:#181210;border:1px solid rgba(200,149,106,0.4);position:relative;box-shadow:0 24px 80px rgba(0,0,0,0.8);display:flex;flex-direction:column;" onclick="event.stopPropagation()">
+
+    <!-- corner deco -->
+    <div style="position:absolute;top:4px;left:4px;width:10px;height:10px;border-top:1px solid rgba(200,149,106,0.5);border-left:1px solid rgba(200,149,106,0.5);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:4px;right:4px;width:10px;height:10px;border-bottom:1px solid rgba(200,149,106,0.5);border-right:1px solid rgba(200,149,106,0.5);pointer-events:none;"></div>
+
+    <!-- header -->
+    <div style="padding:10px 18px;border-bottom:1px solid rgba(200,149,106,0.18);background:rgba(20,12,8,0.8);display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.2em;color:rgba(200,149,106,0.45);text-transform:uppercase;margin-bottom:3px;">✦ &nbsp;Garments</div>
+        <div style="font-family:'Cinzel',serif;font-size:16px;color:#f0e8e0;letter-spacing:0.04em;">Aida · Outfit Selection</div>
+      </div>
+      <button onclick="closeGarment()" style="width:24px;height:24px;border:1px solid rgba(200,149,106,0.3);background:transparent;color:rgba(168,152,120,0.6);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.borderColor='#c84838';this.style.color='#e87858'" onmouseout="this.style.borderColor='rgba(200,149,106,0.3)';this.style.color='rgba(168,152,120,0.6)'">✕</button>
+    </div>
+
+    <!-- currently wearing -->
+    <div style="padding:8px 18px;border-bottom:1px solid rgba(200,149,106,0.1);background:rgba(14,9,6,0.5);display:flex;align-items:center;gap:8px;">
+      <span style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.1em;color:rgba(106,88,72,0.7);text-transform:uppercase;">Currently wearing</span>
+      <span id="garment-wearing" style="font-family:'Cinzel',serif;font-size:12px;color:#d4a84a;letter-spacing:0.04em;">The Shepherd's Road</span>
+    </div>
+
+    <!-- garment cards -->
+    <div style="padding:24px 20px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+
+      <!-- GARMENT 1 — Default, unlocked -->
+      <div id="garment-card-0" onclick="equipGarment(0)" style="width:170px;flex-shrink:0;cursor:pointer;border:2px solid #d4a84a;background:linear-gradient(180deg,#1e160a 0%,#100c06 100%);transition:all 0.25s;position:relative;border-radius:2px;">
+        <!-- equipped badge -->
+        <div id="garment-equipped-0" style="position:absolute;top:8px;right:8px;z-index:2;font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.1em;color:#000;text-transform:uppercase;padding:2px 6px;background:#d4a84a;">EQUIPPED</div>
+        <!-- art -->
+        <div style="height:200px;display:flex;align-items:center;justify-content:center;font-size:64px;background:radial-gradient(ellipse at 50% 85%,rgba(158,40,32,0.3) 0%,transparent 70%);border-bottom:1px solid rgba(212,168,74,0.25);">🌅</div>
+        <div style="height:2px;background:linear-gradient(90deg,transparent,#d4a84a,transparent);"></div>
+        <div style="padding:10px 12px 12px;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.1em;color:rgba(212,168,74,0.6);text-transform:uppercase;margin-bottom:3px;">Default</div>
+          <div style="font-family:'Cinzel',serif;font-size:13px;color:#f0e8e0;letter-spacing:0.03em;margin-bottom:6px;">The Shepherd's Road</div>
+          <div style="font-size:11px;color:rgba(168,152,120,0.65);line-height:1.6;font-family:'Cormorant Garamond',serif;">Crimson embroidered robe, cream inner dress, white headwrap. She has walked in this a very long time.</div>
+        </div>
+      </div>
+
+      <!-- GARMENT 2 — Coming soon -->
+      <div id="garment-card-1" style="width:170px;flex-shrink:0;cursor:default;border:1px solid rgba(200,149,106,0.2);background:linear-gradient(180deg,#141008 0%,#0c0906 100%);position:relative;border-radius:2px;opacity:0.6;">
+        <!-- lock badge -->
+        <div style="position:absolute;top:8px;right:8px;z-index:2;font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.1em;color:rgba(168,152,120,0.6);text-transform:uppercase;padding:2px 6px;border:1px solid rgba(200,149,106,0.2);">COMING SOON</div>
+        <!-- art placeholder -->
+        <div style="height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(20,14,8,0.4);border-bottom:1px solid rgba(200,149,106,0.1);">
+          <div style="font-size:32px;opacity:0.3;">🔒</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.08em;color:rgba(168,152,120,0.3);text-transform:uppercase;">Art Coming</div>
+        </div>
+        <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(200,149,106,0.2),transparent);"></div>
+        <div style="padding:10px 12px 12px;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.1em;color:rgba(200,149,106,0.3);text-transform:uppercase;margin-bottom:3px;">Garment II</div>
+          <div style="font-family:'Cinzel',serif;font-size:13px;color:rgba(240,232,224,0.35);letter-spacing:0.03em;margin-bottom:6px;">The Long Way Home</div>
+          <div style="font-size:11px;color:rgba(168,152,120,0.3);line-height:1.6;font-family:'Cormorant Garamond',serif;font-style:italic;">She has been walking through the 20th century long enough to dress for it. The crook is still with her.</div>
+        </div>
+      </div>
+
+      <!-- GARMENT 3 — Coming soon -->
+      <div id="garment-card-2" style="width:170px;flex-shrink:0;cursor:default;border:1px solid rgba(200,149,106,0.2);background:linear-gradient(180deg,#141008 0%,#0c0906 100%);position:relative;border-radius:2px;opacity:0.6;">
+        <div style="position:absolute;top:8px;right:8px;z-index:2;font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.1em;color:rgba(168,152,120,0.6);text-transform:uppercase;padding:2px 6px;border:1px solid rgba(200,149,106,0.2);">COMING SOON</div>
+        <div style="height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(20,14,8,0.4);border-bottom:1px solid rgba(200,149,106,0.1);">
+          <div style="font-size:32px;opacity:0.3;">🔒</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.08em;color:rgba(168,152,120,0.3);text-transform:uppercase;">Art Coming</div>
+        </div>
+        <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(200,149,106,0.2),transparent);"></div>
+        <div style="padding:10px 12px 12px;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.1em;color:rgba(200,149,106,0.3);text-transform:uppercase;margin-bottom:3px;">Garment III</div>
+          <div style="font-family:'Cinzel',serif;font-size:13px;color:rgba(240,232,224,0.35);letter-spacing:0.03em;margin-bottom:6px;">Wolf in Sheep's Clothing</div>
+          <div style="font-size:11px;color:rgba(168,152,120,0.3);line-height:1.6;font-family:'Cormorant Garamond',serif;font-style:italic;">She has always known what she is. The flock never asked.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- footer -->
+    <div style="padding:8px 18px;border-top:1px solid rgba(200,149,106,0.15);background:rgba(20,12,8,0.7);display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.1em;color:rgba(106,88,72,0.6);text-transform:uppercase;">Reverse : 1999 · Aida · Garments</span>
+      <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(168,152,120,0.5);">1 / 3 Unlocked</span>
+    </div>
+
+  </div>
+</div>
+
 <!-- HOME SCREEN -->
 <div id="main-screen">
 
@@ -1545,7 +1635,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
     <!-- CENTER — character art -->
     <div class="hs-center" onclick="enterProfile()" title="Enter Character Profile">
       <div class="hs-center-glow"></div>
-      <img src="5219.png" class="hs-char-art" alt="Aida"
+      <img id="hsCharArt" src="5219.png" class="hs-char-art" alt="Aida"
            onerror="this.style.display='none';document.getElementById('hsPlaceholder').style.display='flex';">
       <div id="hsPlaceholder" style="display:none;" class="hs-char-placeholder">🌅</div>
       <div style="position:absolute;bottom:24px;right:60px;z-index:3;font-family:'Caveat',cursive;font-size:36px;color:rgba(200,80,60,0.65);transform:rotate(-6deg);pointer-events:none;">Aida</div>
@@ -1579,7 +1669,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
           <span class="hs-nav-btn-label">Crew</span>
           <span class="hs-nav-btn-sub">roster</span>
         </div>
-        <div class="hs-nav-btn hs-nav-btn-wide" onclick="enterProfile()">
+        <div class="hs-nav-btn hs-nav-btn-wide" onclick="summonEnter()">
           <span class="hs-nav-btn-icon">⭕</span>
           <span class="hs-nav-btn-label">Summon</span>
           <span class="hs-nav-btn-sub">pull</span>
@@ -1589,10 +1679,10 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
           <span class="hs-nav-btn-label">War Room</span>
           <span class="hs-nav-btn-sub">battle</span>
         </div>
-        <div class="hs-nav-btn" onclick="enterProfile()">
-          <span class="hs-nav-btn-icon">📖</span>
+        <div class="hs-nav-btn" onclick="openGarment()">
+          <span class="hs-nav-btn-icon">👘</span>
           <span class="hs-nav-btn-label">Gallery</span>
-          <span class="hs-nav-btn-sub">uttu</span>
+          <span class="hs-nav-btn-sub">garments</span>
         </div>
       </div>
     </div>
@@ -2005,6 +2095,57 @@ const AudioCtx=window.AudioContext||window.webkitAudioContext;let actx=null;
 function initAudio(){if(!actx)actx=new AudioCtx();}
 function playClick(f=880,d=0.06,v=0.08){try{initAudio();const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.frequency.setValueAtTime(f,actx.currentTime);o.frequency.exponentialRampToValueAtTime(f*0.5,actx.currentTime+d);g.gain.setValueAtTime(v,actx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+d);o.start();o.stop(actx.currentTime+d);}catch(e){}}
 function playOpen(){playClick(660,0.12,0.1);}function playClose(){playClick(440,0.08,0.07);}function playTab(){playClick(770,0.08,0.08);}
+
+/* ── GARMENT POPUP ── */
+const garments=[
+  {name:"The Shepherd's Road", img:'5219.png'},
+  {name:'The Long Way Home', img:null},
+  {name:"Wolf in Sheep's Clothing", img:null},
+];
+let equippedGarment=0;
+
+function openGarment(){
+  playOpen();
+  const p=document.getElementById('garment-popup');
+  p.style.opacity='1';p.style.visibility='visible';
+}
+function closeGarment(e){
+  if(e && e.target!==document.getElementById('garment-popup'))return;
+  playClose();
+  const p=document.getElementById('garment-popup');
+  p.style.opacity='0';p.style.visibility='hidden';
+}
+function equipGarment(idx){
+  if(!garments[idx].img) return;
+  playOpen();
+  equippedGarment=idx;
+  // update equipped badge
+  [0,1,2].forEach(i=>{
+    const badge=document.getElementById('garment-equipped-'+i);
+    const card=document.getElementById('garment-card-'+i);
+    if(badge){
+      badge.style.display=i===idx?'block':'none';
+    }
+    if(card && garments[i].img){
+      card.style.borderColor=i===idx?'#d4a84a':'rgba(200,149,106,0.3)';
+      card.style.borderWidth=i===idx?'2px':'1px';
+    }
+  });
+  // update "currently wearing" label
+  document.getElementById('garment-wearing').textContent=garments[idx].name;
+  // swap character art on home screen with fade
+  const art=document.getElementById('hsCharArt') || document.querySelector('.hs-char-art');
+  if(art){
+    art.style.transition='opacity 0.4s ease';
+    art.style.opacity='0';
+    setTimeout(()=>{
+      art.src=garments[idx].img;
+      art.style.opacity='1';
+    },400);
+  }
+  // close after brief delay
+  setTimeout(()=>closeGarment(),600);
+}
 
 /* ── CREW POPUP ── */
 const charData={
@@ -2493,12 +2634,231 @@ function closeMail(e){
   m.style.opacity='0';m.style.visibility='hidden';
 }
 
-/* ── PORTRAIT TOGGLE ── */
+/* ── SPINDLE SUMMON ANIMATION ── */
+function summonEnter(){
+  playOpen();
+  const overlay = document.getElementById('spindle-overlay');
+  const canvas  = document.getElementById('spindle-canvas');
+  const glow    = document.getElementById('spindle-glow');
+  const nameEl  = document.getElementById('spindle-name');
+  const rarityEl= document.getElementById('spindle-rarity');
+
+  // show overlay
+  overlay.style.visibility='visible';
+  overlay.style.opacity='1';
+
+  // setup canvas
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  const cx  = canvas.width  / 2;
+  const cy  = canvas.height / 2;
+
+  // particles
+  const particles = [];
+  for(let i=0;i<80;i++){
+    const angle = Math.random()*Math.PI*2;
+    const speed = 1.5 + Math.random()*3.5;
+    particles.push({
+      x:cx, y:cy,
+      vx: Math.cos(angle)*speed,
+      vy: Math.sin(angle)*speed,
+      size: 1.5 + Math.random()*2.5,
+      life: 1,
+      decay: 0.012 + Math.random()*0.018,
+      color: Math.random()<0.6 ? '#d4a84a' : Math.random()<0.5 ? '#c84838' : '#fff',
+    });
+  }
+
+  // spindle state
+  let rot      = 0;
+  let frame    = 0;
+  let phase    = 0; // 0=spin in, 1=flash, 2=reveal, 3=fade out
+  let phaseT   = 0;
+  let running  = true;
+
+  // sounds
+  const spindleSounds = ()=>{
+    beep(220,0.15,'sine',0.1);
+    setTimeout(()=>beep(330,0.12,'sine',0.1),200);
+    setTimeout(()=>beep(440,0.15,'sine',0.12),400);
+    setTimeout(()=>beep(660,0.08,'sine',0.08),600);
+    setTimeout(()=>beep(880,0.3,'sine',0.15),800);
+    setTimeout(()=>{
+      beep(1046,0.1,'sine',0.18);
+      setTimeout(()=>beep(1318,0.5,'sine',0.2),100);
+    },1100);
+  };
+  spindleSounds();
+
+  function drawSpindle(alpha, scale, extraRot){
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(extraRot);
+    ctx.scale(scale, scale);
+    ctx.globalAlpha = alpha;
+
+    const size = 110;
+
+    // outer rotating rays
+    for(let i=0;i<12;i++){
+      const a = (i/12)*Math.PI*2;
+      const grad = ctx.createLinearGradient(0,0,Math.cos(a)*size*1.8,Math.sin(a)*size*1.8);
+      grad.addColorStop(0, 'rgba(212,168,74,0.6)');
+      grad.addColorStop(1, 'rgba(212,168,74,0)');
+      ctx.beginPath();
+      ctx.moveTo(0,0);
+      ctx.lineTo(Math.cos(a)*size*1.8, Math.sin(a)*size*1.8);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    // diamond 1 — upright
+    ctx.beginPath();
+    ctx.moveTo(0, -size);
+    ctx.lineTo(size*0.55, 0);
+    ctx.lineTo(0, size);
+    ctx.lineTo(-size*0.55, 0);
+    ctx.closePath();
+    const dGrad1 = ctx.createLinearGradient(0,-size,0,size);
+    dGrad1.addColorStop(0,'rgba(255,255,255,0.95)');
+    dGrad1.addColorStop(0.3,'rgba(212,168,74,0.8)');
+    dGrad1.addColorStop(0.7,'rgba(200,80,60,0.7)');
+    dGrad1.addColorStop(1,'rgba(255,255,255,0.9)');
+    ctx.fillStyle = dGrad1;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // diamond 2 — rotated 90deg (horizontal)
+    ctx.rotate(Math.PI/2);
+    ctx.beginPath();
+    ctx.moveTo(0, -size*0.75);
+    ctx.lineTo(size*0.4, 0);
+    ctx.lineTo(0, size*0.75);
+    ctx.lineTo(-size*0.4, 0);
+    ctx.closePath();
+    const dGrad2 = ctx.createLinearGradient(0,-size,0,size);
+    dGrad2.addColorStop(0,'rgba(212,168,74,0.5)');
+    dGrad2.addColorStop(0.5,'rgba(200,80,60,0.4)');
+    dGrad2.addColorStop(1,'rgba(212,168,74,0.5)');
+    ctx.fillStyle = dGrad2;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(212,168,74,0.5)';
+    ctx.lineWidth=0.8;
+    ctx.stroke();
+
+    // inner star spark
+    ctx.rotate(-Math.PI/2);
+    const sparkSize = 18 + Math.sin(frame*0.15)*6;
+    for(let i=0;i<4;i++){
+      const sa = (i/4)*Math.PI*2 + rot*3;
+      ctx.beginPath();
+      ctx.moveTo(0,0);
+      ctx.lineTo(Math.cos(sa)*sparkSize, Math.sin(sa)*sparkSize);
+      ctx.strokeStyle='rgba(255,255,255,0.9)';
+      ctx.lineWidth=1.5;
+      ctx.stroke();
+    }
+    // center dot
+    ctx.beginPath();
+    ctx.arc(0,0,5,0,Math.PI*2);
+    ctx.fillStyle='#fff';
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  function animate(){
+    if(!running) return;
+    frame++;
+    phaseT++;
+    rot += 0.04;
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // background fade in
+    const bgAlpha = Math.min(1, frame/30)*0.95;
+    ctx.fillStyle=`rgba(6,4,2,${bgAlpha})`;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    // update particles
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      p.vx*=0.97; p.vy*=0.97;
+      p.life-=p.decay;
+      if(p.life>0){
+        ctx.globalAlpha=p.life;
+        ctx.fillStyle=p.color;
+        ctx.fillRect(p.x,p.y,p.size,p.size);
+        ctx.globalAlpha=1;
+      }
+    });
+
+    if(phase===0){
+      // spin in — scale up from 0
+      const sc = Math.min(1, phaseT/40);
+      const al = Math.min(1, phaseT/25);
+      drawSpindle(al, sc, rot);
+      if(phaseT>50){ phase=1; phaseT=0; }
+
+    } else if(phase===1){
+      // steady spin + glow builds
+      drawSpindle(1, 1, rot);
+      const glowAl = Math.min(1, phaseT/30);
+      glow.style.opacity = glowAl;
+      glow.style.width  = (200+phaseT*2)+'px';
+      glow.style.height = (200+phaseT*2)+'px';
+      glow.style.marginLeft = (-(100+phaseT))+'px';
+      glow.style.marginTop  = (-(100+phaseT))+'px';
+      if(phaseT>50){ phase=2; phaseT=0;
+        nameEl.style.opacity='1';
+        rarityEl.style.opacity='1';
+      }
+
+    } else if(phase===2){
+      // flash white then hold
+      const flashAl = Math.max(0, 1-(phaseT/20));
+      ctx.fillStyle=`rgba(255,255,255,${flashAl*0.7})`;
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      drawSpindle(Math.max(0.3,1-phaseT/60), 1+phaseT*0.005, rot*0.5);
+      if(phaseT>80){ phase=3; phaseT=0; }
+
+    } else if(phase===3){
+      // fade out everything
+      const fadeOut = Math.max(0,1-phaseT/40);
+      drawSpindle(fadeOut*0.5, 1, rot*0.3);
+      overlay.style.opacity = fadeOut;
+      if(phaseT>45){
+        running=false;
+        overlay.style.visibility='hidden';
+        overlay.style.opacity='0';
+        glow.style.opacity='0';
+        nameEl.style.opacity='0';
+        rarityEl.style.opacity='0';
+        // enter profile
+        const ms=document.getElementById('main-screen');
+        const ps=document.getElementById('profile-screen');
+        ms.classList.add('hidden');
+        ps.classList.add('visible');
+        document.getElementById('app').classList.add('visible');
+        setTimeout(()=>{document.getElementById('bondFill').style.width='100%';},400);
+        return;
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+}
+
+
 let portraitToggled=false;
 function togglePortrait(){
   playClick(660,0.1,0.08);
   portraitToggled=!portraitToggled;
-  const img=document.querySelector('.ms-char-art');
+  const img=document.querySelector('.hs-char-art');
   if(!img)return;
   img.style.transition='opacity 0.35s ease';
   img.style.opacity='0';
